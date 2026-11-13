@@ -121,9 +121,25 @@ a{color:inherit;text-decoration:none}
 .sidebar{top:var(--bn-h)!important;height:calc(100vh - var(--bn-h))!important}
 @media(max-width:600px){.motiv-bar .mb-text{font-size:12.5px;white-space:normal;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}:root{--bn-h:50px}}
 </style>
+
+<style>
+/* Login lock */
+.lock{display:none;margin:24px auto 0;width:min(320px,86vw)}
+.lock.show{display:block}
+.lock input[type=password],.lock input[type=text]{width:100%;background:#0c0a16;color:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 14px;text-align:center;font:600 16px Tajawal,Cairo,sans-serif;letter-spacing:2px;outline:none}
+.lock input:focus{border-color:rgba(184,92,255,.65);box-shadow:0 0 0 3px rgba(139,61,255,.18)}
+.lock .lock-row{position:relative}
+.lock .eye{position:absolute;left:8px;top:50%;transform:translateY(-50%);border:0;background:transparent;color:#aaa5bd;font-size:18px;cursor:pointer;padding:6px}
+.lock .lock-btn{width:100%;margin-top:10px;padding:13px;border:0;border-radius:14px;color:#fff;font:800 16px Cairo,Tajawal,sans-serif;cursor:pointer;background:linear-gradient(100deg,var(--purple),var(--blue));box-shadow:0 0 28px rgba(139,61,255,.35)}
+.lock .lock-btn:disabled{opacity:.5;cursor:not-allowed}
+.lock .remember{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:11px;color:var(--muted);font-size:13px;cursor:pointer}
+.lock .lock-err{min-height:20px;margin-top:10px;color:var(--red);font-size:13px;font-weight:700}
+.lock.shake{animation:lockShake .4s}
+@keyframes lockShake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+</style>
 </head>
 <body>
-<div class="splash" id="splash"><div class="splash-box"><img src="icon-192.png" alt="Ahmed Youssef"><h1>AHMED YOUSSEF</h1><p>Study • Focus • Achieve</p></div></div>
+<div class="splash" id="splash"><div class="splash-box"><img src="icon-192.png" alt="Ahmed Youssef"><h1>AHMED YOUSSEF</h1><p>Study • Focus • Achieve</p><div class="lock" id="lockBox"><div class="lock-row"><input type="password" id="lockInput" placeholder="كلمة المرور" autocomplete="current-password" autocapitalize="off" spellcheck="false"><button type="button" class="eye" id="lockEye" aria-label="إظهار">👁</button></div><button type="button" class="lock-btn" id="lockBtn">🔒 دخول</button><label class="remember"><input type="checkbox" id="lockRemember" checked> تذكرني على هذا الجهاز</label><div class="lock-err" id="lockErr"></div></div></div></div>
 <div class="motiv-bar" id="motivBar" role="status" aria-live="polite"><span class="mb-ico">💡</span><div class="mb-text" id="motivText"></div><button class="mb-close" id="motivClose" title="إخفاء" aria-label="إخفاء">✕</button></div>
 <div class="app">
 <aside class="sidebar" id="sidebar">
@@ -534,7 +550,7 @@ if("serviceWorker" in navigator && location.protocol!=="file:"){
 }else{
   document.getElementById("pwaState").textContent=location.protocol==="file:"?"افتحه عبر خادم محلي لتفعيل PWA":"المتصفح لا يدعم Service Worker";
 }
-setTimeout(()=>document.getElementById("splash").classList.add("hide"),900);
+
 
 
 /* ===== Motivation banner: new quote every 5 min, no repeats until all are used ===== */
@@ -571,6 +587,56 @@ setTimeout(()=>document.getElementById("splash").classList.add("hide"),900);
   setInterval(()=>{if(Date.now()-st.t>=EVERY)advance()},5000);
   document.addEventListener("visibilitychange",()=>{if(!document.hidden&&Date.now()-st.t>=EVERY)advance()});
   document.getElementById("motivClose").onclick=()=>{bar.classList.add("gone");document.documentElement.style.setProperty("--bn-h","0px")};
+})();
+
+/* ===== Login lock ===== */
+(function(){
+  const PASS_HASH="79052e6e362471bed40c64513bbc6de3f32afc786fde610773da5336656d4e60", SALT="ahmed-study-os|", AKEY="studyOsAuth_v1";
+  function sha256(msg){
+    const bytes=Array.from(new TextEncoder().encode(msg));
+    const primes=[];for(let n=2;primes.length<64;n++){if(primes.every(p=>n%p))primes.push(n)}
+    const frac=x=>((x-Math.floor(x))*4294967296)>>>0;
+    const K=primes.map(p=>frac(Math.cbrt(p)));let H=primes.slice(0,8).map(p=>frac(Math.sqrt(p)));
+    const l=bytes.length;bytes.push(0x80);while(bytes.length%64!==56)bytes.push(0);
+    const hi=Math.floor(l*8/4294967296),lo=(l*8)>>>0;
+    for(const v of [hi,lo])for(let i=3;i>=0;i--)bytes.push((v>>>(i*8))&255);
+    const rotr=(x,n)=>(x>>>n)|(x<<(32-n));
+    for(let o=0;o<bytes.length;o+=64){
+      const w=new Array(64);
+      for(let i=0;i<16;i++)w[i]=(bytes[o+i*4]<<24|bytes[o+i*4+1]<<16|bytes[o+i*4+2]<<8|bytes[o+i*4+3])>>>0;
+      for(let i=16;i<64;i++){const s0=rotr(w[i-15],7)^rotr(w[i-15],18)^(w[i-15]>>>3),s1=rotr(w[i-2],17)^rotr(w[i-2],19)^(w[i-2]>>>10);w[i]=(w[i-16]+s0+w[i-7]+s1)>>>0}
+      let [a,b,c,d,e,f,g,h]=H;
+      for(let i=0;i<64;i++){const S1=rotr(e,6)^rotr(e,11)^rotr(e,25),ch=(e&f)^(~e&g),t1=(h+S1+ch+K[i]+w[i])>>>0,S0=rotr(a,2)^rotr(a,13)^rotr(a,22),mj=(a&b)^(a&c)^(b&c),t2=(S0+mj)>>>0;h=g;g=f;f=e;e=(d+t1)>>>0;d=c;c=b;b=a;a=(t1+t2)>>>0}
+      const r=[a,b,c,d,e,f,g,h];H=H.map((v,i)=>(v+r[i])>>>0);
+    }
+    return H.map(v=>v.toString(16).padStart(8,"0")).join("");
+  }
+  const splash=document.getElementById("splash"),box=document.getElementById("lockBox"),
+        inp=document.getElementById("lockInput"),btn=document.getElementById("lockBtn"),
+        err=document.getElementById("lockErr"),rem=document.getElementById("lockRemember"),eye=document.getElementById("lockEye");
+  function isAuthed(){try{return localStorage.getItem(AKEY)===PASS_HASH||sessionStorage.getItem(AKEY)===PASS_HASH}catch(e){return false}}
+  function open(){splash.classList.add("hide")}
+  if(isAuthed()){setTimeout(open,900);return}
+  box.classList.add("show");setTimeout(()=>inp.focus(),300);
+  let fails=0,locked=false;
+  function submit(){
+    if(locked)return;
+    const ok=sha256(SALT+inp.value)===PASS_HASH;
+    if(ok){
+      try{(rem.checked?localStorage:sessionStorage).setItem(AKEY,PASS_HASH)}catch(e){}
+      err.textContent="";open();
+    }else{
+      fails++;err.textContent="كلمة المرور غير صحيحة";inp.value="";
+      box.classList.remove("shake");void box.offsetWidth;box.classList.add("shake");
+      if(fails>=5){
+        locked=true;btn.disabled=true;let s=30;
+        const t=setInterval(()=>{err.textContent="محاولات كتير، استنى "+s+" ثانية";if(--s<0){clearInterval(t);locked=false;btn.disabled=false;fails=0;err.textContent=""}},1000);
+      }
+    }
+  }
+  btn.onclick=submit;
+  inp.addEventListener("keydown",e=>{if(e.key==="Enter")submit()});
+  eye.onclick=()=>{inp.type=inp.type==="password"?"text":"password"};
 })();
 </script>
 </body>
