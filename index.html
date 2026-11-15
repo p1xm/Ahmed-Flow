@@ -14,7 +14,7 @@
 <link rel="icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;600;700;800;900&family=Tajawal:wght@400;500;700;800&family=Amiri+Quran&display=swap" rel="stylesheet">
 <style>
 
 :root{
@@ -89,6 +89,8 @@ a{color:inherit;text-decoration:none}
 @media(max-width:980px){.app{grid-template-columns:1fr}.sidebar{position:fixed;right:-280px;width:260px;transition:.25s;z-index:50}.sidebar.open{right:0}.mobile-menu{display:block}.main{padding:16px}.stats,.subject-grid,.achievements{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}}
 @media(max-width:600px){.stats,.subject-grid,.achievements{grid-template-columns:1fr 1fr}.hero{padding:22px}.hero h1{font-size:24px}.topbar{align-items:flex-start}.profile span{display:none}}
 /* V2 additions */
+.q-card{margin-bottom:14px}.q-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:6px}.q-j{position:relative;aspect-ratio:1;border-radius:10px;border:1px solid var(--line);background:#1a1730;color:#fff;font:700 13px Cairo;cursor:pointer}.q-j.done{background:linear-gradient(135deg,rgba(255,212,90,.35),rgba(139,61,255,.3));border-color:rgba(255,212,90,.6)}.q-j small{position:absolute;bottom:2px;left:0;right:0;font:600 9px Cairo;color:var(--green)}@media(max-width:600px){.q-grid{grid-template-columns:repeat(6,1fr)}}
+.q-overlay{position:fixed;inset:0;background:#05050b;z-index:110;display:none;flex-direction:column}.q-overlay.open{display:flex}.q-head,.q-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}.q-foot{border-bottom:0;border-top:1px solid var(--line)}.q-body{flex:1;overflow-y:auto;padding:22px 18px;max-width:820px;width:100%;margin:0 auto;font-family:"Amiri Quran","Scheherazade New","Traditional Arabic",serif;font-size:clamp(22px,4.6vw,32px);line-height:2.35;text-align:justify;direction:rtl}.q-sura{text-align:center;font:800 22px Cairo;color:var(--gold);border:1px solid rgba(255,212,90,.4);border-radius:14px;padding:6px;margin:14px 0 8px}.q-bsm{text-align:center;margin-bottom:8px}.q-n{color:var(--gold);font-size:.7em;margin:0 3px}
 .apps-box{margin:12px 0 4px;text-align:right}.apps-box .apps-t{font-size:13px;color:#bda9ff;margin-bottom:6px}.apps-row{display:flex;flex-direction:column;gap:6px}.site-slot{display:flex;gap:6px}.site-slot input{flex:1;min-width:0;background:#0d0b18;border:1px solid var(--line);color:#fff;padding:9px 10px;border-radius:10px;font-size:13px;direction:ltr;text-align:left}.site-slot button{flex:0 0 auto;padding:0 14px;border:1px solid var(--line);background:linear-gradient(100deg,rgba(139,61,255,.35),rgba(61,112,255,.18));color:#fff;border-radius:10px;font-family:inherit;cursor:pointer}button.chip{cursor:pointer;color:#fff;font-family:inherit}.site-sel,.site-lbl{flex:1;min-width:0;background:#0d0b18;border:1px solid var(--line);color:#fff;padding:9px 10px;border-radius:10px;font-size:13px;font-family:inherit;text-align:right}.focus-apps{margin:10px 0 16px}
 .timer-tabs{display:flex;gap:7px;margin:4px 0 10px}
 .timer-tabs button{flex:1;padding:9px;border:1px solid var(--line);background:#0d0b18;color:#aaa5bd;border-radius:10px}
@@ -307,6 +309,7 @@ a{color:inherit;text-decoration:none}
     <button class="active" data-page="home"><span class="ico">🏠</span>الرئيسية</button>
     <button data-page="compete"><span class="ico">🌍</span>المنافسة</button>
     <button data-page="hall"><span class="ico">🏛️</span>قاعة الشرف</button>
+    <button data-page="quranhall"><span class="ico">📖</span>قاعة شرف القرآن</button>
     <button data-page="friends"><span class="ico">👥</span>الأصدقاء</button>
     <button data-page="duels"><span class="ico">⚔️</span>المبارزات والفرق</button>
     <button data-page="achievements"><span class="ico">👑</span>إنجازات الشهر</button>
@@ -408,6 +411,11 @@ a{color:inherit;text-decoration:none}
     <div id="hallBody"></div>
   </section>
 
+  <section class="page" id="page-quranhall">
+    <div class="section-head"><h2>📖 قاعة شرف القرآن</h2><span>ترتيب الأعضاء بنقاط الأجزاء (نقاط كل جزء = رقمه)</span></div>
+    <div id="quranHallBody"></div>
+  </section>
+
   <!-- FRIENDS -->
   <section class="page" id="page-friends">
     <div class="section-head"><h2>👥 الأصدقاء</h2><span id="friendCount"></span></div>
@@ -434,6 +442,7 @@ a{color:inherit;text-decoration:none}
       <div class="section-head"><h2>⏱️ سلّم الساعات</h2><span id="sqInfo2">كل مربع = 3 ساعات</span></div>
       <div class="sq-grid" id="sqGrid"></div>
     </div>
+    <div class="card q-card" id="quranCard"></div>
     <div class="grid achievements" id="achievementsGrid"></div>
   </section>
 
@@ -552,6 +561,11 @@ a{color:inherit;text-decoration:none}
     <button class="btn primary" id="focusPause">⏸ إيقاف</button>
     <button class="btn" id="focusClose">✕ خروج</button>
   </div>
+</div>
+<div class="q-overlay" id="qReader">
+  <div class="q-head"><button class="btn small" id="qClose">✕ إغلاق</button><b id="qTitle"></b><span class="muted">نص القرآن: tanzil.net</span></div>
+  <div class="q-body" id="qBody"></div>
+  <div class="q-foot"><button class="btn" id="qPrev">→ السابقة</button><span class="muted" id="qInfo"></span><button class="btn primary" id="qNext">التالية ←</button></div>
 </div>
 <div class="toast" id="toast"></div>
 
@@ -833,7 +847,7 @@ function normalize(s){
   s.sessions=s.sessions||0;
   s.totalMinutes=s.totalMinutes||s.focusMinutes||0;
   s.startDate=s.startDate||(Object.keys(s.daily).sort()[0]||todayK());
-  s.iron=s.iron||null;s.exits=s.exits||{};
+  s.iron=s.iron||null;s.exits=s.exits||{};s.quran=(s.quran&&typeof s.quran==="object"&&!Array.isArray(s.quran))?s.quran:{};
   return s;
 }
 const planned=(s,d)=>s.done[d]?s.done[d].n:s.schedule[dayName(d)].length;
@@ -948,8 +962,9 @@ function summary(s,mk,record){
     list.push({...a,n,cur,ok,lost});
   });
   const bonus=((s.bonus&&s.bonus[mk])||[]).reduce((x,b)=>x+b.pts,0);
-  const points=achPts+bonus;
-  return{ms,ib,list,fresh,achPts,bonus,points,ach,level:levelOf(points)};
+  const quranP=quranNormalPts(s,mk);
+  const points=achPts+bonus+quranP;
+  return{ms,ib,list,fresh,achPts,bonus,quranP,points,ach,level:levelOf(points)};
 }
 function checkAch(){
   const sm=summary(state,curMonth(),true);
@@ -1491,7 +1506,7 @@ function renderAchievements(){
   $("achTotal").innerHTML='<span class="ach-total">🏅 '+sm.ach+' / '+sm.list.length+'</span>';
   const lo=LV[sm.level-1],hi=LV[sm.level],pct=hi?Math.min(100,(sm.points-lo)/(hi-lo)*100):100;
   $("achHead").innerHTML=`<div><div class="muted">مستواك</div><div class="lvl-big">${sm.level}<span style="font-size:16px;color:var(--muted)"> / 10</span></div></div>
-    <div style="flex:1;min-width:200px"><div><b>${sm.points}</b> نقطة ${sm.bonus?`<span class="muted">(منها ${sm.bonus} من المبارزات)</span>`:""}</div><div class="ach-bar"><i style="width:${pct}%"></i></div><div class="muted">${hi?"فاضل "+(hi-sm.points)+" نقطة للمستوى "+(sm.level+1):"وصلت لأعلى مستوى 👑"}</div></div>
+    <div style="flex:1;min-width:200px"><div><b>${sm.points}</b> نقطة ${sm.bonus?`<span class="muted">(منها ${sm.bonus} من المبارزات)</span>`:""}${sm.quranP?` <span class="muted">(منها ${sm.quranP} من القرآن)</span>`:""}</div><div class="ach-bar"><i style="width:${pct}%"></i></div><div class="muted">${hi?"فاضل "+(hi-sm.points)+" نقطة للمستوى "+(sm.level+1):"وصلت لأعلى مستوى 👑"}</div></div>
     <div class="muted">🥉 سهل = 1 • 🥈 متوسط = 3 • 🥇 صعب = 6 • 💎 أسطوري = 10<br>كل شهر بيبدأ من الصفر.</div>`;
   renderSquares($("sqGrid"),sm.ms.minutes);
   $("sqInfo2").textContent=Math.floor(sm.ms.minutes/60)+" / 150 ساعة • كل مربع = 3 ساعات";
@@ -1504,6 +1519,7 @@ function renderAchievements(){
     e.innerHTML=`<div class="medal">${TIERI[x.t]}</div><b>${escapeHtml(x.title)}</b><small>${escapeHtml(x.desc)}</small><div><span class="tier t${x.t}">${TIERN[x.t]} • ${TP[x.t]} نقطة</span></div><div class="ach-bar"><i style="width:${x.ok?100:p}%"></i></div><small>${x.lost?"🔒 ضاع (وضع الحديد)":x.ok?"✅ تم فتح الإنجاز":Math.min(x.cur,x.n)+" / "+x.n+" "+x.u}</small>`;
     g.appendChild(e);
   });
+  renderQuranCard();
 }
 
 /* =====================================================================
@@ -1618,9 +1634,141 @@ $("edCancel").onclick=()=>{draft=null;go("schedule")};
 $("edReset").onclick=()=>{if(confirm("متأكد؟ هيرجع الجدول الافتراضي وهتتمسح تعديلاتك."))  {draft=defaultSchedule();renderEditor();toast("اضغط حفظ لتأكيد الجدول الافتراضي")}};
 
 /* =====================================================================
+   القرآن: قراءة صفحة صفحة بمؤقت، نقاط كل جزء = رقمه، وقاعة شرف خاصة
+   النص من ملف quran.json (Tanzil)، ومفيش أي تعديل على حروفه
+   ===================================================================== */
+const JUZ_START=[[1,1],[2,142],[2,253],[3,93],[4,24],[4,148],[5,82],[6,111],[7,88],[8,41],[9,93],[11,6],[12,53],[15,1],[17,1],[18,75],[21,1],[23,1],[25,21],[27,56],[29,46],[33,31],[36,28],[39,32],[41,47],[46,1],[51,31],[58,1],[67,1],[78,1]];
+const Q_MIN=60,Q_CHARS=1400;
+let QJ=null,QBSM="";
+const toAr=n=>String(n).replace(/\d/g,d=>"٠١٢٣٤٥٦٧٨٩"[d]);
+function buildQuran(data){
+  const st=JUZ_START.map(x=>x[0]*1000+x[1]);
+  const per=Array.from({length:30},()=>[]);
+  data.forEach(su=>su.verses.forEach(v=>{
+    const k=su.id*1000+v.id;let j=0;while(j<29&&k>=st[j+1])j++;
+    per[j].push({s:su.id,sn:su.name,v:v.id,t:v.text});
+  }));
+  QJ=per.map(arr=>{
+    const pages=[];let cur=[],n=0;
+    arr.forEach(x=>{cur.push(x);n+=x.t.length;if(n>=Q_CHARS){pages.push(cur);cur=[];n=0}});
+    if(cur.length){if(n<400&&pages.length)pages[pages.length-1]=pages[pages.length-1].concat(cur);else pages.push(cur)}
+    return pages;
+  });
+  QBSM=data[0].verses[0].text;
+}
+/* بيانات القرآن في الحساب: state.quran[شهر] = [أرقام الأجزاء المكتملة] */
+const qDone=(s,mk)=>{const a=(s&&s.quran&&s.quran[mk])||[];return Array.isArray(a)?a.filter(n=>n>=1&&n<=30):[]};
+const qSet=(s,mk)=>new Set(qDone(s,mk));
+const quranCount=(s,mk)=>qSet(s,mk).size;
+function quranPts(s,mk){let t=0;qSet(s,mk).forEach(n=>t+=n);return t}
+const quranNormalPts=(s,mk)=>Math.min(15,Math.floor(quranCount(s,mk)/10)*5);
+/* تقدم الصفحات (على الجهاز بس) */
+const qKey=()=>"elshilla_qprog_"+(ME?ME.id:"guest");
+function qProgGet(){try{return JSON.parse(localStorage.getItem(qKey())||"{}")||{}}catch(e){return{}}}
+function qPagesDone(j){const p=qProgGet(),mk=curMonth();return(p[mk]&&p[mk][j])||[]}
+function qMarkPage(j,i){
+  const p=qProgGet(),mk=curMonth();
+  Object.keys(p).forEach(k=>{if(k<mk)delete p[k]});
+  p[mk]=p[mk]||{};const a=p[mk][j]||[];if(a.indexOf(i)<0)a.push(i);p[mk][j]=a;
+  try{localStorage.setItem(qKey(),JSON.stringify(p))}catch(e){}
+}
+function renderQuranCard(){
+  const box=$("quranCard");if(!box||!state)return;
+  const mk=curMonth(),done=qSet(state,mk),cnt=done.size,pts=quranPts(state,mk),np=quranNormalPts(state,mk);
+  let g="";
+  for(let j=1;j<=30;j++){
+    const d=done.has(j),r=d?0:qPagesDone(j).length;
+    g+='<button class="q-j'+(d?" done":"")+'" data-j="'+j+'" title="الجزء '+j+' = '+j+' نقطة">'+j+(d?"✓":"")+(r?"<small>"+r+" ص</small>":"")+"</button>";
+  }
+  box.innerHTML='<div class="section-head"><h2>📖 القرآن</h2><span>'+cnt+" / 30 جزء • "+pts+" نقطة قرآن • +"+np+' نقطة عادية</span></div>'+
+    '<div class="muted" style="margin-bottom:10px">دوس على الجزء واقراه صفحة صفحة، وكل صفحة بتحتاج '+Q_MIN+' ثانية قبل ما تكمل. نقاط كل جزء = رقمه، وكل 10 أجزاء = 5 نقاط عادية (حد أقصى 15 في الشهر). كل جزء بيتحسب مرة واحدة في الشهر.</div>'+
+    '<div class="q-grid">'+g+"</div>";
+}
+$("quranCard").addEventListener("click",e=>{const b=e.target.closest("[data-j]");if(b)openJuz(+b.dataset.j)});
+const Q={j:1,i:0,left:0,tm:null,review:false};
+async function openJuz(j){
+  if(!state)return;
+  if(!QJ){
+    toast("بحمّل المصحف...");
+    try{const r=await fetch("quran.json");if(!r.ok)throw new Error("x");buildQuran(await r.json())}
+    catch(e){return toast("مش قادر أحمّل ملف quran.json. اتأكد إنه مرفوع وإن فيه إنترنت")}
+  }
+  Q.j=j;Q.review=qSet(state,curMonth()).has(j);
+  let n=0;const done=qPagesDone(j);while(done.indexOf(n)>=0)n++;
+  Q.i=Q.review?0:Math.min(n,QJ[j-1].length-1);
+  $("qReader").classList.add("open");qRender();
+}
+function qRender(){
+  const pages=QJ[Q.j-1],pg=pages[Q.i],done=qPagesDone(Q.j);
+  $("qTitle").textContent="الجزء "+Q.j+" • صفحة "+(Q.i+1)+" من "+pages.length+(Q.review?" • مراجعة":"");
+  let h="";
+  pg.forEach(x=>{
+    if(x.v===1){
+      h+='<div class="q-sura">سورة '+escapeHtml(x.sn)+"</div>";
+      if(x.s!==1&&x.s!==9)h+='<div class="q-bsm">'+escapeHtml(QBSM)+"</div>";
+    }
+    h+=escapeHtml(x.t)+' <span class="q-n">﴿'+toAr(x.v)+"﴾</span> ";
+  });
+  $("qBody").innerHTML=h;$("qBody").scrollTop=0;
+  $("qPrev").disabled=Q.i===0;
+  $("qInfo").textContent="";
+  Q.left=(Q.review||done.indexOf(Q.i)>=0)?0:Q_MIN;
+  qTick();
+  clearInterval(Q.tm);
+  Q.tm=setInterval(()=>{
+    if(!$("qReader").classList.contains("open")){clearInterval(Q.tm);return}
+    if(document.hidden)return;
+    if(Q.left>0){Q.left--;if(Q.left===0&&!Q.review)qMarkPage(Q.j,Q.i);qTick()}
+  },1000);
+}
+function qTick(){
+  const last=Q.i===QJ[Q.j-1].length-1,b=$("qNext");
+  if(Q.left>0){b.disabled=true;b.textContent="استنى "+Q.left+" ث"}
+  else{b.disabled=false;b.textContent=last?(Q.review?"إغلاق":"✅ إنهاء الجزء"):"التالية ←"}
+}
+function qClose(){clearInterval(Q.tm);$("qReader").classList.remove("open")}
+$("qClose").onclick=qClose;
+$("qPrev").onclick=()=>{if(Q.i>0){Q.i--;qRender()}};
+$("qNext").onclick=()=>{
+  if(Q.left>0)return;
+  const pages=QJ[Q.j-1];
+  if(Q.i<pages.length-1){Q.i++;qRender();return}
+  if(Q.review)return qClose();
+  const done=qPagesDone(Q.j);
+  for(let n=0;n<pages.length;n++)if(done.indexOf(n)<0)return toast("لسه فيه صفحات ما اتقرتش");
+  const mk=curMonth();
+  state.quran=state.quran||{};
+  const a=Array.isArray(state.quran[mk])?state.quran[mk]:(state.quran[mk]=[]);
+  if(a.indexOf(Q.j)<0){a.push(Q.j);toast("🎉 خلصت الجزء "+Q.j+"! +"+Q.j+" نقطة قرآن");save()}
+  qClose();renderQuranCard();
+};
+function quranRows(mk){
+  const rows=[];
+  Object.values(DB.users()).forEach(u=>{
+    const c=quranCount(u.state,mk);
+    if(c>0)rows.push({id:u.id,name:u.name,photo:u.photo,me:ME&&u.id===ME.id,cnt:c,pts:quranPts(u.state,mk)});
+  });
+  return rows.sort((a,b)=>b.pts-a.pts||b.cnt-a.cnt||a.name.localeCompare(b.name,"ar"));
+}
+function renderQuranHall(){
+  const cur=curMonth(),prev=prevMonth(cur);
+  const sec=(mk,title)=>{
+    const rows=quranRows(mk).slice(0,10);
+    let h='<div class="section-head"><h2>'+title+" "+monthLabel(mk)+"</h2></div>";
+    if(!rows.length)return h+'<div class="card muted" style="margin-bottom:14px">لسه محدش سجّل أجزاء في الشهر ده 📖</div>';
+    rows.forEach((p,i)=>{
+      const r=i+1,fr=r===1?"fr1":r===2?"fr2":r===3?"fr3":r<=7?"fr4":"fr8",sz=r===1?66:r===2?62:r===3?58:46,medal=r===1?"🥇":r===2?"🥈":r===3?"🥉":r;
+      h+='<div class="hof-row k'+r+'"><div class="rk">'+medal+"</div>"+avatar(p,sz,fr)+'<div><div class="nm">'+escapeHtml(p.name)+(p.me?" (أنت)":"")+'</div><div class="sub">'+p.cnt+' جزء</div></div><div class="val">'+p.pts+" نقطة</div></div>";
+    });
+    return h+'<div style="height:14px"></div>';
+  };
+  $("quranHallBody").innerHTML=sec(cur,"📖 الشهر ده")+sec(prev,"🏛️ الشهر اللي فات");
+}
+
+/* =====================================================================
    NAVIGATION + RENDER
    ===================================================================== */
-const PAGES={home:renderHome,compete:renderCompete,hall:renderHall,friends:renderFriends,duels:renderDuels,achievements:renderAchievements,schedule:renderSchedule,subjects:renderSubjects,tasks:renderTasks,analytics:renderAnalytics,profile:renderProfile};
+const PAGES={home:renderHome,compete:renderCompete,hall:renderHall,quranhall:renderQuranHall,friends:renderFriends,duels:renderDuels,achievements:renderAchievements,schedule:renderSchedule,subjects:renderSubjects,tasks:renderTasks,analytics:renderAnalytics,profile:renderProfile};
 function renderAll(){if(!ME)return;renderChrome();if(PAGES[curPage]&&curPage!=="home"&&curPage!=="achievements")PAGES[curPage]()}
 document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>go(b.dataset.page));
 document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
