@@ -1667,7 +1667,8 @@ function updateTimer(){const txt=timerModeType==="countdown"?fmtShort(remaining)
 function tick(){
   if(allowedAway&&Date.now()-allowedAwayAt>AWAY_MAX){allowedAway=false;awayTimedOut=true;running=false;clearInterval(interval);interval=null;releaseLock();return}
   const now=Date.now();let dt=Math.floor((now-lastT)/1000);if(dt<=0)return;
-  lastT=now;dt=Math.min(dt,allowCap);let minAdded=false;
+  if(dt>allowCap){lastT=now;dt=allowCap}else lastT+=dt*1000;
+  let minAdded=false;
   for(let i=0;i<dt;i++){
     if(timerModeType==="countdown")remaining--;else elapsed++;
     carry++;if(carry>=60){carry=0;addMinutes(1);minAdded=true}
@@ -1675,7 +1676,7 @@ function tick(){
   }
   updateTimer();if(minAdded)save(true);
 }
-function startTimer(){if(running)return;running=true;lastT=Date.now();interval=setInterval(tick,1000);acquireLock();toast(timerModeType==="countdown"?"بدأ العد التنازلي ⚡":"بدأت ساعة التركيز ⏱️")}
+function startTimer(){if(running)return;running=true;lastT=Date.now();interval=setInterval(tick,250);acquireLock();toast(timerModeType==="countdown"?"بدأ العد التنازلي ⚡":"بدأت ساعة التركيز ⏱️")}
 function pauseTimer(){if(running)tick();running=false;clearInterval(interval);interval=null;releaseLock()}
 function resetTimer(){pauseTimer();remaining=3000;elapsed=0;carry=0;updateTimer()}
 function finishSession(){
