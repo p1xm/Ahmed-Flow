@@ -89,6 +89,7 @@ a{color:inherit;text-decoration:none}
 @media(max-width:980px){.app{grid-template-columns:1fr}.sidebar{position:fixed;right:-280px;width:260px;transition:.25s;z-index:50}.sidebar.open{right:0}.mobile-menu{display:block}.main{padding:16px}.stats,.subject-grid,.achievements{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}}
 @media(max-width:600px){.stats,.subject-grid,.achievements{grid-template-columns:1fr 1fr}.hero{padding:22px}.hero h1{font-size:24px}.topbar{align-items:flex-start}.profile span{display:none}}
 /* V2 additions */
+.apps-box{margin:12px 0 4px;text-align:right}.apps-box .apps-t{font-size:13px;color:#bda9ff;margin-bottom:6px}.apps-row{display:flex;gap:6px}.apps-row input{flex:1;min-width:0;background:#0d0b18;border:1px solid var(--line);color:#fff;padding:9px 8px;border-radius:10px;font-size:13px;text-align:center}.focus-apps{margin:10px 0 16px}
 .timer-tabs{display:flex;gap:7px;margin:4px 0 10px}
 .timer-tabs button{flex:1;padding:9px;border:1px solid var(--line);background:#0d0b18;color:#aaa5bd;border-radius:10px}
 .timer-tabs button.active{color:#fff;background:linear-gradient(100deg,rgba(139,61,255,.35),rgba(61,112,255,.18));border-color:rgba(184,92,255,.45)}
@@ -361,6 +362,15 @@ a{color:inherit;text-decoration:none}
         <div class="timer-sub" id="timerSub">اختر فترة وابدأ التركيز</div>
         <div id="countdownControls"><select class="timer-select" id="timerSelect"></select></div>
         <div id="stopwatchControls" style="display:none"><div class="stopwatch-help">يبدأ من 00:00:00 ويعرض الساعات والدقائق والثواني</div></div>
+        <div class="apps-box">
+          <div class="apps-t">📱 التطبيقات المسموح استخدامها (3 بس)</div>
+          <div class="apps-row">
+            <input class="app-in" maxlength="24" list="appList" placeholder="تطبيق 1">
+            <input class="app-in" maxlength="24" list="appList" placeholder="تطبيق 2">
+            <input class="app-in" maxlength="24" list="appList" placeholder="تطبيق 3">
+          </div>
+          <datalist id="appList"><option value="ديسكورد"><option value="آلة حاسبة"><option value="قاموس"><option value="ملاحظات"><option value="ChatGPT"><option value="Notion"><option value="Anki"></datalist>
+        </div>
         <div class="timer-controls">
           <button class="btn primary" id="timerStart">▶ ابدأ</button>
           <button class="btn" id="timerPause">⏸ إيقاف</button>
@@ -539,6 +549,7 @@ a{color:inherit;text-decoration:none}
     <div class="timer" id="focusTimer">50:00</div>
     <h2 id="focusTitle">جلسة مذاكرة</h2>
     <p class="timer-sub" id="focusSubject">جاهز؟</p>
+    <div class="focus-apps" id="focusApps"></div>
     <button class="btn primary" id="focusPause">⏸ إيقاف</button>
     <button class="btn" id="focusClose">✕ خروج</button>
   </div>
@@ -1648,6 +1659,7 @@ function setupTimer(){
   if(!items.length){const o=document.createElement("option");o.textContent="جلسة حرة";s.appendChild(o)}
   const setSub=()=>{const b=items[s.value];$("timerSub").textContent=b?b.n:"جلسة حرة";$("focusSubject").textContent=b?b.n:"جلسة حرة"};
   s.onchange=setSub;setSub();
+  if(typeof fillAppInputs==="function")fillAppInputs();
 }
 const fmt=sec=>String(Math.floor(sec/3600)).padStart(2,"0")+":"+String(Math.floor(sec%3600/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0");
 const fmtShort=sec=>String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0");
@@ -1685,6 +1697,28 @@ $("focusOpen").onclick=()=>$("focusOverlay").classList.add("open");
 $("focusClose").onclick=()=>{if(running)return toast("🔒 وقّف التايمر الأول لو عايز تخرج");$("focusOverlay").classList.remove("open")};
 $("focusPause").onclick=()=>running?pauseTimer():startTimer();
 
+
+/* ---------- التطبيقات المسموحة (محفوظة على الجهاز بس، مش بتتبعت لـ Firestore ومش بتأثر على الإنجازات) ---------- */
+const APPS_N=3;
+/* تطبيقات محظورة (بتتقارن بعد التطبيع: حروف صغيرة، من غير تشكيل/مسافات/رموز) */
+const BLOCK_STEMS=["whats","واتس","telegram","تيليجرام","تليجرام","تلجرام","تيلجرام","facebook","فيسبوك","messenger","ماسنجر","ماسنجر","instagram","insta","انستجرام","انستا","tiktok","تيكتوك","youtube","يوتيوب","يوتوب","twitter","تويتر","snapchat","snapchat","سناب"];
+const BLOCK_EXACT=["x","اكس","الاكس","ig","fb","tg","wa","tt","yt","sc"];
+const normApp=t=>String(t||"").toLowerCase().replace(/[\u064B-\u0652\u0640]/g,"").replace(/[أإآ]/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي").replace(/[^a-z0-9\u0621-\u064A]/g,"");
+function isBlockedApp(t){const n=normApp(t);if(!n)return false;return BLOCK_EXACT.indexOf(n)>=0||BLOCK_STEMS.some(w=>n.indexOf(normApp(w))>=0)}
+const appsKey=()=>"elshilla_apps_"+(ME?ME.id:"guest");
+function getApps(){try{const a=JSON.parse(localStorage.getItem(appsKey())||"[]");return Array.isArray(a)?a.slice(0,APPS_N).map(x=>String(x||"").slice(0,24)).map(x=>isBlockedApp(x)?"":x):[]}catch(e){return[]}}
+function setApps(a){try{localStorage.setItem(appsKey(),JSON.stringify(a))}catch(e){}}
+function renderFocusApps(){
+  const names=getApps().filter(Boolean);
+  $("focusApps").innerHTML=names.length?'<div class="muted">📱 المسموح في الجلسة دي:</div>'+names.map(n=>'<span class="chip">'+escapeHtml(n)+'</span>').join(""):"";
+}
+function fillAppInputs(){const a=getApps();document.querySelectorAll(".app-in").forEach((el,i)=>{el.value=a[i]||""});renderFocusApps()}
+document.querySelectorAll(".app-in").forEach((el,i)=>{
+  el.addEventListener("input",()=>{const a=getApps();while(a.length<APPS_N)a.push("");const v=el.value.trim().slice(0,24);a[i]=isBlockedApp(v)?"":v;setApps(a);renderFocusApps()});
+  el.addEventListener("change",()=>{
+    if(isBlockedApp(el.value)){el.value="";const a=getApps();while(a.length<APPS_N)a.push("");a[i]="";setApps(a);renderFocusApps();toast("🚫 التطبيق ده ممنوع في وقت التركيز")}
+  });
+});
 /* =====================================================================
    FOCUS LOCK: مفيش خروج والتايمر شغال
    ===================================================================== */
