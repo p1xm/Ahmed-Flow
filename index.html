@@ -89,7 +89,7 @@ a{color:inherit;text-decoration:none}
 @media(max-width:980px){.app{grid-template-columns:1fr}.sidebar{position:fixed;right:-280px;width:260px;transition:.25s;z-index:50}.sidebar.open{right:0}.mobile-menu{display:block}.main{padding:16px}.stats,.subject-grid,.achievements{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}}
 @media(max-width:600px){.stats,.subject-grid,.achievements{grid-template-columns:1fr 1fr}.hero{padding:22px}.hero h1{font-size:24px}.topbar{align-items:flex-start}.profile span{display:none}}
 /* V2 additions */
-.apps-box{margin:12px 0 4px;text-align:right}.apps-box .apps-t{font-size:13px;color:#bda9ff;margin-bottom:6px}.apps-row{display:flex;gap:6px}.apps-row input{flex:1;min-width:0;background:#0d0b18;border:1px solid var(--line);color:#fff;padding:9px 8px;border-radius:10px;font-size:13px;text-align:center}.focus-apps{margin:10px 0 16px}
+.apps-box{margin:12px 0 4px;text-align:right}.apps-box .apps-t{font-size:13px;color:#bda9ff;margin-bottom:6px}.apps-row{display:flex;flex-direction:column;gap:6px}.site-slot{display:flex;gap:6px}.site-slot input{flex:1;min-width:0;background:#0d0b18;border:1px solid var(--line);color:#fff;padding:9px 10px;border-radius:10px;font-size:13px;direction:ltr;text-align:left}.site-slot button{flex:0 0 auto;padding:0 14px;border:1px solid var(--line);background:linear-gradient(100deg,rgba(139,61,255,.35),rgba(61,112,255,.18));color:#fff;border-radius:10px;font-family:inherit;cursor:pointer}button.chip{cursor:pointer;color:#fff;font-family:inherit}.site-sel,.site-lbl{flex:1;min-width:0;background:#0d0b18;border:1px solid var(--line);color:#fff;padding:9px 10px;border-radius:10px;font-size:13px;font-family:inherit;text-align:right}.focus-apps{margin:10px 0 16px}
 .timer-tabs{display:flex;gap:7px;margin:4px 0 10px}
 .timer-tabs button{flex:1;padding:9px;border:1px solid var(--line);background:#0d0b18;color:#aaa5bd;border-radius:10px}
 .timer-tabs button.active{color:#fff;background:linear-gradient(100deg,rgba(139,61,255,.35),rgba(61,112,255,.18));border-color:rgba(184,92,255,.45)}
@@ -363,13 +363,13 @@ a{color:inherit;text-decoration:none}
         <div id="countdownControls"><select class="timer-select" id="timerSelect"></select></div>
         <div id="stopwatchControls" style="display:none"><div class="stopwatch-help">يبدأ من 00:00:00 ويعرض الساعات والدقائق والثواني</div></div>
         <div class="apps-box">
-          <div class="apps-t">📱 التطبيقات المسموح استخدامها (3 بس)</div>
+          <div class="apps-t">🌐 المواقع المسموحة وقت التركيز</div>
           <div class="apps-row">
-            <input class="app-in" maxlength="24" list="appList" placeholder="تطبيق 1">
-            <input class="app-in" maxlength="24" list="appList" placeholder="تطبيق 2">
-            <input class="app-in" maxlength="24" list="appList" placeholder="تطبيق 3">
+            <div class="site-slot"><select class="site-sel" id="chatPick"><option value="chatgpt">🤖 ChatGPT</option><option value="claude">🤖 Claude</option><option value="gemini">🤖 Gemini</option></select><button class="site-go" data-k="chat" title="افتح">↗</button></div>
+            <div class="site-slot"><div class="site-lbl">🔎 جوجل</div><button class="site-go" data-k="google" title="افتح">↗</button></div>
+            <div class="site-slot"><div class="site-lbl">▶️ يوتيوب</div><button class="site-go" data-k="youtube" title="افتح">↗</button></div>
           </div>
-          <datalist id="appList"><option value="ديسكورد"><option value="آلة حاسبة"><option value="قاموس"><option value="ملاحظات"><option value="ChatGPT"><option value="Notion"><option value="Anki"></datalist>
+          <div class="muted" style="margin-top:6px;font-size:12px">⏳ التايمر هيفضل شغال، بس هيقف لو غبت أكتر من ساعة</div>
         </div>
         <div class="timer-controls">
           <button class="btn primary" id="timerStart">▶ ابدأ</button>
@@ -1665,8 +1665,9 @@ const fmt=sec=>String(Math.floor(sec/3600)).padStart(2,"0")+":"+String(Math.floo
 const fmtShort=sec=>String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0");
 function updateTimer(){const txt=timerModeType==="countdown"?fmtShort(remaining):fmt(elapsed);timerEl.textContent=txt;focusTimer.textContent=txt}
 function tick(){
+  if(allowedAway&&Date.now()-allowedAwayAt>AWAY_MAX){allowedAway=false;awayTimedOut=true;running=false;clearInterval(interval);interval=null;releaseLock();return}
   const now=Date.now();let dt=Math.floor((now-lastT)/1000);if(dt<=0)return;
-  lastT=now;dt=Math.min(dt,120);let minAdded=false;
+  lastT=now;dt=Math.min(dt,allowCap);let minAdded=false;
   for(let i=0;i<dt;i++){
     if(timerModeType==="countdown")remaining--;else elapsed++;
     carry++;if(carry>=60){carry=0;addMinutes(1);minAdded=true}
@@ -1698,27 +1699,41 @@ $("focusClose").onclick=()=>{if(running)return toast("🔒 وقّف التايم
 $("focusPause").onclick=()=>running?pauseTimer():startTimer();
 
 
-/* ---------- التطبيقات المسموحة (محفوظة على الجهاز بس، مش بتتبعت لـ Firestore ومش بتأثر على الإنجازات) ---------- */
-const APPS_N=3;
-/* تطبيقات محظورة (بتتقارن بعد التطبيع: حروف صغيرة، من غير تشكيل/مسافات/رموز) */
-const BLOCK_STEMS=["whats","واتس","telegram","تيليجرام","تليجرام","تلجرام","تيلجرام","facebook","فيسبوك","messenger","ماسنجر","ماسنجر","instagram","insta","انستجرام","انستا","tiktok","تيكتوك","youtube","يوتيوب","يوتوب","twitter","تويتر","snapchat","snapchat","سناب"];
-const BLOCK_EXACT=["x","اكس","الاكس","ig","fb","tg","wa","tt","yt","sc"];
-const normApp=t=>String(t||"").toLowerCase().replace(/[\u064B-\u0652\u0640]/g,"").replace(/[أإآ]/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي").replace(/[^a-z0-9\u0621-\u064A]/g,"");
-function isBlockedApp(t){const n=normApp(t);if(!n)return false;return BLOCK_EXACT.indexOf(n)>=0||BLOCK_STEMS.some(w=>n.indexOf(normApp(w))>=0)}
-const appsKey=()=>"elshilla_apps_"+(ME?ME.id:"guest");
-function getApps(){try{const a=JSON.parse(localStorage.getItem(appsKey())||"[]");return Array.isArray(a)?a.slice(0,APPS_N).map(x=>String(x||"").slice(0,24)).map(x=>isBlockedApp(x)?"":x):[]}catch(e){return[]}}
-function setApps(a){try{localStorage.setItem(appsKey(),JSON.stringify(a))}catch(e){}}
-function renderFocusApps(){
-  const names=getApps().filter(Boolean);
-  $("focusApps").innerHTML=names.length?'<div class="muted">📱 المسموح في الجلسة دي:</div>'+names.map(n=>'<span class="chip">'+escapeHtml(n)+'</span>').join(""):"";
+/* ---------- المواقع المسموحة: شات (ChatGPT/Claude/Gemini حسب اختيارك) + جوجل + يوتيوب. الاختيار على الجهاز بس، مش بيأثر على Firestore ولا الإنجازات ---------- */
+const CHATS={chatgpt:["ChatGPT","https://chatgpt.com/"],claude:["Claude","https://claude.ai/"],gemini:["Gemini","https://gemini.google.com/"]};
+const FIXED={google:["جوجل","https://www.google.com/","🔎"],youtube:["يوتيوب","https://www.youtube.com/","▶️"]};
+const chatKey=()=>"elshilla_chat_"+(ME?ME.id:"guest");
+function getChat(){try{const v=localStorage.getItem(chatKey());return CHATS[v]?v:"chatgpt"}catch(e){return"chatgpt"}}
+function siteInfo(k){
+  if(k==="chat"){const c=CHATS[getChat()];return{name:c[0],url:c[1],ic:"🤖"}}
+  const f=FIXED[k];return f?{name:f[0],url:f[1],ic:f[2]}:null;
 }
-function fillAppInputs(){const a=getApps();document.querySelectorAll(".app-in").forEach((el,i)=>{el.value=a[i]||""});renderFocusApps()}
-document.querySelectorAll(".app-in").forEach((el,i)=>{
-  el.addEventListener("input",()=>{const a=getApps();while(a.length<APPS_N)a.push("");const v=el.value.trim().slice(0,24);a[i]=isBlockedApp(v)?"":v;setApps(a);renderFocusApps()});
-  el.addEventListener("change",()=>{
-    if(isBlockedApp(el.value)){el.value="";const a=getApps();while(a.length<APPS_N)a.push("");a[i]="";setApps(a);renderFocusApps();toast("🚫 التطبيق ده ممنوع في وقت التركيز")}
-  });
-});
+function renderFocusApps(){
+  $("focusApps").innerHTML='<div class="muted">🌐 المسموح في الجلسة دي (دوس عشان تفتح):</div><div class="muted" style="font-size:12px;margin-bottom:4px">⏳ التايمر هيقف لو غبت أكتر من ساعة</div>'+
+    ["chat","google","youtube"].map(k=>{const i=siteInfo(k);return '<button class="chip site-open" data-k="'+k+'">'+i.ic+' '+i.name+' ↗</button>'}).join("");
+}
+function fillAppInputs(){$("chatPick").value=getChat();renderFocusApps()}
+
+/* فتح موقع مسموح من غير ما التايمر يقف */
+let allowedOutAt=0,allowedAway=false,allowedAwayAt=0,awayTimedOut=false,allowCap=120;const AWAY_MAX=3600000;
+function openSite(k){
+  const i=siteInfo(k);if(!i)return;
+  if(running){allowedOutAt=Date.now();toast("⏳ التايمر شغال، بس هيقف لو غبت أكتر من ساعة")}
+  window.open(i.url,"_blank","noopener,noreferrer");
+}
+function returnFromSite(){
+  if(awayTimedOut){awayTimedOut=false;toast("⏸ التايمر وقف لأنك غبت أكتر من ساعة");return}
+  if(!allowedAway)return;
+  const away=Date.now()-allowedAwayAt;
+  allowedAway=false;allowedOutAt=0;
+  if(!running)return;
+  if(away>AWAY_MAX){pauseTimer();toast("⏸ التايمر وقف لأنك غبت أكتر من ساعة");return}
+  allowCap=AWAY_MAX/1000;try{tick()}finally{allowCap=120}
+}
+$("chatPick").addEventListener("change",e=>{try{localStorage.setItem(chatKey(),e.target.value)}catch(x){}renderFocusApps()});
+document.querySelectorAll(".site-go").forEach(b=>b.addEventListener("click",()=>openSite(b.dataset.k)));
+$("focusApps").addEventListener("click",e=>{const b=e.target.closest(".site-open");if(b)openSite(b.dataset.k)});
+
 /* =====================================================================
    FOCUS LOCK: مفيش خروج والتايمر شغال
    ===================================================================== */
@@ -1736,6 +1751,7 @@ window.addEventListener("beforeunload",e=>{if(running){e.preventDefault();e.retu
 window.addEventListener("popstate",()=>{if(running){try{history.pushState({lock:1},"")}catch(e){}toast("🔒 وقّف التايمر الأول لو عايز تخرج")}});
 function onLeave(){
   if(!running||awayAt)return;
+  if(allowedOutAt&&Date.now()-allowedOutAt<120000){allowedAway=true;allowedAwayAt=Date.now();allowedOutAt=0;return}
   pauseTimer();awayAt=Date.now();
   if(state){const k=todayK();state.exits[k]=(state.exits[k]||0)+1;persist()}
 }
@@ -1746,7 +1762,7 @@ function onReturn(){
   $("leaveMsg").textContent="الوقت اللي خرجت فيه ("+(secs>=60?Math.floor(secs/60)+" دقيقة":secs+" ثانية")+") مش متحسب. ده خروج رقم "+n+" النهارده. ركّز وكمّل 💪";
   $("leaveOverlay").classList.add("open");
 }
-document.addEventListener("visibilitychange",()=>{if(document.hidden)onLeave();else{onReturn();if(running&&navigator.wakeLock&&!wakeLock)acquireLock()}});
+document.addEventListener("visibilitychange",()=>{if(document.hidden)onLeave();else{returnFromSite();onReturn();if(running&&navigator.wakeLock&&!wakeLock)acquireLock()}});
 window.addEventListener("pagehide",onLeave);
 $("leaveResume").onclick=()=>{$("leaveOverlay").classList.remove("open");$("focusOverlay").classList.add("open");startTimer()};
 $("leaveEnd").onclick=()=>{$("leaveOverlay").classList.remove("open");$("focusOverlay").classList.remove("open");releaseLock()};
