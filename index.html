@@ -553,15 +553,6 @@ a{color:inherit;text-decoration:none}
     <button class="btn" id="focusClose">✕ خروج</button>
   </div>
 </div>
-<div class="focus-overlay" id="leaveOverlay" style="z-index:120">
-  <div class="focus-box">
-    <div style="font-size:54px">⚠️</div>
-    <h2>خرجت من جلسة التركيز!</h2>
-    <p class="timer-sub" id="leaveMsg"></p>
-    <button class="btn primary" id="leaveResume">▶ كمّل الجلسة</button>
-    <button class="btn" id="leaveEnd">إنهاء الجلسة</button>
-  </div>
-</div>
 <div class="toast" id="toast"></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
@@ -1694,7 +1685,7 @@ $("countdownTab").onclick=()=>setTimerMode("countdown");
 $("stopwatchTab").onclick=()=>setTimerMode("stopwatch");
 $("startFocus").onclick=()=>{$("focusOverlay").classList.add("open");startTimer()};
 $("focusOpen").onclick=()=>$("focusOverlay").classList.add("open");
-$("focusClose").onclick=()=>{if(running)return toast("🔒 وقّف التايمر الأول لو عايز تخرج");$("focusOverlay").classList.remove("open")};
+$("focusClose").onclick=()=>$("focusOverlay").classList.remove("open");
 $("focusPause").onclick=()=>running?pauseTimer():startTimer();
 
 
@@ -1714,53 +1705,30 @@ function renderFocusApps(){
 function fillAppInputs(){$("chatPick").value=getChat();renderFocusApps()}
 
 /* فتح موقع مسموح من غير ما التايمر يقف */
-let excursion=false,excTimer=null,allowedAway=false,allowCap=120;
+let allowCap=120;
 function openSite(k){
   const i=siteInfo(k);if(!i)return;
-  if(running){excursion=true;clearTimeout(excTimer);excTimer=setTimeout(()=>{excursion=false},120000)}
   window.open(i.url,"_blank","noopener,noreferrer");
-}
-function returnFromSite(){
-  if(!excursion)return;
-  clearTimeout(excTimer);excTimer=setTimeout(()=>{excursion=false},4000);
-  if(allowedAway){allowedAway=false;if(running){allowCap=86400;try{tick()}finally{allowCap=120}}}
 }
 $("chatPick").addEventListener("change",e=>{try{localStorage.setItem(chatKey(),e.target.value)}catch(x){}renderFocusApps()});
 document.querySelectorAll(".site-go").forEach(b=>b.addEventListener("click",()=>openSite(b.dataset.k)));
 $("focusApps").addEventListener("click",e=>{const b=e.target.closest(".site-open");if(b)openSite(b.dataset.k)});
 
 /* =====================================================================
-   FOCUS LOCK: مفيش خروج والتايمر شغال
+   التايمر بيفضل شغال حتى لو خرجت من الموقع: الوقت بيتحسب بالساعة الفعلية وبيتعوّض أول ما ترجع
    ===================================================================== */
-let wakeLock=null,awayAt=0;
+let wakeLock=null;
 async function acquireLock(){
-  try{if(!document.fullscreenElement&&document.documentElement.requestFullscreen)await document.documentElement.requestFullscreen({navigationUI:"hide"})}catch(e){}
   try{if(navigator.wakeLock){wakeLock=await navigator.wakeLock.request("screen");wakeLock.addEventListener("release",()=>{wakeLock=null})}}catch(e){}
-  try{history.pushState({lock:1},"")}catch(e){}
 }
 function releaseLock(){
   try{if(wakeLock){wakeLock.release();wakeLock=null}}catch(e){}
-  try{if(document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen()}catch(e){}
 }
-window.addEventListener("beforeunload",e=>{if(running){e.preventDefault();e.returnValue="";return ""}});
-window.addEventListener("popstate",()=>{if(running){try{history.pushState({lock:1},"")}catch(e){}toast("🔒 وقّف التايمر الأول لو عايز تخرج")}});
-function onLeave(){
-  if(!running||awayAt)return;
-  if(excursion){clearTimeout(excTimer);allowedAway=true;return}
-  pauseTimer();awayAt=Date.now();
-  if(state){const k=todayK();state.exits[k]=(state.exits[k]||0)+1;persist()}
-}
-function onReturn(){
-  if(!awayAt)return;
-  const secs=Math.round((Date.now()-awayAt)/1000);awayAt=0;
-  const n=state&&state.exits?state.exits[todayK()]||1:1;
-  $("leaveMsg").textContent="الوقت اللي خرجت فيه ("+(secs>=60?Math.floor(secs/60)+" دقيقة":secs+" ثانية")+") مش متحسب. ده خروج رقم "+n+" النهارده. ركّز وكمّل 💪";
-  $("leaveOverlay").classList.add("open");
-}
-document.addEventListener("visibilitychange",()=>{if(document.hidden)onLeave();else{returnFromSite();onReturn();if(running&&navigator.wakeLock&&!wakeLock)acquireLock()}});
-window.addEventListener("pagehide",onLeave);
-$("leaveResume").onclick=()=>{$("leaveOverlay").classList.remove("open");$("focusOverlay").classList.add("open");startTimer()};
-$("leaveEnd").onclick=()=>{$("leaveOverlay").classList.remove("open");$("focusOverlay").classList.remove("open");releaseLock()};
+document.addEventListener("visibilitychange",()=>{
+  if(document.hidden)return;
+  if(running){allowCap=86400;try{tick()}finally{allowCap=120}}
+  if(running&&navigator.wakeLock&&!wakeLock)acquireLock();
+});
 
 /* =====================================================================
    BACKUP
