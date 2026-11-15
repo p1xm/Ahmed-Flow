@@ -1,0 +1,52 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function isMember() {
+      return signedIn() && exists(/databases/$(db)/documents/members/$(request.auth.uid));
+    }
+    // صاحب البروفايل = اللي إيميل دخوله (رقم التليفون) مسجل في ملف private بتاعه
+    function ownerOf(id) {
+      return signedIn()
+        && get(/databases/$(db)/documents/private/$(id)).data.authEmail == request.auth.token.email;
+    }
+
+    // كود الشلة (بتعمله من الكونسول، ومحدش يقدر يقراه من الموقع)
+    match /config/{d} { allow read, write: if false; }
+
+    // الانضمام للشلة: لازم الكود يطابق config/join
+    match /members/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow create: if signedIn() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['userId', 'code'])
+        && request.resource.data.code == get(/databases/$(db)/documents/config/join).data.code;
+      allow update, delete: if false;
+    }
+
+    // ربط الحساب بالبروفايل (خاص بصاحبه)
+    match /private/{id} {
+      allow read: if signedIn() && resource.data.authEmail == request.auth.token.email;
+      allow create: if isMember()
+        && request.resource.data.authEmail == request.auth.token.email
+        && request.resource.data.keys().hasOnly(['authEmail', 'createdAt']);
+      allow update, delete: if false;
+    }
+
+    // البروفايلات: الكل (الأعضاء) يشوف، وصاحب الحساب بس يعدّل.
+    // الأعضاء التانيين يقدروا يعدلوا المكافآت والتاريخ الشهري بس (للمبارزات وتصفية الشهر).
+    match /users/{id} {
+      allow read: if isMember();
+      allow create: if isMember() && ownerOf(id) && request.resource.data.id == id;
+      allow update: if isMember() && (
+        ownerOf(id)
+        || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['bonusJson', 'historyJson'])
+      );
+      allow delete: if false;
+    }
+
+    match /duels/{id}   { allow read, write: if isMember(); }
+    match /teams/{id}   { allow read, write: if isMember(); }
+    match /tduels/{id}  { allow read, write: if isMember(); }
+  }
+}

@@ -9,14 +9,14 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Ahmed Study OS">
-
-<title>AHMED YOUSSEF STUDY OS 👑</title>
+<meta name="apple-mobile-web-app-title" content="El-Shilla Study">
+<title>El-Shilla Study 👑</title>
 <link rel="icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
+
 :root{
   --bg:#05050b;--bg2:#0a0a16;--card:rgba(17,15,34,.82);--card2:#111027;
   --line:rgba(150,116,255,.20);--text:#f7f4ff;--muted:#a7a1c2;
@@ -37,19 +37,20 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.25;ba
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
 a{color:inherit;text-decoration:none}
+.hidden{display:none!important}
 .app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
 .sidebar{
   position:sticky;top:0;height:100vh;padding:22px 16px;border-left:1px solid var(--line);
-  background:rgba(6,6,15,.88);backdrop-filter:blur(18px);z-index:10
+  background:rgba(6,6,15,.88);backdrop-filter:blur(18px);z-index:10;display:flex;flex-direction:column
 }
 .brand{display:flex;align-items:center;gap:12px;padding:8px 8px 22px;border-bottom:1px solid var(--line)}
 .logo{width:58px;height:58px;border-radius:18px;object-fit:cover;box-shadow:0 0 25px rgba(126,56,255,.45);border:1px solid rgba(255,255,255,.14)}
 .brand b{font:900 18px Cairo;color:#fff;display:block;letter-spacing:.3px}.brand small{color:var(--muted)}
-.nav{padding-top:18px;display:grid;gap:8px}.nav button{
+.nav{padding-top:18px;display:grid;gap:8px;flex:1;overflow:auto;align-content:start}.nav button{
   border:1px solid transparent;background:transparent;color:#aaa5bd;text-align:right;padding:12px 13px;border-radius:14px;transition:.2s;display:flex;align-items:center;gap:11px
 }.nav button:hover,.nav button.active{background:linear-gradient(100deg,rgba(139,61,255,.20),rgba(61,112,255,.09));border-color:var(--line);color:#fff;box-shadow:var(--glow)}
 .nav .ico{width:25px;text-align:center}
-.sidebar-bottom{position:absolute;bottom:18px;right:16px;left:16px;padding:14px;border:1px solid var(--line);border-radius:16px;background:rgba(139,61,255,.07)}
+.sidebar-bottom{margin-top:10px;padding:14px;border:1px solid var(--line);border-radius:16px;background:rgba(139,61,255,.07)}
 .mini-xp{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}.xpbar{height:7px;background:#201d32;border-radius:99px;overflow:hidden;margin-top:8px}.xpbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--purple),var(--blue));box-shadow:0 0 14px var(--purple);transition:.5s}
 .main{padding:26px;max-width:1500px;width:100%;margin:auto}
 .topbar{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:22px}
@@ -66,9 +67,11 @@ a{color:inherit;text-decoration:none}
 .hero-actions{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
 .btn{border:1px solid var(--line);background:#111024;color:#fff;padding:11px 17px;border-radius:13px;transition:.2s}.btn:hover{transform:translateY(-2px);border-color:rgba(184,92,255,.5);box-shadow:var(--glow)}
 .btn.primary{background:linear-gradient(100deg,#742bdf,#3e5cff);border-color:transparent}
+.btn.danger{color:var(--red)}
+.btn.small{padding:7px 12px;font-size:13px;border-radius:10px}
 .grid{display:grid;gap:15px}.stats{grid-template-columns:repeat(4,1fr);margin:17px 0}.stat{padding:18px;border:1px solid var(--line);background:var(--card);border-radius:18px;box-shadow:var(--shadow)}.stat .k{color:var(--muted);font-size:13px}.stat .v{font:900 26px Cairo;margin-top:4px}.stat .s{font-size:11px;color:#8f89a7}
 .two{grid-template-columns:1.25fr .75fr}.three{grid-template-columns:repeat(3,1fr)}
-.section{margin-top:18px}.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.section-head h2{font:800 19px Cairo;margin:0}.section-head span{color:var(--muted);font-size:12px}
+.section{margin-top:18px}.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px;flex-wrap:wrap}.section-head h2{font:800 19px Cairo;margin:0}.section-head span{color:var(--muted);font-size:12px}
 .card{border:1px solid var(--line);background:var(--card);border-radius:20px;padding:18px;box-shadow:var(--shadow)}
 .today-list{display:grid;gap:10px}.study-row{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:14px;border:1px solid rgba(255,255,255,.07);border-radius:15px;background:rgba(255,255,255,.025)}
 .subject-icon{width:43px;height:43px;border-radius:13px;display:grid;place-items:center;font-size:20px;background:rgba(139,61,255,.13);border:1px solid var(--line)}
@@ -76,18 +79,15 @@ a{color:inherit;text-decoration:none}
 .progress{height:7px;background:#211e31;border-radius:99px;overflow:hidden;margin-top:8px}.progress i{height:100%;display:block;background:linear-gradient(90deg,var(--purple),var(--blue));border-radius:99px}
 .timer-card{text-align:center;display:flex;flex-direction:column;justify-content:center;min-height:330px}.timer-mode{color:#bda9ff;font-size:13px}.timer{font:900 clamp(48px,7vw,78px) Cairo;letter-spacing:2px;margin:7px 0;text-shadow:0 0 28px rgba(139,61,255,.35)}.timer-sub{color:var(--muted);margin-bottom:18px}.timer-controls{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.timer-select{width:100%;background:#0d0b18;border:1px solid var(--line);color:#fff;padding:10px;border-radius:11px;margin:5px 0 12px}
 .quick{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.quick button{padding:13px;border:1px solid var(--line);background:#0e0c1a;color:#fff;border-radius:13px}.quick button:hover{background:#17122a}
-.schedule{overflow:auto}.week{min-width:850px;border-collapse:separate;border-spacing:7px;width:100%}.week th{color:#aaa4c0;font-size:12px;padding:8px}.week td{vertical-align:top;min-width:115px;height:120px;border:1px solid var(--line);border-radius:14px;padding:9px;background:rgba(255,255,255,.025)}.week td:first-child{background:rgba(139,61,255,.08);font-weight:800}.cell{padding:8px;border-radius:10px;margin-bottom:6px;background:rgba(139,61,255,.09);border:1px solid rgba(139,61,255,.16);font-size:12px}.cell b{display:block;font-size:12px}.cell small{color:#a9a1c0}
+.schedule{overflow:auto}.week{min-width:850px;border-collapse:separate;border-spacing:7px;width:100%}.week th{color:#aaa4c0;font-size:12px;padding:8px}.week td{vertical-align:top;min-width:115px;height:120px;border:1px solid var(--line);border-radius:14px;padding:9px;background:rgba(255,255,255,.025)}.week td:first-child{background:rgba(139,61,255,.08);font-weight:800}.week tr.today-row td:first-child{box-shadow:inset 0 0 0 1px rgba(184,92,255,.6)}.cell{padding:8px;border-radius:10px;margin-bottom:6px;background:rgba(139,61,255,.09);border:1px solid rgba(139,61,255,.16);font-size:12px}.cell b{display:block;font-size:12px}.cell small{color:#a9a1c0;display:block}
 .subject-grid{grid-template-columns:repeat(3,1fr)}.subject-card{position:relative;overflow:hidden}.subject-card:after{content:"";position:absolute;width:100px;height:100px;left:-35px;bottom:-45px;background:var(--accent-color);filter:blur(45px);opacity:.18}.subject-card h3{margin:0 0 4px}.subject-card .big{font:900 24px Cairo}.subject-card .tag{color:var(--muted);font-size:12px}
 .task-add{display:flex;gap:8px}.task-add input{flex:1;background:#0c0a16;color:#fff;border:1px solid var(--line);border-radius:12px;padding:11px}.tasks{display:grid;gap:8px;margin-top:12px}.task{display:flex;align-items:center;gap:10px;padding:11px;border:1px solid rgba(255,255,255,.07);border-radius:12px}.task.done{text-decoration:line-through;color:#77718c}.task button{margin-right:auto;background:none;border:0;color:#ff6f8e}
 .achievements{grid-template-columns:repeat(3,1fr)}.achievement{padding:16px;border:1px solid var(--line);border-radius:16px;background:#0f0d1c;opacity:.55}.achievement.unlocked{opacity:1;box-shadow:0 0 22px rgba(139,61,255,.12)}.achievement .medal{font-size:28px}.achievement b{display:block;margin-top:6px}.achievement small{color:var(--muted)}
 .chart{height:220px;display:flex;align-items:end;gap:9px;padding:12px 5px 28px}.bar-wrap{height:100%;flex:1;display:flex;align-items:end;justify-content:center;position:relative}.bar{width:70%;max-width:48px;border-radius:9px 9px 4px 4px;background:linear-gradient(180deg,var(--blue),var(--purple));box-shadow:0 0 18px rgba(139,61,255,.22);min-height:5px}.bar-label{position:absolute;bottom:-24px;font-size:11px;color:var(--muted)}
 .focus-overlay{position:fixed;inset:0;background:rgba(3,3,8,.96);backdrop-filter:blur(16px);z-index:100;display:none;place-items:center;padding:20px}.focus-overlay.open{display:grid}.focus-box{width:min(700px,100%);text-align:center;border:1px solid var(--line);border-radius:30px;padding:35px;background:radial-gradient(circle at 50% 0,rgba(139,61,255,.16),transparent 45%),#090814;box-shadow:0 0 80px rgba(104,42,255,.18)}.focus-box .timer{font-size:clamp(75px,14vw,140px)}
-.toast{position:fixed;bottom:20px;left:20px;background:#141025;border:1px solid var(--line);padding:12px 16px;border-radius:12px;box-shadow:var(--shadow);opacity:0;transform:translateY(10px);transition:.25s;z-index:200}.toast.show{opacity:1;transform:none}
+.toast{position:fixed;bottom:20px;left:20px;background:#141025;border:1px solid var(--line);padding:12px 16px;border-radius:12px;box-shadow:var(--shadow);opacity:0;transform:translateY(10px);transition:.25s;z-index:600;max-width:90vw}.toast.show{opacity:1;transform:none}
 @media(max-width:980px){.app{grid-template-columns:1fr}.sidebar{position:fixed;right:-280px;width:260px;transition:.25s;z-index:50}.sidebar.open{right:0}.mobile-menu{display:block}.main{padding:16px}.stats,.subject-grid,.achievements{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}}
 @media(max-width:600px){.stats,.subject-grid,.achievements{grid-template-columns:1fr 1fr}.hero{padding:22px}.hero h1{font-size:24px}.topbar{align-items:flex-start}.profile span{display:none}}
-</style>
-
-<style>
 /* V2 additions */
 .timer-tabs{display:flex;gap:7px;margin:4px 0 10px}
 .timer-tabs button{flex:1;padding:9px;border:1px solid var(--line);background:#0d0b18;color:#aaa5bd;border-radius:10px}
@@ -98,16 +98,32 @@ a{color:inherit;text-decoration:none}
 .file-input{display:none}
 .pwa-card{margin-top:15px}
 .pwa-status{font-size:12px;color:var(--muted);line-height:1.8}
-.splash{position:fixed;inset:0;background:#05050b;z-index:500;display:grid;place-items:center;transition:.45s}
-.splash.hide{opacity:0;pointer-events:none}
-.splash-box{text-align:center}.splash-box img{width:115px;height:115px;border-radius:30px;box-shadow:0 0 50px rgba(139,61,255,.45)}.splash-box h1{font:900 24px Cairo;margin:15px 0 3px}.splash-box p{color:var(--muted);margin:0}
 .code-box{display:flex;gap:8px;margin-top:10px}.code-box input{flex:1;min-width:0;background:#0c0a16;color:#fff;border:1px solid var(--line);border-radius:12px;padding:11px;text-align:center;letter-spacing:1px}
 @media(max-width:600px){.backup-grid{grid-template-columns:1fr}}
-</style>
-
-
-<style>
-/* Motivation top banner */
+/* splash + auth */
+.splash{position:fixed;inset:0;background:#05050b;z-index:500;display:flex;overflow:auto;transition:.45s}
+.splash.hide{opacity:0;pointer-events:none}
+.splash-box{text-align:center;margin:auto;padding:24px 16px;width:min(380px,100%)}
+.splash-box img{width:100px;height:100px;border-radius:28px;box-shadow:0 0 50px rgba(139,61,255,.45)}
+.splash-box h1{font:900 22px Cairo;margin:14px 0 3px}.splash-box p{color:var(--muted);margin:0}
+.auth{display:none;margin-top:18px;text-align:right}
+.auth.show{display:block}
+.auth .atabs{display:flex;gap:6px;margin-bottom:12px}
+.auth .atabs button{flex:1;padding:9px 4px;border:1px solid var(--line);background:#0d0b18;color:#aaa5bd;border-radius:11px;font-size:12.5px}
+.auth .atabs button.active{color:#fff;background:linear-gradient(100deg,rgba(139,61,255,.4),rgba(61,112,255,.2));border-color:rgba(184,92,255,.5)}
+.auth label.l{display:block;font-size:12px;color:var(--muted);margin:2px 2px 5px}
+.auth input,.auth select{width:100%;background:#0c0a16;color:#fff;border:1px solid var(--line);border-radius:13px;padding:12px 13px;margin-bottom:10px;outline:none;font:600 15px Tajawal,Cairo,sans-serif}
+.auth input:focus,.auth select:focus{border-color:rgba(184,92,255,.65);box-shadow:0 0 0 3px rgba(139,61,255,.18)}
+.auth .abtn{width:100%;padding:13px;border:0;border-radius:14px;color:#fff;font:800 16px Cairo,Tajawal,sans-serif;cursor:pointer;background:linear-gradient(100deg,var(--purple),var(--blue));box-shadow:0 0 28px rgba(139,61,255,.35)}
+.auth .abtn:disabled{opacity:.5;cursor:not-allowed}
+.auth .abtn.ghost{background:#111024;border:1px solid var(--line);box-shadow:none}
+.auth .remember{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:13px;margin:2px 0 10px;cursor:pointer}
+.auth .remember input{width:auto;margin:0}
+.auth .aerr{min-height:20px;color:var(--red);font-size:13px;font-weight:700;margin:2px 0 8px}
+.auth .anote{background:rgba(255,212,90,.08);border:1px solid rgba(255,212,90,.25);color:#ffe59a;padding:10px 12px;border-radius:12px;font-size:12px;line-height:1.7;margin-bottom:12px}
+.auth.shake{animation:lockShake .4s}
+@keyframes lockShake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+/* motivation banner */
 :root{--bn-h:42px}
 .motiv-bar{position:sticky;top:0;z-index:60;height:var(--bn-h);display:flex;align-items:center;gap:10px;padding:0 14px;
   background:linear-gradient(100deg,rgba(139,61,255,.32),rgba(61,112,255,.20) 60%,rgba(7,7,17,.92));
@@ -120,26 +136,7 @@ a{color:inherit;text-decoration:none}
 .motiv-bar.gone{display:none}
 .sidebar{top:var(--bn-h)!important;height:calc(100vh - var(--bn-h))!important}
 @media(max-width:600px){.motiv-bar .mb-text{font-size:12.5px;white-space:normal;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}:root{--bn-h:50px}}
-</style>
-
-<style>
-/* Login lock */
-.lock{display:none;margin:24px auto 0;width:min(320px,86vw)}
-.lock.show{display:block}
-.lock input[type=password],.lock input[type=text]{width:100%;background:#0c0a16;color:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 14px;text-align:center;font:600 16px Tajawal,Cairo,sans-serif;letter-spacing:2px;outline:none}
-.lock input:focus{border-color:rgba(184,92,255,.65);box-shadow:0 0 0 3px rgba(139,61,255,.18)}
-.lock .lock-row{position:relative}
-.lock .eye{position:absolute;left:8px;top:50%;transform:translateY(-50%);border:0;background:transparent;color:#aaa5bd;font-size:18px;cursor:pointer;padding:6px}
-.lock .lock-btn{width:100%;margin-top:10px;padding:13px;border:0;border-radius:14px;color:#fff;font:800 16px Cairo,Tajawal,sans-serif;cursor:pointer;background:linear-gradient(100deg,var(--purple),var(--blue));box-shadow:0 0 28px rgba(139,61,255,.35)}
-.lock .lock-btn:disabled{opacity:.5;cursor:not-allowed}
-.lock .remember{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:11px;color:var(--muted);font-size:13px;cursor:pointer}
-.lock .lock-err{min-height:20px;margin-top:10px;color:var(--red);font-size:13px;font-weight:700}
-.lock.shake{animation:lockShake .4s}
-@keyframes lockShake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
-</style>
-
-<style>
-/* Achievements v2 */
+/* achievements v2 */
 .ach-cat{grid-column:1/-1;margin:16px 0 2px;display:flex;justify-content:space-between;align-items:center;font:800 16px Cairo,Tajawal,sans-serif;color:#fff;padding-bottom:6px;border-bottom:1px solid var(--line)}
 .ach-cat span{font:600 12px Tajawal,sans-serif;color:var(--muted)}
 .achievement .medal{filter:grayscale(1)}
@@ -150,28 +147,177 @@ a{color:inherit;text-decoration:none}
 .ach-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--purple),var(--blue));border-radius:99px}
 .achievement.unlocked .ach-bar i{background:linear-gradient(90deg,var(--green),var(--cyan))}
 .ach-total{display:inline-block;padding:4px 12px;border-radius:99px;border:1px solid var(--line);background:rgba(139,61,255,.14);color:#fff;font-weight:700}
+/* competition */
+.rank-strip{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;margin-bottom:15px;padding:14px 16px;border:1px solid rgba(184,92,255,.45);border-radius:16px;background:linear-gradient(100deg,rgba(139,61,255,.22),rgba(61,112,255,.10));color:#fff;text-align:right}
+.rank-strip b{font:900 18px Cairo}
+.metric-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.metric-tabs button{padding:9px 14px;border:1px solid var(--line);background:#0d0b18;color:#aaa5bd;border-radius:11px;font-size:13px}
+.metric-tabs button.active{color:#fff;background:linear-gradient(100deg,rgba(139,61,255,.4),rgba(61,112,255,.2));border-color:rgba(184,92,255,.5)}
+.podium{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:10px;align-items:end;margin-bottom:16px}
+.pod{text-align:center;padding:14px 8px;border:1px solid var(--line);border-radius:18px;background:var(--card)}
+.pod.p1{border-color:rgba(255,212,90,.55);background:linear-gradient(170deg,rgba(255,212,90,.14),var(--card) 70%);padding-top:20px;padding-bottom:20px}
+.pod .m{font-size:30px}.pod .nm{font:800 14px Cairo;margin-top:4px;word-break:break-word}.pod .vv{font:900 16px Cairo;color:#cdaeff;margin-top:3px}.pod.me{box-shadow:0 0 0 2px rgba(184,92,255,.7)}
+.lb{display:grid;gap:8px}
+.lb-row{display:grid;grid-template-columns:38px 42px 1fr auto;align-items:center;gap:10px;padding:11px 12px;border:1px solid rgba(255,255,255,.07);border-radius:14px;background:rgba(255,255,255,.025)}
+.lb-row.me{border-color:rgba(184,92,255,.6);background:linear-gradient(100deg,rgba(139,61,255,.18),rgba(61,112,255,.08))}
+.lb-row .rk{font:900 18px Cairo;text-align:center}
+.lb-row .av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font:900 17px Cairo;background:linear-gradient(135deg,var(--purple),var(--blue))}
+.lb-row .nm{font-weight:800}
+.lb-row .sub{font-size:11px;color:var(--muted)}
+.lb-row .val{font:900 16px Cairo;color:#cdaeff;text-align:left}
+.botTag{font-size:10px;background:#201d32;color:var(--muted);padding:1px 7px;border-radius:99px;margin-right:6px;font-weight:500}
+.demo-note{background:rgba(255,212,90,.08);border:1px solid rgba(255,212,90,.25);color:#ffe59a;padding:10px 12px;border-radius:12px;font-size:12px;line-height:1.7;margin-bottom:14px}
+/* schedule editor */
+.ed-day{margin-bottom:14px}
+.ed-day .dh{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.ed-day .dh h3{margin:0;font:800 17px Cairo}
+.ed-row{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-bottom:8px;padding:9px;border:1px solid rgba(255,255,255,.07);border-radius:13px;background:rgba(255,255,255,.025)}
+.ed-row input{background:#0c0a16;color:#fff;border:1px solid var(--line);border-radius:10px;padding:9px;outline:none;min-width:0}
+.ed-row input:focus{border-color:rgba(184,92,255,.65)}
+.ed-row .e-i{width:54px;text-align:center;font-size:18px}
+.ed-row .e-n{flex:1;min-width:130px}
+.ed-row .e-h{width:78px;text-align:center}
+.ed-row .e-t{width:118px}
+.ed-row .e-x{background:none;border:0;color:#ff6f8e;font-size:20px;padding:4px 8px}
+.ed-hint{color:var(--muted);font-size:12px;line-height:1.8;margin:0 0 12px}
+.ed-bar{position:sticky;bottom:10px;display:flex;gap:8px;flex-wrap:wrap;padding:12px;border:1px solid var(--line);border-radius:16px;background:rgba(10,9,20,.95);backdrop-filter:blur(14px);margin-top:16px;z-index:5}
+@media(max-width:600px){.podium{grid-template-columns:1fr 1fr 1fr}.lb-row{grid-template-columns:30px 36px 1fr auto;gap:8px}}
+
+/* ================= El-Shilla additions ================= */
+.fld{width:100%;background:#0c0a16;color:#fff;border:1px solid var(--line);border-radius:12px;padding:11px;margin-bottom:8px;outline:none}
+.fld:focus{border-color:rgba(184,92,255,.65)}
+.frow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.frow>*{flex:1;min-width:130px}
+.muted{color:var(--muted);font-size:13px}
+.av2{width:var(--s,40px);height:var(--s,40px);border-radius:50%;position:relative;flex:none;box-sizing:border-box;display:inline-block}
+.av2 img,.av2 span{width:100%;height:100%;border-radius:50%;object-fit:cover;display:grid;place-items:center;font:900 calc(var(--s,40px)*.42) Cairo,sans-serif;color:#fff}
+.av2 img{display:block}
+@property --ang{syntax:"<angle>";initial-value:0deg;inherits:false}
+@keyframes spin{to{--ang:360deg}}
+@keyframes glowp{0%,100%{filter:drop-shadow(0 0 8px rgba(255,212,90,.55))}50%{filter:drop-shadow(0 0 22px rgba(255,212,90,1))}}
+@keyframes rot{to{transform:rotate(360deg)}}
+@keyframes twinkle{0%,100%{opacity:.3;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}
+.fr1{padding:5px;background:conic-gradient(from var(--ang),#ffd45a,#b85cff,#3d70ff,#ffd45a);animation:spin 3s linear infinite,glowp 2.4s ease-in-out infinite}
+.fr1:before{content:"👑";position:absolute;top:calc(var(--s)*-.44);left:50%;transform:translateX(-50%);font-size:calc(var(--s)*.46);z-index:2;filter:drop-shadow(0 2px 6px rgba(0,0,0,.7))}
+.fr1:after{content:"✨";position:absolute;right:-8px;bottom:-4px;font-size:calc(var(--s)*.3);animation:twinkle 1.6s infinite}
+.fr2{padding:4px;background:conic-gradient(#f4f4fb,#8d93ad,#f4f4fb);box-shadow:0 0 16px rgba(200,205,230,.45)}
+.fr3{padding:4px;background:conic-gradient(#e6a468,#7a4a24,#e6a468);box-shadow:0 0 14px rgba(208,138,78,.4)}
+.fr4{padding:3px;background:linear-gradient(135deg,#8b3dff,#3d70ff);box-shadow:0 0 10px rgba(139,61,255,.35)}
+.fr8{padding:2px;background:#3a3560}
+.tag{font-size:10px;background:#201d32;color:var(--muted);padding:1px 7px;border-radius:99px;margin-right:6px;font-weight:500}
+.knight{font-size:11px;background:rgba(255,212,90,.14);border:1px solid rgba(255,212,90,.4);color:#ffe59a;padding:1px 7px;border-radius:99px;margin-right:6px;font-weight:700}
+.lb-row{grid-template-columns:38px 46px 1fr auto}
+/* hall */
+.hof-top{position:relative;overflow:hidden;text-align:center;padding:48px 14px 24px;border-radius:26px;border:1px solid rgba(255,212,90,.65);background:radial-gradient(circle at 50% 0,rgba(255,212,90,.26),transparent 55%),linear-gradient(160deg,rgba(139,61,255,.38),rgba(10,9,20,.92));box-shadow:0 0 70px rgba(139,61,255,.32),inset 0 0 44px rgba(255,212,90,.08);margin-bottom:14px}
+.hof-top:before{content:"";position:absolute;left:50%;top:50%;width:900px;height:900px;margin:-450px 0 0 -450px;background:conic-gradient(from 0deg,transparent 0,rgba(255,212,90,.13) 10%,transparent 22%,transparent 50%,rgba(184,92,255,.14) 60%,transparent 72%);animation:rot 12s linear infinite;pointer-events:none}
+.hof-top>*{position:relative}
+.hof-title{font:900 15px Cairo;color:#ffe59a;letter-spacing:.5px;margin-bottom:62px}
+.hof-name{font:900 26px Cairo;margin-top:14px;background:linear-gradient(90deg,#ffe59a,#fff,#cdaeff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hof-sub{color:#e2d8ff;margin-top:4px}
+.hof-row{display:grid;grid-template-columns:44px auto 1fr auto;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;border:1px solid rgba(255,255,255,.07);margin-bottom:9px;background:var(--card)}
+.hof-row .rk{font:900 20px Cairo;text-align:center}
+.hof-row .nm{font-weight:800}
+.hof-row .sub{font-size:11px;color:var(--muted)}
+.hof-row .val{font:900 17px Cairo;color:#cdaeff;text-align:left}
+.hof-row.k2{padding:16px 14px;background:linear-gradient(100deg,rgba(220,225,245,.18),var(--card));border-color:rgba(220,225,245,.55);box-shadow:0 0 22px rgba(200,205,230,.12)}
+.hof-row.k3{padding:15px 14px;background:linear-gradient(100deg,rgba(208,138,78,.19),var(--card));border-color:rgba(208,138,78,.55);box-shadow:0 0 18px rgba(208,138,78,.1)}
+.hof-row.k4,.hof-row.k5,.hof-row.k6,.hof-row.k7{background:linear-gradient(100deg,rgba(139,61,255,.15),var(--card));border-color:rgba(139,61,255,.35)}
+.improved{display:flex;align-items:center;gap:12px;padding:14px;border-radius:16px;border:1px solid rgba(85,230,165,.4);background:linear-gradient(100deg,rgba(85,230,165,.12),var(--card))}
+/* friends */
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.fcard{display:flex;gap:12px;align-items:center;padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--card)}
+.fcard.me{border-color:rgba(184,92,255,.6)}
+.fcard .nm{font-weight:800}.fcard .sub{font-size:12px;color:var(--muted)}
+.fcard .btn{margin-right:auto}
+/* achievements */
+.tier{display:inline-block;font-size:11px;padding:1px 9px;border-radius:99px;border:1px solid var(--line);margin-top:6px}
+.tier.t1{color:#e6a468;border-color:rgba(230,164,104,.5)}.tier.t2{color:#d9dcee;border-color:rgba(217,220,238,.5)}.tier.t3{color:#ffd45a;border-color:rgba(255,212,90,.5)}.tier.t4{color:#7ee7ff;border-color:rgba(126,231,255,.55);box-shadow:0 0 10px rgba(126,231,255,.2)}
+.achievement.lost{opacity:.4;border-color:rgba(255,85,125,.4)}
+.sq-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:5px}
+.sq{aspect-ratio:1;border-radius:6px;background:#1a1730;border:1px solid var(--line);position:relative;overflow:hidden}
+.sq.on{background:linear-gradient(135deg,var(--purple),var(--blue));box-shadow:0 0 10px rgba(139,61,255,.4);border-color:transparent}
+.sq i{position:absolute;inset:0;background:linear-gradient(135deg,var(--purple),var(--blue));opacity:.6}
+.lvl-card{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.lvl-big{font:900 38px Cairo;color:#cdaeff;line-height:1}
+/* duels */
+.duel{padding:14px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.025);margin-bottom:10px}
+.duel .vs{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;text-align:center}
+.duel .who{display:flex;flex-direction:column;align-items:center;gap:4px;font-weight:800}
+.duel .sc{font:900 18px Cairo;color:#cdaeff}
+.tug{height:12px;border-radius:99px;background:#2a2540;overflow:hidden;display:flex;margin:12px 0 6px}
+.tug i{display:block;height:100%;transition:.5s}.tug i:first-child{background:linear-gradient(90deg,#8b3dff,#b85cff)}.tug i:last-child{background:linear-gradient(90deg,#3d70ff,#58b7ff)}
+.res-win{color:var(--green);font-weight:800}.res-lose{color:var(--red);font-weight:800}
+.alert{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:13px 15px;border-radius:15px;border:1px solid rgba(255,212,90,.35);background:rgba(255,212,90,.07);margin-bottom:12px;font-size:14px}
+.alert .acts{display:flex;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;border:1px solid var(--line);background:#100e1f;font-size:12px;margin:3px}
+.hide-demo{display:none}
 </style>
 </head>
 <body>
-<div class="splash" id="splash"><div class="splash-box"><img src="icon-192.png" alt="Ahmed Youssef"><h1>AHMED YOUSSEF</h1><p>Study • Focus • Achieve</p><div class="lock" id="lockBox"><div class="lock-row"><input type="password" id="lockInput" placeholder="كلمة المرور" autocomplete="current-password" autocapitalize="off" spellcheck="false"><button type="button" class="eye" id="lockEye" aria-label="إظهار">👁</button></div><button type="button" class="lock-btn" id="lockBtn">🔒 دخول</button><label class="remember"><input type="checkbox" id="lockRemember" checked> تذكرني على هذا الجهاز</label><div class="lock-err" id="lockErr"></div></div></div></div>
+
+<!-- ===== Splash + Auth ===== -->
+<div class="splash" id="splash"><div class="splash-box">
+  <img src="icon-192.png" alt="El-Shilla Study">
+  <h1>El-Shilla Study</h1><p>ذاكر • نافس • اطلع الأول</p>
+  <div class="auth" id="authBox">
+    <div class="atabs">
+      <button type="button" class="active" data-atab="login">دخول</button>
+      <button type="button" data-atab="register">حساب جديد</button>
+      <button type="button" data-atab="recover">نسيت كلمة السر</button>
+    </div>
+
+    <form id="loginForm" autocomplete="off">
+      <label class="l">رقم التليفون</label>
+      <input id="liPhone" inputmode="tel" placeholder="01XXXXXXXXX">
+      <label class="l">كلمة السر</label>
+      <input id="liPass" type="password" placeholder="••••••">
+      <label class="remember"><input type="checkbox" id="liRemember" checked> تذكرني على هذا الجهاز</label>
+      <div class="aerr" id="liErr"></div>
+      <button class="abtn" id="liBtn" type="submit">🔓 دخول</button>
+    </form>
+
+    <form id="regForm" class="hidden" autocomplete="off">
+      <div class="anote">التسجيل للشلة بس 🔐 محتاج كود الشلة من صاحبك. وأول ما تسجل بتدخل المنافسة تلقائي.</div>
+      <label class="l">الاسم (هيظهر لأصحابك، وتقدر تغيره بعدين)</label>
+      <input id="rgName" maxlength="18" placeholder="مثلاً: أحمد">
+      <label class="l">رقم التليفون (مش بيظهر لحد)</label>
+      <input id="rgPhone" inputmode="tel" placeholder="01XXXXXXXXX">
+      <label class="l">كلمة السر (6 على الأقل)</label>
+      <input id="rgPass" type="password" placeholder="••••••">
+      <label class="l">كود الشلة</label>
+      <input id="rgCode" placeholder="اكتب الكود" style="text-transform:uppercase;letter-spacing:2px;text-align:center">
+      <div class="aerr" id="rgErr"></div>
+      <button class="abtn" type="submit">✨ إنشاء الحساب</button>
+    </form>
+
+    <div id="recForm" class="hidden">
+      <div class="anote" style="line-height:1.9">🔑 نسيت كلمة السر؟<br>كلّم صاحب الموقع (الأدمن) وقوله يمسح حسابك من قايمة الدخول.<br>بعدها سجّل من تاب <b>حساب جديد</b> بنفس رقمك وكود الشلة، وبياناتك ونقطك بترجع زي ما هي ✅</div>
+    </div>
+  </div>
+</div></div>
+
 <div class="motiv-bar" id="motivBar" role="status" aria-live="polite"><span class="mb-ico">💡</span><div class="mb-text" id="motivText"></div><button class="mb-close" id="motivClose" title="إخفاء" aria-label="إخفاء">✕</button></div>
 <div class="app">
 <aside class="sidebar" id="sidebar">
   <div class="brand">
-    <img class="logo" src="icon-192.png" alt="Study OS">
-    <div><b>AHMED YOUSSEF STUDY OS</b><small>Study • Focus • Achieve</small></div>
+    <img class="logo" src="icon-192.png" alt="El-Shilla Study">
+    <div><b>El-Shilla Study</b><small>ذاكر • نافس • اطلع الأول</small></div>
   </div>
   <nav class="nav">
     <button class="active" data-page="home"><span class="ico">🏠</span>الرئيسية</button>
+    <button data-page="compete"><span class="ico">🌍</span>المنافسة</button>
+    <button data-page="hall"><span class="ico">🏛️</span>قاعة الشرف</button>
+    <button data-page="friends"><span class="ico">👥</span>الأصدقاء</button>
+    <button data-page="duels"><span class="ico">⚔️</span>المبارزات والفرق</button>
+    <button data-page="achievements"><span class="ico">👑</span>إنجازات الشهر</button>
     <button data-page="schedule"><span class="ico">📅</span>الجدول الأسبوعي</button>
+    <button data-page="edit"><span class="ico">✏️</span>تعديل جدولي</button>
     <button data-page="subjects"><span class="ico">📚</span>المواد</button>
     <button data-page="tasks"><span class="ico">✅</span>المهام</button>
     <button data-page="analytics"><span class="ico">📊</span>الإحصائيات</button>
-    <button data-page="achievements"><span class="ico">👑</span>الإنجازات</button>
-    <button data-page="backup"><span class="ico">💾</span>النسخ والنقل</button>
+    <button data-page="profile"><span class="ico">👤</span>حسابي</button>
   </nav>
   <div class="sidebar-bottom">
-    <div class="mini-xp"><span>المستوى <b id="levelSide">1</b></span><span id="xpSide">0 / 1000 XP</span></div>
+    <div class="mini-xp"><span>المستوى <b id="levelSide">1</b> / 10</span><span id="xpSide">0 نقطة</span></div>
     <div class="xpbar"><i id="xpBarSide"></i></div>
   </div>
 </aside>
@@ -179,137 +325,211 @@ a{color:inherit;text-decoration:none}
 <main class="main">
   <div class="topbar">
     <div><button class="btn mobile-menu" id="menuBtn">☰</button><span class="date" id="todayDate"></span></div>
-    <div class="profile"><span>Ahmed Youssef</span><img src="icon-192.png" alt="Ahmed"></div>
+    <div class="profile"><span id="profileName">—</span><span id="topAvatar"></span></div>
   </div>
 
+  <!-- HOME -->
   <section class="page active" id="page-home">
     <div class="hero">
-      <h1>أهلاً أحمد 👑</h1>
-      <p>حوّل مذاكرتك إلى نظام كامل. <strong>ذاكر بتركيز، اجمع XP، وارفع مستواك.</strong></p>
+      <h1 id="heroTitle">أهلاً 👑</h1>
+      <p id="heroSub"></p>
       <div class="hero-actions">
         <button class="btn primary" id="startFocus">⚡ ابدأ جلسة Focus</button>
-        <button class="btn" data-go="schedule">📅 افتح جدول الأسبوع</button>
+        <button class="btn" data-go="achievements">👑 إنجازات الشهر</button>
       </div>
     </div>
-
     <div class="grid stats">
-      <div class="stat"><div class="k">⏱️ ساعات المذاكرة</div><div class="v" id="hoursStat">0h</div><div class="s">جلسات Focus المكتملة</div></div>
-      <div class="stat"><div class="k">🔥 الاستمرارية</div><div class="v"><span id="streakStat">0</span> يوم</div><div class="s">هدفك: حافظ على السلسلة</div></div>
-      <div class="stat"><div class="k">⚡ XP</div><div class="v" id="xpStat">0</div><div class="s">المستوى <span id="levelStat">1</span></div></div>
-      <div class="stat"><div class="k">🎯 إنجاز الأسبوع</div><div class="v" id="completionStat">0%</div><div class="s">من الفترات المكتملة</div></div>
+      <div class="stat"><div class="k">🏅 نقاط الشهر</div><div class="v" id="stPts">0</div><div class="s">مستوى <span id="stLvl">1</span> / 10</div></div>
+      <div class="stat"><div class="k">⏱️ ساعات الشهر</div><div class="v" id="stHours">0h</div><div class="s" id="stHoursSub"></div></div>
+      <div class="stat"><div class="k">🔥 الاستمرارية</div><div class="v"><span id="stStreak">0</span> يوم</div><div class="s" id="stStreakSub"></div></div>
+      <div class="stat"><div class="k">🎯 التزام الشهر</div><div class="v" id="stPct">0%</div><div class="s">من فترات جدولك</div></div>
     </div>
-
+    <button class="rank-strip" data-go="compete"><span>🌍 ترتيبك هذا الشهر</span><b id="rankStripVal">—</b></button>
+    <div id="homeAlerts"></div>
     <div class="grid two">
       <div class="card">
         <div class="section-head"><h2>📅 خطة اليوم</h2><span id="todayPlanName"></span></div>
         <div class="today-list" id="todayList"></div>
       </div>
       <div class="card timer-card">
-        <div class="timer-mode" id="timerMode">FOCUS SESSION</div>
+        <div class="timer-mode" id="timerMode">FOCUS COUNTDOWN</div>
         <div class="timer-tabs">
           <button id="countdownTab" class="active">⏳ تنازلي</button>
           <button id="stopwatchTab">⏱️ تصاعدي</button>
         </div>
         <div class="timer" id="timer">50:00</div>
         <div class="timer-sub" id="timerSub">اختر فترة وابدأ التركيز</div>
-        <div id="countdownControls">
-          <select class="timer-select" id="timerSelect"></select>
-        </div>
-        <div id="stopwatchControls" style="display:none">
-          <div class="stopwatch-help">يبدأ من 00:00:00 ويعرض الساعات والدقائق والثواني</div>
-        </div>
+        <div id="countdownControls"><select class="timer-select" id="timerSelect"></select></div>
+        <div id="stopwatchControls" style="display:none"><div class="stopwatch-help">يبدأ من 00:00:00 ويعرض الساعات والدقائق والثواني</div></div>
         <div class="timer-controls">
           <button class="btn primary" id="timerStart">▶ ابدأ</button>
           <button class="btn" id="timerPause">⏸ إيقاف</button>
           <button class="btn" id="timerReset">↻ إعادة</button>
           <button class="btn" id="focusOpen">⛶ Focus كامل</button>
         </div>
+        <div class="muted" style="margin-top:10px">كل دقيقة تركيز بتتحسب لحظة بلحظة 👌</div>
       </div>
     </div>
-
     <div class="section card">
-      <div class="section-head"><h2>🚀 وصول سريع</h2><span>كل ما تحتاجه في مكان واحد</span></div>
-      <div class="quick">
-        <button data-go="tasks">✅ إضافة مهمة</button>
-        <button data-go="subjects">📚 متابعة المواد</button>
-        <button data-go="analytics">📊 تحليل مذاكرتي</button>
-        <button data-go="achievements">👑 مشاهدة الإنجازات</button>
-      </div>
+      <div class="section-head"><h2>⏱️ رحلة الـ 150 ساعة</h2><span id="sqInfo"></span></div>
+      <div class="sq-grid" id="sqGridHome"></div>
     </div>
   </section>
 
+  <!-- COMPETE -->
+  <section class="page" id="page-compete">
+    <div class="section-head"><h2>🌍 المنافسة <span id="compMonth"></span></h2><span id="compCount"></span></div>
+    <div class="demo-note hidden" id="demoNote">⚠️ نسخة تجريبية: الترتيب بيعرض الحسابات اللي على الجهاز ده + أصحاب وهميين عليهم علامة "تجريبي". في النسخة الحقيقية هتشوف كل اللي سجلوا من أي موبايل.</div>
+    <div class="card">
+      <div class="metric-tabs" id="metricTabs">
+        <button class="active" data-metric="points">🏅 نقاط الشهر</button>
+        <button data-metric="minutes">⏱️ ساعات الشهر</button>
+        <button data-metric="week">📆 آخر 7 أيام</button>
+        <button data-metric="streak">🔥 الاستمرارية</button>
+      </div>
+      <div class="podium" id="podium"></div>
+      <div class="lb" id="compList"></div>
+    </div>
+  </section>
+
+  <!-- HALL -->
+  <section class="page" id="page-hall">
+    <div class="section-head"><h2>🏛️ قاعة الشرف <span id="hallMonth"></span></h2><span>أفضل 10 في الشهر اللي فات</span></div>
+    <div class="demo-note hidden" id="hallNote">⚠️ لسه مفيش شهر كامل اتسجل. دي بيانات تجريبية بس عشان تشوف الشكل. أول قاعة شرف حقيقية بتتفتح مع بداية الشهر الجاي.</div>
+    <div id="hallBody"></div>
+  </section>
+
+  <!-- FRIENDS -->
+  <section class="page" id="page-friends">
+    <div class="section-head"><h2>👥 الأصدقاء</h2><span id="friendCount"></span></div>
+    <div class="card" style="margin-bottom:14px"><input class="fld" id="friendSearch" placeholder="🔎 دوّر على اسم..." style="margin:0"></div>
+    <div class="fgrid" id="friendGrid"></div>
+  </section>
+
+  <!-- DUELS -->
+  <section class="page" id="page-duels">
+    <div class="section-head"><h2>⚔️ المبارزات والفرق</h2></div>
+    <div class="metric-tabs" id="dtabs">
+      <button class="active" data-dt="d1">⚔️ 1 ضد 1</button>
+      <button data-dt="d2">👥 فريق ضد فريق</button>
+    </div>
+    <div id="pane-d1"></div>
+    <div id="pane-d2" class="hidden"></div>
+  </section>
+
+  <!-- ACHIEVEMENTS -->
+  <section class="page" id="page-achievements">
+    <div class="section-head"><h2>👑 إنجازات الشهر <span id="achMonth"></span></h2><span id="achTotal"></span></div>
+    <div class="card" style="margin-bottom:14px"><div class="lvl-card" id="achHead"></div></div>
+    <div class="card" style="margin-bottom:14px">
+      <div class="section-head"><h2>⏱️ سلّم الساعات</h2><span id="sqInfo2">كل مربع = 3 ساعات</span></div>
+      <div class="sq-grid" id="sqGrid"></div>
+    </div>
+    <div class="grid achievements" id="achievementsGrid"></div>
+  </section>
+
+  <!-- SCHEDULE -->
   <section class="page" id="page-schedule">
-    <div class="section-head"><h2>📅 الجدول الأسبوعي</h2><span>الخطة الأساسية</span></div>
+    <div class="section-head"><h2>📅 الجدول الأسبوعي</h2><button class="btn primary small" data-go="edit">✏️ تعديل جدولي</button></div>
     <div class="card schedule"><table class="week" id="weekTable"></table></div>
   </section>
 
+  <!-- EDIT -->
+  <section class="page" id="page-edit">
+    <div class="section-head"><h2>✏️ تعديل جدولي</h2><span>غيّر المواد والأيام والأوقات زي ما تحب</span></div>
+    <div class="card" style="margin-bottom:14px"><p class="ed-hint">لكل يوم ضيف المواد اللي بتذاكرها: الأيقونة (إيموجي) • اسم المادة • عدد الساعات • ميعاد البداية (اختياري). لو اليوم فاضي سيبه من غير مواد، وأيام الراحة مش بتكسر سلسلتك.</p></div>
+    <div id="editDays"></div>
+    <div class="ed-bar">
+      <button class="btn primary" id="edSave">💾 حفظ الجدول</button>
+      <button class="btn" id="edCancel">إلغاء التعديلات</button>
+      <button class="btn danger" id="edReset">↺ الجدول الافتراضي</button>
+    </div>
+  </section>
+
+  <!-- SUBJECTS -->
   <section class="page" id="page-subjects">
-    <div class="section-head"><h2>📚 المواد</h2><span>تابع تقدم كل مادة</span></div>
+    <div class="section-head"><h2>📚 المواد</h2><span>تقدمك في الأسبوع الحالي (من السبت)</span></div>
     <div class="grid subject-grid" id="subjectGrid"></div>
   </section>
 
+  <!-- TASKS -->
   <section class="page" id="page-tasks">
-    <div class="section-head"><h2>✅ المهام</h2><span>مهامك السريعة</span></div>
+    <div class="section-head"><h2>✅ المهام</h2><span>بتتحسب في إنجازات الشهر</span></div>
     <div class="card">
       <div class="task-add"><input id="taskInput" placeholder="اكتب مهمة مثل: حل 30 سؤال كيمياء"><button class="btn primary" id="addTask">إضافة</button></div>
       <div class="tasks" id="tasksList"></div>
     </div>
   </section>
 
+  <!-- ANALYTICS -->
   <section class="page" id="page-analytics">
-    <div class="section-head"><h2>📊 الإحصائيات</h2><span>مبنية على جلساتك داخل الموقع</span></div>
+    <div class="section-head"><h2>📊 الإحصائيات</h2><span>مبنية على جلساتك</span></div>
     <div class="grid two">
-      <div class="card"><div class="section-head"><h2>ساعات آخر 7 أيام</h2><span>Focus</span></div><div class="chart" id="chart"></div></div>
+      <div class="card"><div class="section-head"><h2>آخر 7 أيام</h2><span>Focus</span></div><div class="chart" id="chart"></div></div>
       <div class="card">
         <div class="section-head"><h2>🎯 مؤشراتك</h2></div>
-        <p>جلسات Focus مكتملة: <b id="sessionsAnalytic">0</b></p>
-        <p>فترات جدول مكتملة: <b id="blocksAnalytic">0</b></p>
-        <p>إجمالي XP: <b id="xpAnalytic">0</b></p>
-        <p>المستوى الحالي: <b id="levelAnalytic">1</b></p>
+        <p>ساعات الشهر: <b id="monthHoursAn">0</b></p>
+        <p>إجمالي ساعاتك من أول يوم: <b id="totalHoursAn">0</b></p>
+        <p>جلسات Focus مكتملة: <b id="sessionsAn">0</b></p>
+        <p>فترات الجدول اللي خلصتها الشهر ده: <b id="blocksAn">0</b></p>
       </div>
     </div>
   </section>
 
-  <section class="page" id="page-achievements">
-    <div class="section-head"><h2>👑 قاعة الإنجازات</h2><span>افتحها بالمذاكرة</span></div>
-    <div class="grid achievements" id="achievementsGrid"></div>
-  </section>
-
-<section class="page" id="page-backup">
-  <div class="section-head"><h2>💾 النسخ والنقل</h2><span>احفظ تقدمك وانقله لأي جهاز</span></div>
-  <div class="grid two">
-    <div class="card">
-      <div class="section-head"><h2>📦 JSON Backup</h2><span>كامل البيانات</span></div>
-      <p style="color:var(--muted);font-size:13px">يمكنك تحميل نسخة كاملة من الجدول والتقدم والمهام والجلسات والإعدادات، ثم استعادتها لاحقًا.</p>
+  <!-- PROFILE -->
+  <section class="page" id="page-profile">
+    <div class="section-head"><h2>👤 حسابي</h2><span id="acctInfo"></span></div>
+    <div class="grid two">
+      <div class="card">
+        <div class="section-head"><h2>🪪 الاسم والصورة</h2></div>
+        <div class="frow" style="margin-bottom:12px"><div id="profAvatar" style="flex:none;min-width:0"></div><div style="min-width:0"><div class="muted">الصورة بتظهر في الترتيب وقاعة الشرف وقايمة الأصدقاء</div></div></div>
+        <div class="frow" style="margin-bottom:8px">
+          <label class="btn" for="pfPhoto" style="text-align:center">📷 اختر صورة</label>
+          <input class="file-input" id="pfPhoto" type="file" accept="image/*">
+          <button class="btn danger" id="pfPhotoDel">🗑️ شيل الصورة</button>
+        </div>
+        <label class="l muted">الاسم</label>
+        <input class="fld" id="pfName" maxlength="18">
+        <button class="btn primary" id="pfSaveName">💾 حفظ الاسم</button>
+        <div class="muted" id="pfNameNote" style="margin-top:8px">تقدر تغير اسمك مرة كل 7 أيام.</div>
+      </div>
+      <div class="card">
+        <div class="section-head"><h2>🛟 يوم الإجازة</h2></div>
+        <p class="muted" id="holState"></p>
+        <button class="btn" id="holBtn">🛟 أنقذ سلسلتي (امبارح)</button>
+        <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+        <div class="section-head"><h2>🔒 وضع الحديد</h2></div>
+        <p class="muted">اختياري ولمدة شهر كامل. لو فاتك يوم مذاكرة في جدولك (أقل من ساعة) بتخسر كل إنجازات الاستمرارية بتاعة الشهر. مفيش يوم إجازة معاه، ومش بترجع في الشهر ده. بيبدأ من بكرة.</p>
+        <p class="muted" id="ironState"></p>
+        <button class="btn danger" id="ironBtn">🔒 فعّل وضع الحديد</button>
+      </div>
+    </div>
+    <div class="card" style="margin-top:15px">
+      <div class="section-head"><h2>📦 نسخة احتياطية</h2></div>
       <div class="backup-grid">
         <button class="btn primary" id="exportJson">⬇️ تصدير JSON</button>
-        <label class="btn" for="importJson">⬆️ استيراد JSON</label>
+        <label class="btn" for="importJson" style="text-align:center">⬆️ استيراد JSON</label>
         <input class="file-input" id="importJson" type="file" accept=".json,application/json">
-        <button class="btn" id="downloadBackup">💾 تحميل نسخة احتياطية</button>
         <button class="btn" id="restoreAutoBackup">♻️ استعادة آخر Backup تلقائي</button>
+        <button class="btn danger" id="logoutBtn">🚪 تسجيل الخروج</button>
       </div>
       <p class="pwa-status" id="backupStatus"></p>
     </div>
-    <div class="card">
-      <div class="section-head"><h2>🔐 نقل باستخدام كود</h2><span>بدون ملف</span></div>
-      <p style="color:var(--muted);font-size:13px">أنشئ كودًا من تقدمك، ثم أدخله على جهاز آخر لاستعادة البيانات.</p>
-      <div class="code-box"><input id="transferCode" placeholder="STUDYOS-..." readonly><button class="btn" id="copyCode">نسخ</button></div>
-      <div class="backup-grid" style="margin-top:9px">
-        <button class="btn primary" id="makeCode">🔄 إنشاء كود</button>
-        <input id="codeImport" class="timer-select" placeholder="الصق كود النقل هنا" style="margin:0">
-        <button class="btn" id="applyCode">📥 استعادة بالكود</button>
+    <div class="card" id="demoTools" style="margin-top:15px">
+      <div class="section-head"><h2>🧪 أدوات التجربة</h2><span>هتتشال في النسخة الحقيقية</span></div>
+      <div class="backup-grid">
+        <button class="btn" id="dtMin">⏩ +30 دقيقة النهارده</button>
+        <button class="btn" id="dtSeed">📈 ولّد أسبوعين تجريبيين</button>
       </div>
     </div>
-  </div>
-  <div class="card pwa-card">
-    <div class="section-head"><h2>📱 PWA احترافي</h2><span id="pwaState">جارٍ الفحص...</span></div>
-    <p class="pwa-status">الموقع يدعم التثبيت كتطبيق، العمل بدون إنترنت بعد أول تشغيل، حفظ البيانات محليًا، وطلب إشعارات الجلسات عند دعم المتصفح.</p>
-    <div class="hero-actions">
-      <button class="btn primary" id="installPwa">📲 تثبيت التطبيق</button>
-      <button class="btn" id="notifyBtn">🔔 تفعيل الإشعارات</button>
+    <div class="card pwa-card">
+      <div class="section-head"><h2>📱 تثبيت التطبيق</h2><span id="pwaState">جارٍ الفحص...</span></div>
+      <div class="hero-actions">
+        <button class="btn primary" id="installPwa">📲 تثبيت التطبيق</button>
+        <button class="btn" id="notifyBtn">🔔 تفعيل الإشعارات</button>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 </main>
 </div>
 
@@ -323,324 +543,1381 @@ a{color:inherit;text-decoration:none}
     <button class="btn" id="focusClose">✕ خروج</button>
   </div>
 </div>
+<div class="focus-overlay" id="leaveOverlay" style="z-index:120">
+  <div class="focus-box">
+    <div style="font-size:54px">⚠️</div>
+    <h2>خرجت من جلسة التركيز!</h2>
+    <p class="timer-sub" id="leaveMsg"></p>
+    <button class="btn primary" id="leaveResume">▶ كمّل الجلسة</button>
+    <button class="btn" id="leaveEnd">إنهاء الجلسة</button>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 <script>
-const SCHEDULE = {
-"السبت":[["—","يوم فاضي من غير مذاكرة","—"]],
-"الأحد":[["كيمياء","ساعتان","🧪"],["فيزياء","ساعتان","⚡"],["إنجليزي","ساعتان","🇬🇧"]],
-"الإثنين":[["عربي","ساعتان","📖"],["أحياء","ساعتان","🧬"],["إنجليزي","ساعتان","🇬🇧"]],
-"الثلاثاء":[["فيزياء 2","ساعتان","⚡"],["إنجليزي 2","ساعتان","🇬🇧"],["عربي","ساعتان","📖"]],
-"الأربعاء":[["أحياء","ساعتان","🧬"],["كيمياء","ساعتان","🧪"],["عربي","ساعتان","📖"]],
-"الخميس":[["فيزياء","ساعتان","⚡"],["كيمياء + أحياء","ساعة + ساعة","🧪🧬"],["فرنساوي + مراجعة لغات","ساعة + ساعة","🇫🇷"]],
-"الجمعة":[["تصفية المتراكم","ساعتان","🎯"],["امتحان صغير","ساعتان","📝"],["راحة","ساعتان","💤"]]
-};
+/* =====================================================================
+   CONFIG
+   ===================================================================== */
+const JOIN_CODE="SHILLA2026";   // كود الشلة (في النسخة الحقيقية بيتراجع من السيرفر)
+const DEMO=false;                // تجريبي: أصحاب وهميين + أدوات تجربة. false في النسخة الحقيقية
 const DAYS=["السبت","الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة"];
-const SUBJECTS={
-"فيزياء":{icon:"⚡",color:"#667cff"},"فيزياء 2":{icon:"⚡",color:"#667cff"},
-"كيمياء":{icon:"🧪",color:"#b85cff"},"كيمياء + أحياء":{icon:"🧪",color:"#b85cff"},
-"أحياء":{icon:"🧬",color:"#55e6a5"},"إنجليزي":{icon:"🇬🇧",color:"#58b7ff"},"إنجليزي 2":{icon:"🇬🇧",color:"#58b7ff"},
-"عربي":{icon:"📖",color:"#ffd45a"},"فرنساوي + مراجعة لغات":{icon:"🇫🇷",color:"#ff6f8e"},
-"تصفية المتراكم":{icon:"🎯",color:"#ff9d5c"},"امتحان صغير":{icon:"📝",color:"#ff557d"},"راحة":{icon:"💤",color:"#77718c"}
-};
-const KEY="ahmed-study-os-v1";
-let state=JSON.parse(localStorage.getItem(KEY)||"null")||{
-  done:{},tasks:[],sessions:0,xp:0,streak:0,days:[],daily:{},focusMinutes:0
-};
-function save(){localStorage.setItem(KEY,JSON.stringify(state));renderAll()}
-function toast(t){const x=document.getElementById("toast");x.textContent=t;x.classList.add("show");setTimeout(()=>x.classList.remove("show"),2200)}
-function today(){return DAYS[(new Date().getDay()+1)%7]} // JS Sunday=0 => our Saturday-first order
-function blockKey(day,i){return day+"-"+i}
-function subjectInfo(name){return SUBJECTS[name]||{icon:"📚",color:"#8b3dff"}}
-function parseHours(text){let m=text.match(/(\d+)/g); if(!m)return 0; return m.reduce((a,n)=>a+Number(n),0)}
-function totalBlocks(){return Object.values(SCHEDULE).reduce((a,x)=>a+x.length,0)-1}
-function completedBlocks(){return Object.keys(state.done).filter(k=>state.done[k]).length}
-function level(){return Math.floor(state.xp/1000)+1}
-function xpInLevel(){return state.xp%1000}
-function localKey(d){d=d||new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
-function markActive(){state.days=state.days||[];const k=localKey();if(!state.days.includes(k))state.days.push(k)}
-function calcStreak(){
-  const set=new Set(state.days||[]);if(!set.size)return state.streak||0;
-  let d=new Date();if(!set.has(localKey(d)))d.setDate(d.getDate()-1);
-  let n=0;while(set.has(localKey(d))){n++;d.setDate(d.getDate()-1)}return n;
+const blk=(n,m,i,t="")=>({n,m,i,t});
+function defaultSchedule(){return{
+"السبت":[],
+"الأحد":[blk("كيمياء",120,"🧪"),blk("فيزياء",120,"⚡"),blk("إنجليزي",120,"🇬🇧")],
+"الإثنين":[blk("عربي",120,"📖"),blk("أحياء",120,"🧬"),blk("إنجليزي",120,"🇬🇧")],
+"الثلاثاء":[blk("فيزياء 2",120,"⚡"),blk("إنجليزي 2",120,"🇬🇧"),blk("عربي",120,"📖")],
+"الأربعاء":[blk("أحياء",120,"🧬"),blk("كيمياء",120,"🧪"),blk("عربي",120,"📖")],
+"الخميس":[blk("فيزياء",120,"⚡"),blk("كيمياء + أحياء",120,"🧪🧬"),blk("فرنساوي + مراجعة لغات",120,"🇫🇷")],
+"الجمعة":[blk("تصفية المتراكم",120,"🎯"),blk("امتحان صغير",120,"📝"),blk("راحة",120,"💤")]
+}}
+const SUBJECT_META={"فيزياء":{icon:"⚡",color:"#667cff"},"كيمياء":{icon:"🧪",color:"#b85cff"},"أحياء":{icon:"🧬",color:"#55e6a5"},"إنجليزي":{icon:"🇬🇧",color:"#58b7ff"},"عربي":{icon:"📖",color:"#ffd45a"},"فرنساوي":{icon:"🇫🇷",color:"#ff6f8e"},"تصفية المتراكم":{icon:"🎯",color:"#ff9d5c"},"امتحان صغير":{icon:"📝",color:"#ff557d"},"راحة":{icon:"💤",color:"#77718c"}};
+const NON_SUBJECT=["راحة","تصفية المتراكم","امتحان صغير"];
+const ICON_GUESS=[["كيمياء","🧪"],["فيزياء","⚡"],["أحياء","🧬"],["رياضة","📐"],["رياضيات","📐"],["جبر","📐"],["هندسة","📐"],["تفاضل","📐"],["تكامل","📐"],["استاتيكا","📐"],["ديناميكا","📐"],["عربي","📖"],["إنجليزي","🇬🇧"],["انجليزي","🇬🇧"],["فرنساوي","🇫🇷"],["فرنسي","🇫🇷"],["ألماني","🇩🇪"],["الماني","🇩🇪"],["تاريخ","🏛️"],["جغرافيا","🌍"],["دين","🕌"],["فلسفة","🤔"],["جيولوجيا","🪨"],["إحصاء","📊"],["احصاء","📊"],["حاسب","💻"],["برمجة","💻"],["راحة","💤"],["امتحان","📝"],["مراجعة","🎯"]];
+function iconGuess(name){for(const [k,i] of ICON_GUESS)if(name.includes(k))return i;return "📚"}
+function subjectInfo(name){
+  const base=bareNames(name)[0]||name;
+  if(SUBJECT_META[base])return SUBJECT_META[base];
+  const PAL=["#667cff","#b85cff","#55e6a5","#58b7ff","#ffd45a","#ff6f8e","#ff9d5c","#4dd6c1"];
+  let h=0;for(const c of name)h=(h*31+c.charCodeAt(0))>>>0;
+  return{icon:iconGuess(name),color:PAL[h%PAL.length]};
 }
-function bestStreak(){
-  const a=Array.from(new Set(state.days||[])).sort();let best=a.length?1:0,run=1;
-  for(let i=1;i<a.length;i++){
-    const p=new Date(a[i-1]+"T12:00:00"),c=new Date(a[i]+"T12:00:00");
-    run=Math.round((c-p)/864e5)===1?run+1:1;if(run>best)best=run;
+function bareNames(name){return String(name).split("+").map(x=>x.trim().replace(/\s*\d+\s*$/,"")).filter(Boolean)}
+
+/* ---------- أصحاب وهميين (DEMO فقط) ---------- */
+const BOTS=[
+ {name:"مريم",base:185,k:7.6},{name:"مصطفى",base:160,k:7.2},{name:"سارة",base:140,k:6.8},
+ {name:"كريم",base:120,k:6.4},{name:"يوسف",base:95,k:6},{name:"نور",base:150,k:7},{name:"آدم",base:80,k:5.5}
+];
+const HALL_BOTS=[
+ {name:"مريم",pts:97,hrs:148,prev:120},{name:"مصطفى",pts:88,hrs:131,prev:125},{name:"سارة",pts:81,hrs:118,prev:70},
+ {name:"كريم",pts:74,hrs:109,prev:100},{name:"نور",pts:66,hrs:97,prev:95},{name:"يوسف",pts:58,hrs:84,prev:60},
+ {name:"آدم",pts:49,hrs:76,prev:70},{name:"هدى",pts:41,hrs:66,prev:40},{name:"عمر",pts:33,hrs:52,prev:50},
+ {name:"ليلى",pts:26,hrs:41,prev:20},{name:"زياد",pts:19,hrs:30,prev:12}
+];
+const BOT_TEAMS=[
+ {id:"bt_1",name:"نمور الفيزياء",leader:"bot:مصطفى",members:["bot:مصطفى","bot:سارة","bot:كريم"],invites:[],bot:true,color:"#ff9d5c"},
+ {id:"bt_2",name:"صقور الكيمياء",leader:"bot:مريم",members:["bot:مريم","bot:يوسف"],invites:[],bot:true,color:"#58b7ff"}
+];
+
+/* =====================================================================
+   HELPERS
+   ===================================================================== */
+const $=id=>document.getElementById(id);
+function toast(t){const x=$("toast");x.textContent=t;x.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(()=>x.classList.remove("show"),2600)}
+const escapeHtml=s=>String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+const pad=n=>String(n).padStart(2,"0");
+const dk=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const pd=k=>{const [y,m,d]=k.split("-").map(Number);return new Date(y,m-1,d,12)};
+const addDays=(k,n)=>{const d=pd(k);d.setDate(d.getDate()+n);return dk(d)};
+const todayK=()=>dk(new Date());
+const mkOf=k=>k.slice(0,7);
+const monthDates=mk=>{const [y,m]=mk.split("-").map(Number);const n=new Date(y,m,0).getDate();return Array.from({length:n},(_,i)=>mk+"-"+pad(i+1))};
+const dayName=k=>DAYS[(pd(k).getDay()+1)%7];
+const weekStartOf=k=>addDays(k,-((pd(k).getDay()+1)%7));
+const prevMonth=mk=>{const [y,m]=mk.split("-").map(Number);const d=new Date(y,m-2,1);return d.getFullYear()+"-"+pad(d.getMonth()+1)};
+const nextMonth=mk=>{const [y,m]=mk.split("-").map(Number);const d=new Date(y,m,1);return d.getFullYear()+"-"+pad(d.getMonth()+1)};
+const curMonth=()=>mkOf(todayK());
+const monthLabel=mk=>new Intl.DateTimeFormat("ar-EG",{month:"long",year:"numeric"}).format(pd(mk+"-01"));
+function range(a,z){const out=[];let d=a,i=0;while(d<=z&&i<70){out.push(d);d=addDays(d,1);i++}return out}
+function normPhone(p){return String(p).replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d)).replace(/[\s\-+]/g,"").replace(/^0020/,"0").replace(/^20(?=1)/,"0")}
+const validPhone=p=>/^01[0125]\d{8}$/.test(p);
+function normAnswer(a){return a.trim().toLowerCase().replace(/\s+/g,"").replace(/[أإآ]/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي")}
+const normName=n=>n.trim().toLowerCase().replace(/\s+/g," ").replace(/[أإآ]/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي");
+async function hash(s){
+  try{const buf=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("elshilla|"+s));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("")}
+  catch(e){let h=5381;for(const c of "elshilla|"+s)h=((h<<5)+h+c.charCodeAt(0))>>>0;return "x"+h}
+}
+const uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-4);
+function rnd(seed){let h=2166136261;for(const c of seed){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return((h>>>0)%1000)/1000}
+function durText(m){
+  if(m===30)return"نص ساعة";if(m===60)return"ساعة";if(m===90)return"ساعة ونص";if(m===120)return"ساعتان";
+  if(m<60)return m+" دقيقة";const h=m/60;if(Number.isInteger(h))return h+(h<=10?" ساعات":" ساعة");return h.toFixed(1)+" ساعة";
+}
+function timeText(t){if(!t)return"";const [h,m]=t.split(":").map(Number);const ap=h>=12?"م":"ص";return ((h%12)||12)+":"+String(m).padStart(2,"0")+" "+ap}
+const fmtMin=m=>{m=Math.floor(m);return m>=60?Math.floor(m/60)+"س "+(m%60)+"د":m+"د"};
+const hueOf=s=>{let h=0;for(const c of String(s))h=(h*31+c.charCodeAt(0))>>>0;return h%360};
+const PHOTO_RE=/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+\/=]+$/;
+function avatar(u,size=40,fr=""){
+  const ini=escapeHtml(((u&&u.name)||"?").trim()[0]||"?");
+  const inner=(u&&u.photo&&PHOTO_RE.test(u.photo))?`<img src="${u.photo}" alt="">`:`<span style="background:hsl(${hueOf(u&&u.name)} 55% 36%)">${ini}</span>`;
+  return `<div class="av2 ${fr}" style="--s:${size}px">${inner}</div>`;
+}
+
+/* =====================================================================
+   CLOUD LAYER (Firebase Auth + Firestore) — كل حاجة مشتركة بين الكل
+   ===================================================================== */
+const FB_CONFIG={
+  apiKey:"AIzaSyDGmhgXI1EQHe22hLQHJpzO1XOTiT7_7FQ",
+  authDomain:"el-shilla-study.firebaseapp.com",
+  projectId:"el-shilla-study",
+  storageBucket:"el-shilla-study.firebasestorage.app",
+  messagingSenderId:"724564123481",
+  appId:"1:724564123481:web:2985786ce3e1b68f86b648"
+};
+const EMAIL_DOM="@elshilla.app";
+const USERS_KEY="elshilla_users_v1",SESS_KEY="elshilla_session_v1",LEGACY_KEY="ahmed-study-os-v1",LEGACY_CLAIM="elshilla_legacy_claimed";
+let auth=null,fs=null;
+try{
+  firebase.initializeApp(FB_CONFIG);
+  auth=firebase.auth();fs=firebase.firestore();
+  fs.settings({ignoreUndefinedProperties:true,experimentalAutoDetectLongPolling:true});
+  fs.enablePersistence({synchronizeTabs:true}).catch(()=>{});
+}catch(e){auth=null;fs=null}
+
+let _warned=false;
+function cloudWarn(err){
+  console.warn("cloud:",err&&err.code,err&&err.message);
+  if(err&&err.code==="permission-denied"&&!_warned){_warned=true;toast("⚠️ السيرفر رفض الحفظ (صلاحيات). راجع قواعد Firestore")}
+}
+
+/* ---------- المستخدمين ---------- */
+let _uc={};const _us={};
+function userToDoc(u){
+  const st=Object.assign({},u.state);const bonus=st.bonus||{};delete st.bonus;
+  return{id:u.id,name:u.name,photo:u.photo||"",nameChangedAt:u.nameChangedAt||0,createdAt:u.createdAt||0,
+    stateJson:JSON.stringify(st),bonusJson:JSON.stringify(bonus),historyJson:JSON.stringify(u.history||{})};
+}
+function docToUser(d){
+  let st={},bonus={},hist={};
+  try{st=JSON.parse(d.stateJson||"{}")}catch(e){}
+  try{bonus=JSON.parse(d.bonusJson||"{}")}catch(e){}
+  try{hist=JSON.parse(d.historyJson||"{}")}catch(e){}
+  st.bonus=bonus;
+  return{id:d.id,name:d.name||"؟",photo:d.photo||"",nameChangedAt:d.nameChangedAt||0,createdAt:d.createdAt||0,state:normalize(st),history:hist};
+}
+const snapOf=u=>JSON.stringify(userToDoc(u));
+function mergeBonus(local,remote){
+  const out={};
+  new Set(Object.keys(local||{}).concat(Object.keys(remote||{}))).forEach(mk=>{
+    const seen=new Set(),arr=[];
+    ((remote||{})[mk]||[]).concat((local||{})[mk]||[]).forEach(e=>{if(e&&!seen.has(e.id)){seen.add(e.id);arr.push(e)}});
+    out[mk]=arr;
+  });
+  return out;
+}
+function onUsersSnap(qs){
+  qs.docChanges().forEach(ch=>{
+    const id=ch.doc.id;
+    if(ch.type==="removed"){delete _uc[id];delete _us[id];return}
+    const nu=docToUser(Object.assign({},ch.doc.data(),{id}));
+    if(ME&&id===ME.id&&_uc[id]){
+      // حسابي: ما أستبدلش الأوبجكت، بدمج بس اللي اتغير من برا (مكافآت، أو تعديل من جهاز تاني)
+      const me=_uc[id];
+      const dirty=_us[id]!==undefined&&snapOf(me)!==_us[id];
+      me.state.bonus=mergeBonus(me.state.bonus,nu.state.bonus);
+      Object.keys(nu.history).forEach(k=>{if(!me.history[k])me.history[k]=nu.history[k]});
+      if(!ch.doc.metadata.hasPendingWrites&&!dirty&&!(typeof running!=="undefined"&&running)){
+        const keepBonus=me.state.bonus;
+        Object.keys(me.state).forEach(k=>delete me.state[k]);
+        Object.assign(me.state,nu.state);me.state.bonus=keepBonus;
+        me.name=nu.name;me.photo=nu.photo;me.nameChangedAt=nu.nameChangedAt;
+        state=me.state;
+      }
+      _us[id]=snapOf(me);
+    }else{
+      const old=_uc[id];
+      if(old&&old.phone)nu.phone=old.phone;
+      _uc[id]=nu;_us[id]=snapOf(nu);
+    }
+  });
+}
+let _saveT=null;
+function flushUsers(){
+  if(!fs||!auth||!auth.currentUser)return;
+  Object.values(_uc).forEach(u=>{
+    const doc=userToDoc(u),j=JSON.stringify(doc);
+    if(_us[u.id]===j)return;
+    const mine=ME&&u.id===ME.id,prev=_us[u.id];
+    _us[u.id]=j;
+    const ref=fs.collection("users").doc(u.id);
+    const p=mine?ref.set(doc):ref.update({bonusJson:doc.bonusJson,historyJson:doc.historyJson});
+    p.catch(err=>{_us[u.id]=prev;cloudWarn(err)});
+  });
+}
+const DB={
+  users(){return _uc},
+  save(){clearTimeout(_saveT);_saveT=setTimeout(flushUsers,700)},
+  flushNow(){clearTimeout(_saveT);flushUsers()}
+};
+window.addEventListener("pagehide",()=>DB.flushNow());
+document.addEventListener("visibilitychange",()=>{if(document.hidden)DB.flushNow()});
+
+/* ---------- مبارزات / فرق / مبارزات فرق ---------- */
+function mkColl(name){
+  const cache=[],snap={};
+  return{
+    get(){return cache},
+    set(v){
+      if(!fs)return;
+      const ids=new Set();
+      v.forEach(it=>{
+        ids.add(it.id);const j=JSON.stringify(it);
+        if(snap[it.id]!==j){
+          snap[it.id]=j;
+          fs.collection(name).doc(it.id).set(JSON.parse(j)).catch(err=>{delete snap[it.id];cloudWarn(err)});
+        }
+      });
+      Object.keys(snap).forEach(id=>{
+        if(!ids.has(id)){delete snap[id];fs.collection(name).doc(id).delete().catch(cloudWarn)}
+      });
+      if(v!==cache){cache.length=0;v.forEach(x=>cache.push(x))}
+    },
+    apply(qs){
+      qs.docChanges().forEach(ch=>{
+        const id=ch.doc.id,i=cache.findIndex(x=>x.id===id);
+        if(ch.type==="removed"){if(i>=0)cache.splice(i,1);delete snap[id];return}
+        const d=Object.assign({},ch.doc.data(),{id});
+        if(i>=0)cache[i]=d;else cache.push(d);
+        snap[id]=JSON.stringify(d);
+      });
+    },
+    reset(){cache.length=0;Object.keys(snap).forEach(k=>delete snap[k])}
+  };
+}
+const D_DUELS=mkColl("duels"),D_TEAMS=mkColl("teams"),D_TD=mkColl("tduels");
+
+/* ---------- الاشتراك في التحديثات اللحظية ---------- */
+let _unsubs=[],_renderT=null;
+function scheduleRender(){
+  clearTimeout(_renderT);
+  _renderT=setTimeout(()=>{
+    if(!ME)return;
+    const a=document.activeElement;
+    if(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&!a.closest("#authBox"))return;
+    try{resolveAll();renderAll()}catch(e){console.warn(e)}
+  },600);
+}
+function startCloud(){
+  stopCloud();
+  const wait=(q,fn)=>new Promise(res=>{
+    let first=true;
+    const un=q.onSnapshot(qs=>{fn(qs);if(first){first=false;res()}else scheduleRender()},err=>{cloudWarn(err);if(first){first=false;res()}});
+    _unsubs.push(un);
+  });
+  const all=Promise.all([
+    wait(fs.collection("users"),onUsersSnap),
+    wait(fs.collection("duels"),q=>D_DUELS.apply(q)),
+    wait(fs.collection("teams"),q=>D_TEAMS.apply(q)),
+    wait(fs.collection("tduels"),q=>D_TD.apply(q))
+  ]);
+  return Promise.race([all,new Promise(r=>setTimeout(r,9000))]);
+}
+function stopCloud(){
+  _unsubs.forEach(f=>{try{f()}catch(e){}});_unsubs=[];
+  _uc={};Object.keys(_us).forEach(k=>delete _us[k]);
+  D_DUELS.reset();D_TEAMS.reset();D_TD.reset();
+}
+async function userIdOf(phone){return "u"+(await hash("id|"+phone)).slice(0,20)}
+
+let ME=null,state=null;
+function persist(){if(ME)DB.save()}
+
+/* =====================================================================
+   STATE
+   ===================================================================== */
+function normalize(s){
+  s=s||{};
+  s.schedule=s.schedule||defaultSchedule();
+  DAYS.forEach(d=>{if(!Array.isArray(s.schedule[d]))s.schedule[d]=[]});
+  s.daily=s.daily||{};
+  const nd={};
+  if(s.done)Object.keys(s.done).forEach(k=>{const e=s.done[k];if(/^\d{4}-\d\d-\d\d$/.test(k)&&e&&typeof e==="object"&&e.d&&!Array.isArray(e.d))nd[k]=e});
+  s.done=nd;
+  s.tasks=Array.isArray(s.tasks)?s.tasks:[];
+  s.holidays=s.holidays||{};s.unlocked=s.unlocked||{};s.bonus=s.bonus||{};
+  s.sessions=s.sessions||0;
+  s.totalMinutes=s.totalMinutes||s.focusMinutes||0;
+  s.startDate=s.startDate||(Object.keys(s.daily).sort()[0]||todayK());
+  s.iron=s.iron||null;s.exits=s.exits||{};
+  return s;
+}
+const planned=(s,d)=>s.done[d]?s.done[d].n:s.schedule[dayName(d)].length;
+const doneCount=(s,d)=>s.done[d]?Object.keys(s.done[d].d).length:0;
+
+/* ---------- monthly stats ---------- */
+function monthStats(s,mk,today=todayK()){
+  const dates=monthDates(mk),first=dates[0],last=dates[dates.length-1];
+  const start=s.startDate||first;
+  const asOf=today<last?today:last;
+  const E={minutes:0,maxDay:0,best:0,broken:false,okDays:0,keptDays:0,planned:0,done:0,pct:0,dayFull:0,weeksFull:0,tasksDone:0,subjMax:0,subjTotal:0,daysInMonth:dates.length};
+  const all=new Set();
+  DAYS.forEach(d=>s.schedule[d].forEach(b=>bareNames(b.n).forEach(n=>{if(!NON_SUBJECT.includes(n))all.add(n)})));
+  E.subjTotal=all.size;
+  if(first>today)return E;
+  let run=0;
+  for(const d of dates){
+    const inR=d>=start;
+    if(d<=asOf){
+      const m=s.daily[d]||0;E.minutes+=m;E.maxDay=Math.max(E.maxDay,m);
+      if(inR){
+        const pl=planned(s,d);
+        if(m>=60){run++;E.best=Math.max(E.best,run);E.okDays++;E.keptDays++}
+        else if(d===today){}
+        else if(s.holidays[d]){E.keptDays++}
+        else if(pl>0){run=0;E.broken=true}
+        else E.keptDays++;
+        if(pl>0&&doneCount(s,d)>=pl)E.dayFull++;
+      }
+    }
+    if(inR){const pl=planned(s,d);E.planned+=pl;E.done+=Math.min(doneCount(s,d),pl)}
   }
-  return Math.max(best,calcStreak());
+  E.pct=E.planned?E.done/E.planned*100:0;
+  dates.filter(d=>dayName(d)==="السبت").forEach(w=>{
+    let p=0,dn=0;const names=new Set();
+    range(w,addDays(w,6)).forEach(d=>{
+      if(d<start)return;
+      const pl=planned(s,d);p+=pl;dn+=Math.min(doneCount(s,d),pl);
+      if(s.done[d])Object.values(s.done[d].d).forEach(arr=>(arr||[]).forEach(n=>{if(all.has(n))names.add(n)}));
+    });
+    if(p>0&&dn>=p)E.weeksFull++;
+    E.subjMax=Math.max(E.subjMax,names.size);
+  });
+  E.tasksDone=s.tasks.filter(t=>t.done&&t.doneAt&&mkOf(t.doneAt)===mk).length;
+  return E;
 }
-function subjDone(name){
-  let n=0;Object.keys(state.done).forEach(k=>{if(!state.done[k])return;const m=k.match(/^(.*)-(\d+)$/);if(!m)return;const it=(SCHEDULE[m[1]]||[])[+m[2]];if(it&&it[0]===name)n++});return n;
+function calcStreak(s){
+  const t=todayK();let n=0,d=t;
+  for(let i=0;i<400;i++){
+    if(d<s.startDate)break;
+    const m=s.daily[d]||0;
+    if(m>=60)n++;else if(d===t){}else if(s.holidays[d]){}else if(planned(s,d)>0)break;
+    d=addDays(d,-1);
+  }
+  return n;
 }
-function subjDoneLike(word){
-  let n=0;Object.keys(state.done).forEach(k=>{if(!state.done[k])return;const m=k.match(/^(.*)-(\d+)$/);if(!m)return;const it=(SCHEDULE[m[1]]||[])[+m[2]];if(it&&it[0].includes(word))n++});return n;
+function weekMinutes(s){let t=0;const n=todayK();for(let i=0;i<7;i++)t+=s.daily[addDays(n,-i)]||0;return t}
+function ironBroken(s,mk){
+  const ir=s.iron;if(!ir||ir.mk!==mk)return false;if(ir.broken)return true;
+  const t=todayK();
+  for(let d=ir.since;d<t&&mkOf(d)===mk;d=addDays(d,1)){
+    if(d<s.startDate)continue;
+    if(planned(s,d)>0&&(s.daily[d]||0)<60){ir.broken=true;return true}
+  }
+  return false;
 }
-function fullDays(){
-  let n=0,total=0;
-  Object.keys(SCHEDULE).forEach(d=>{const items=SCHEDULE[d];if(items.every(x=>x[0]==="—"))return;total++;
-    if(items.every((x,i)=>state.done[blockKey(d,i)]))n++});
-  return {n,total};
+
+/* ---------- achievements (IDs ثابتة: عمرها ما بتتغير) ---------- */
+const TP={1:1,2:3,3:6,4:10},TIERN={1:"سهل",2:"متوسط",3:"صعب",4:"أسطوري"},TIERI={1:"🥉",2:"🥈",3:"🥇",4:"💎"};
+const LV=[0,2,6,12,20,30,42,56,72,92];
+const levelOf=p=>LV.filter(x=>p>=x).length;
+const A=(id,cat,t,n,title,desc,u,v)=>({id,cat,t,n,title,desc,u,v});
+const CATS={streak:["🔥","الاستمرارية"],hours:["⏱️","ساعات التركيز"],day:["🚀","يوم خارق"],sched:["📅","الالتزام بالجدول"],tasks:["✅","المهام والتنوع"]};
+const ACH=[
+A("st_3","streak",1,3,"3 أيام ورا بعض","ذاكر ساعة تركيز على الأقل لـ 3 أيام متتالية","يوم",m=>m.best),
+A("st_5","streak",1,5,"5 أيام ورا بعض","5 أيام متتالية بساعة تركيز على الأقل","يوم",m=>m.best),
+A("st_7","streak",2,7,"أسبوع ورا بعض","7 أيام متتالية","يوم",m=>m.best),
+A("st_10","streak",2,10,"10 أيام ورا بعض","10 أيام متتالية","يوم",m=>m.best),
+A("st_14","streak",3,14,"أسبوعين ورا بعض","14 يوم متتالي","يوم",m=>m.best),
+A("st_21","streak",3,21,"21 يوم ورا بعض","21 يوم متتالي","يوم",m=>m.best),
+A("st_all","streak",4,m=>m.daysInMonth,"الشهر كله من غير يوم ضايع","مفيش يوم فاتك طول الشهر (أيام الراحة في جدولك مش بتكسر السلسلة)","يوم",m=>(m.broken||m.minutes<600)?0:m.keptDays),
+A("hr_15","hours",1,15,"15 ساعة","اجمع 15 ساعة تركيز في الشهر","ساعة",m=>Math.floor(m.minutes/60)),
+A("hr_45","hours",2,45,"45 ساعة","اجمع 45 ساعة تركيز في الشهر","ساعة",m=>Math.floor(m.minutes/60)),
+A("hr_90","hours",3,90,"90 ساعة","اجمع 90 ساعة تركيز في الشهر","ساعة",m=>Math.floor(m.minutes/60)),
+A("hr_150","hours",4,150,"150 ساعة","اجمع 150 ساعة تركيز في الشهر","ساعة",m=>Math.floor(m.minutes/60)),
+A("dy_120","day",1,120,"يوم بساعتين","ذاكر ساعتين تركيز في يوم واحد","دقيقة",m=>m.maxDay),
+A("dy_240","day",2,240,"يوم بـ 4 ساعات","ذاكر 4 ساعات تركيز في يوم واحد","دقيقة",m=>m.maxDay),
+A("dy_360","day",3,360,"يوم بـ 6 ساعات","ذاكر 6 ساعات تركيز في يوم واحد","دقيقة",m=>m.maxDay),
+A("dy_480","day",4,480,"يوم بـ 8 ساعات","ذاكر 8 ساعات تركيز في يوم واحد","دقيقة",m=>m.maxDay),
+A("sc_day","sched",1,1,"يوم كامل","خلّص كل فترات يوم واحد من جدولك","يوم",m=>m.dayFull),
+A("sc_p50","sched",2,50,"نص الشهر","خلّص 50% من فترات جدولك في الشهر","%",m=>Math.floor(m.pct)),
+A("sc_w1","sched",2,1,"أسبوع كامل","خلّص كل فترات أسبوع كامل (من السبت للجمعة)","أسبوع",m=>m.weeksFull),
+A("sc_p75","sched",3,75,"75% من الشهر","خلّص 75% من فترات جدولك في الشهر","%",m=>Math.floor(m.pct)),
+A("sc_w2","sched",3,2,"أسبوعين كاملين","خلّص كل فترات أسبوعين كاملين","أسبوع",m=>m.weeksFull),
+A("sc_p95","sched",4,95,"95% من الشهر","خلّص 95% من فترات جدولك في الشهر","%",m=>Math.floor(m.pct)),
+A("sc_w4","sched",4,4,"4 أسابيع كاملة","خلّص كل فترات 4 أسابيع كاملة","أسبوع",m=>m.weeksFull),
+A("tk_5","tasks",1,5,"5 مهام","خلّص 5 مهام من قايمة مهامك","مهمة",m=>m.tasksDone),
+A("tk_all","tasks",2,m=>Math.max(1,m.subjTotal),"كل المواد في أسبوع","علّم فترة من كل مادة في جدولك خلال أسبوع واحد","مادة",m=>m.subjMax),
+A("tk_15","tasks",2,15,"15 مهمة","خلّص 15 مهمة","مهمة",m=>m.tasksDone),
+A("tk_30","tasks",3,30,"30 مهمة","خلّص 30 مهمة","مهمة",m=>m.tasksDone)
+];
+function summary(s,mk,record){
+  const ms=monthStats(s,mk),ib=ironBroken(s,mk);
+  let un=(s.unlocked&&s.unlocked[mk])||{};
+  if(record){s.unlocked[mk]=un=s.unlocked[mk]||{}}
+  const fresh=[],list=[];let achPts=0,ach=0;
+  ACH.forEach(a=>{
+    const n=typeof a.n==="function"?a.n(ms):a.n,cur=a.v(ms),now=cur>=n&&n>0,lost=ib&&a.cat==="streak";
+    const ok=!lost&&(now||!!un[a.id]);
+    if(record&&now&&!lost&&!un[a.id]){un[a.id]=1;fresh.push(a)}
+    if(ok){achPts+=TP[a.t];ach++}
+    list.push({...a,n,cur,ok,lost});
+  });
+  const bonus=((s.bonus&&s.bonus[mk])||[]).reduce((x,b)=>x+b.pts,0);
+  const points=achPts+bonus;
+  return{ms,ib,list,fresh,achPts,bonus,points,ach,level:levelOf(points)};
 }
-function markDone(day,i){
-  const k=blockKey(day,i); state.done[k]=!state.done[k];
-  if(state.done[k]){state.xp+=80; markActive(); state.streak=calcStreak(); toast("تم الإنجاز! +80 XP ⚡")}
-  else {state.xp=Math.max(0,state.xp-80)}
-  save()
+function checkAch(){
+  const sm=summary(state,curMonth(),true);
+  if(sm.fresh.length){toast(sm.fresh.length>1?"🏅 "+sm.fresh.length+" إنجازات جديدة!":"🏅 إنجاز جديد: "+sm.fresh[0].title)}
+  persist();
+}
+function finalizeMonths(){
+  const users=DB.users(),cur=curMonth();let ch=false;
+  Object.values(users).forEach(u=>{
+    let mk=mkOf(u.state.startDate),g=0;
+    while(mk<cur&&g++<48){
+      if(!u.history[mk]){const sm=summary(u.state,mk,true);u.history[mk]={points:sm.points,minutes:sm.ms.minutes,iron:!!(u.state.iron&&u.state.iron.mk===mk&&!sm.ib)};ch=true}
+      mk=nextMonth(mk);
+    }
+  });
+  if(ch)DB.save();
+}
+
+/* =====================================================================
+   SCHEDULE ACTIONS
+   ===================================================================== */
+function toggleBlock(date,i){
+  const b=state.schedule[dayName(date)][i];if(!b)return;
+  const e=state.done[date]||(state.done[date]={n:state.schedule[dayName(date)].length,d:{}});
+  if(e.d[i]){delete e.d[i];if(!Object.keys(e.d).length)delete state.done[date]}
+  else{e.d[i]=bareNames(b.n);toast("تم الإنجاز ✅")}
+  save();
+}
+function addMinutes(n){
+  const k=todayK();state.daily[k]=(state.daily[k]||0)+n;state.totalMinutes+=n;
+}
+function save(light){
+  checkAch();
+  if(light)renderChrome();else renderAll();
+}
+
+/* =====================================================================
+   RENDER: chrome + home
+   ===================================================================== */
+let curPage="home";
+function renderChrome(){
+  if(!ME)return;
+  const sm=summary(state,curMonth(),false);
+  $("profileName").textContent=ME.name;$("topAvatar").innerHTML=avatar(ME,42);
+  $("levelSide").textContent=sm.level;
+  const lo=LV[sm.level-1],hi=LV[sm.level];
+  $("xpSide").textContent=sm.points+" نقطة"+(hi?" • التالي "+hi:" • أعلى مستوى");
+  $("xpBarSide").style.width=(hi?Math.min(100,(sm.points-lo)/(hi-lo)*100):100)+"%";
+  if(curPage==="home")renderHome();
+  if(curPage==="achievements")renderAchievements();
+}
+function renderSquares(el,minutes){
+  const full=Math.min(50,Math.floor(minutes/180)),part=(minutes%180)/180;
+  let h="";
+  for(let i=0;i<50;i++){
+    if(i<full)h+='<div class="sq on"></div>';
+    else if(i===full&&full<50&&part>0)h+='<div class="sq"><i style="opacity:'+(0.25+part*0.5)+'"></i></div>';
+    else h+='<div class="sq"></div>';
+  }
+  el.innerHTML=h;
+}
+function missedYesterday(){
+  const y=addDays(todayK(),-1);
+  if(y<state.startDate)return null;
+  if((state.daily[y]||0)>=60||state.holidays[y]||planned(state,y)<=0)return null;
+  const mk=mkOf(y);
+  if(state.iron&&state.iron.mk===mk)return null;
+  if(Object.keys(state.holidays).some(d=>mkOf(d)===mk))return null;
+  return y;
 }
 function renderHome(){
-  const d=today(); document.getElementById("todayPlanName").textContent=d;
-  const list=document.getElementById("todayList"); list.innerHTML="";
-  (SCHEDULE[d]||[]).forEach((item,i)=>{
-    if(item[0]==="—") return;
-    const done=!!state.done[blockKey(d,i)], info=subjectInfo(item[0]);
+  const t=todayK(),mk=curMonth(),sm=summary(state,mk,false),ms=sm.ms;
+  $("heroTitle").textContent="أهلاً "+ME.name+" 👑";
+  $("heroSub").innerHTML="شهر <strong>"+monthLabel(mk)+"</strong> بدأ من الصفر. اجمع نقاط، ارفع مستواك، وادخل قاعة الشرف.";
+  $("stPts").textContent=sm.points;$("stLvl").textContent=sm.level;
+  $("stHours").textContent=(ms.minutes/60).toFixed(1)+"h";
+  $("stHoursSub").textContent="النهارده: "+fmtMin(state.daily[t]||0);
+  $("stStreak").textContent=calcStreak(state);
+  $("stStreakSub").textContent="أفضل سلسلة في الشهر: "+ms.best;
+  $("stPct").textContent=Math.floor(ms.pct)+"%";
+  renderSquares($("sqGridHome"),ms.minutes);
+  $("sqInfo").textContent=Math.floor(ms.minutes/60)+" / 150 ساعة";
+  // rank
+  const rows=sortPlayers(players(mk),"points"),idx=rows.findIndex(p=>p.me);
+  $("rankStripVal").textContent=idx<0?"—":"#"+(idx+1)+" من "+rows.length;
+  // plan
+  const d=dayName(t);$("todayPlanName").textContent=d;
+  const list=$("todayList");list.innerHTML="";
+  const items=state.schedule[d]||[];
+  if(!items.length)list.innerHTML='<div style="color:var(--muted);padding:10px">النهارده يوم فاضي 🎉 (يوم راحة، مش بيكسر سلسلتك)</div>';
+  items.forEach((b,i)=>{
+    const done=!!(state.done[t]&&state.done[t].d[i]),info=subjectInfo(b.n);
     const el=document.createElement("div");el.className="study-row";
-    el.innerHTML=`<div class="subject-icon" style="box-shadow:0 0 18px ${info.color}22">${info.icon}</div>
-      <div><h3>${item[0]}</h3><small>${item[1]}</small><div class="progress"><i style="width:${done?100:0}%;background:linear-gradient(90deg,${info.color},#8b3dff)"></i></div></div>
+    el.innerHTML=`<div class="subject-icon" style="box-shadow:0 0 18px ${info.color}22">${escapeHtml(b.i||info.icon)}</div>
+      <div><h3>${escapeHtml(b.n)}</h3><small>${durText(b.m)}${b.t?" • 🕓 "+timeText(b.t):""}</small><div class="progress"><i style="width:${done?100:0}%;background:linear-gradient(90deg,${info.color},#8b3dff)"></i></div></div>
       <button class="check ${done?"done":""}" title="تحديد كمكتمل">✓</button>`;
-    el.querySelector(".check").onclick=()=>markDone(d,i);list.appendChild(el)
+    el.querySelector(".check").onclick=()=>toggleBlock(t,i);list.appendChild(el);
   });
+  renderAlerts();
 }
-function renderStats(){
-  const sessions=state.sessions||0,hours=(state.focusMinutes||0)/60;
-  const completion=totalBlocks()?Math.round(completedBlocks()/totalBlocks()*100):0;
-  document.getElementById("hoursStat").textContent=hours.toFixed(1)+"h";
-  document.getElementById("streakStat").textContent=calcStreak();
-  document.getElementById("xpStat").textContent=state.xp;
-  document.getElementById("completionStat").textContent=completion+"%";
-  document.getElementById("levelStat").textContent=level();
-  document.getElementById("levelSide").textContent=level();
-  document.getElementById("xpSide").textContent=xpInLevel()+" / 1000 XP";
-  document.getElementById("xpBarSide").style.width=(xpInLevel()/10)+"%";
-  document.getElementById("sessionsAnalytic").textContent=sessions;
-  document.getElementById("blocksAnalytic").textContent=completedBlocks();
-  document.getElementById("xpAnalytic").textContent=state.xp;
-  document.getElementById("levelAnalytic").textContent=level();
-}
-function renderSchedule(){
-  const t=document.getElementById("weekTable");t.innerHTML="<thead><tr><th>اليوم</th><th>الفترة الأولى</th><th>الفترة الثانية</th><th>الفترة الثالثة</th></tr></thead>";
-  const body=document.createElement("tbody");
-  DAYS.forEach(d=>{
-    const tr=document.createElement("tr");const td=document.createElement("td");td.textContent=d;tr.appendChild(td);
-    (SCHEDULE[d]||[]).forEach((x,i)=>{const c=document.createElement("td");const info=subjectInfo(x[0]);c.innerHTML=`<div class="cell" style="border-color:${info.color}44"><b>${x[2]} ${x[0]}</b><small>${x[1]}</small></div>`;tr.appendChild(c)});
-    body.appendChild(tr)
-  });t.appendChild(body)
-}
-function renderSubjects(){
-  const map={}; DAYS.forEach(d=>(SCHEDULE[d]||[]).forEach(x=>{if(x[0]==="—"||x[0]==="راحة"||x[0]==="تصفية المتراكم"||x[0]==="امتحان صغير")return;map[x[0]]=(map[x[0]]||0)+parseHours(x[1])}));
-  const g=document.getElementById("subjectGrid");g.innerHTML="";
-  Object.entries(map).forEach(([name,h])=>{const info=subjectInfo(name), el=document.createElement("div");el.className="card subject-card";el.style.setProperty("--accent-color",info.color);
-    const done=subjDone(name);
-    el.innerHTML=`<div style="font-size:28px">${info.icon}</div><h3>${name}</h3><div class="big">${h} ساعة</div><div class="tag">مخطط أسبوعيًا • ${done} فترات مكتملة</div><div class="progress"><i style="width:${Math.min(100,done/h*100)}%;background:${info.color}"></i></div>`;
-    g.appendChild(el)
-  })
-}
-function renderTasks(){
-  const g=document.getElementById("tasksList");g.innerHTML="";
-  state.tasks.forEach((t,i)=>{const el=document.createElement("div");el.className="task "+(t.done?"done":"");el.innerHTML=`<button>×</button><input type="checkbox" ${t.done?"checked":""}><span>${escapeHtml(t.text)}</span>`;
-    el.querySelector("input").onchange=()=>{state.tasks[i].done=!state.tasks[i].done;state.xp+=state.tasks[i].done?30:-30;state.tasksCompleted=Math.max(0,(state.tasksCompleted||0)+(state.tasks[i].done?1:-1));if(state.tasks[i].done)markActive();save()};
-    el.querySelector("button").onclick=()=>{state.tasks.splice(i,1);save()};g.appendChild(el)})
-}
-function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-function achievementList(){
-  const xp=state.xp||0,sess=state.sessions||0,hrs=Math.floor((state.focusMinutes||0)/60),blocks=completedBlocks(),lv=level(),
-        best=bestStreak(),act=new Set(state.days||[]).size,
-        tdone=Math.max(state.tasksCompleted||0,state.tasks.filter(t=>t.done).length),
-        tadd=Math.max(state.tasksAdded||0,state.tasks.length),
-        maxDay=Math.max(0,...Object.values(state.daily||{})),fd=fullDays();
-  const L=[];const add=(cat,icon,title,desc,cur,target)=>L.push({cat,icon,title,desc,cur,target});
-  const tiers=(cat,icons,arr,cur,tf,df)=>arr.forEach((n,i)=>add(cat,icons[Math.min(i,icons.length-1)],tf(n),df(n),cur,n));
-  tiers("⚡ نقاط الخبرة (XP)",["👑","⭐","💎","🏆","🌟","🚀","🔱","🦁","🌌"],[500,1000,2500,5000,7500,10000,15000,25000,50000],xp,n=>n+" نقطة خبرة",n=>"اجمع "+n+" نقطة XP");
-  tiers("🎖️ المستويات",["🎖️","🥉","🥈","🥇","🏅","🎗️","💫","🌠"],[2,3,5,10,15,20,30,50],lv,n=>"المستوى "+n,n=>"وصّل للمستوى "+n);
-  tiers("⏱️ جلسات التركيز",["⏱️","⚡","🎧","🧠","🔥","💪","🧘","🛡️"],[1,5,10,25,50,100,200,365],sess,n=>n+" جلسة تركيز",n=>"أكمل "+n+" جلسة Focus");
-  tiers("🕐 ساعات التركيز",["🕐","⌛","⏳","🌙","☀️","🌞","🪐","🌌","♾️"],[1,5,10,25,50,100,200,300,500],hrs,n=>n+" ساعة تركيز",n=>"ذاكر "+n+" ساعة تركيز إجمالي");
-  tiers("📚 فترات الجدول",["📚","📖","📘","📗","📙","📕","🗂️","🏛️","🎓"],[1,5,10,25,50,100,150,250,400],blocks,n=>n+" فترة مكتملة",n=>"أنجز "+n+" فترة من الجدول");
-  tiers("🔥 الاستمرارية",["🔥","🔥","🔥","🌋","☄️","💥","🌟","🏔️","🗻","🐉","👑"],[2,3,5,7,10,14,21,30,60,100,365],best,n=>n+" أيام متتالية",n=>"ذاكر "+n+" أيام ورا بعض");
-  tiers("📅 أيام النشاط",["📅","📆","🗓️","🌱","🌿","🌳","🌲","🏕️","🏆","👑"],[1,3,7,14,21,30,50,75,100,200],act,n=>n+(n===1?" يوم نشاط":" يوم نشاط"),n=>"افتح التطبيق وأنجز حاجة في "+n+" يوم مختلف");
-  tiers("✅ المهام",["✅","☑️","📝","🗒️","📋","🧾","🏁"],[1,5,10,25,50,100,250],tdone,n=>n+" مهمة منجزة",n=>"خلّص "+n+" مهمة من قايمة مهامك");
-  tiers("✅ المهام",["➕","🗃️","📌","🧩"],[1,10,30,100],tadd,n=>"أضفت "+n+" مهمة",n=>"سجّل "+n+" مهمة في قايمة المهام");
-  tiers("🚀 يوم خارق",["🥤","💡","💪","🏋️","🦾","🧠","🌟"],[30,60,120,180,240,360,480],Math.floor(maxDay),n=>(n>=60?(n/60)+" ساعة":n+" دقيقة")+" في يوم",n=>"ذاكر "+(n>=60?(n/60)+" ساعة":n+" دقيقة")+" تركيز في يوم واحد");
-  [["كيمياء","🧪"],["فيزياء","⚡"],["أحياء","🧬"],["عربي","📖"],["إنجليزي","🇬🇧"],["فرنساوي","🇫🇷"]].forEach(([s,ic])=>{
-    const c=subjDoneLike(s);
-    [1,5,10,25].forEach((n,i)=>add(ic+" المواد: "+s,["🌱","📗","🏅","👑"][i],s+" • "+n+(n===1?" فترة":" فترات"),"أنجز "+n+(n===1?" فترة":" فترات")+" في مادة "+s,c,n));
+function renderAlerts(){
+  const box=$("homeAlerts");let h="";
+  const users=DB.users();
+  D_DUELS.get().filter(d=>d.status==="pending"&&d.to===ME.id).forEach(d=>{
+    h+=`<div class="alert"><span>⚔️ <b>${escapeHtml(entName(d.from,users))}</b> بيتحداك: ${KIND_T[d.kind]} لمدة ${d.days} أيام</span><span class="acts"><button class="btn small primary" data-ha="acc:${d.id}">قبول</button><button class="btn small danger" data-ha="dec:${d.id}">رفض</button></span></div>`;
   });
-  add("🎯 تحديات","🎯","يوم كامل","خلّص كل فترات يوم واحد من الجدول",Math.min(fd.n,1),1);
-  add("🎯 تحديات","🎯","3 أيام كاملة","خلّص كل فترات 3 أيام مختلفة",fd.n,3);
-  add("🎯 تحديات","🏆","أسبوع كامل","خلّص كل فترات الجدول الأسبوعي",fd.n,Math.max(1,fd.total));
-  return L;
+  D_TEAMS.get().filter(t=>t.invites.includes(ME.id)).forEach(t=>{
+    h+=`<div class="alert"><span>👥 دعوة للانضمام لفريق <b>${escapeHtml(t.name)}</b></span><span class="acts"><button class="btn small primary" data-ha="tacc:${t.id}">قبول</button><button class="btn small danger" data-ha="tdec:${t.id}">رفض</button></span></div>`;
+  });
+  D_TD.get().filter(d=>d.status==="pending").forEach(d=>{
+    const tb=getTeam(d.b);if(tb&&tb.leader===ME.id){const ta=getTeam(d.a);
+      h+=`<div class="alert"><span>👥 فريق <b>${escapeHtml(ta?ta.name:"؟")}</b> بيتحدى فريقك: ${KIND_T[d.kind]} لمدة ${d.days} أيام</span><span class="acts"><button class="btn small primary" data-ha="tdacc:${d.id}">قبول</button><button class="btn small danger" data-ha="tddec:${d.id}">رفض</button></span></div>`}
+  });
+  const my=missedYesterday();
+  if(my)h+=`<div class="alert"><span>🛟 فاتك امبارح! تقدر تستخدم يوم الإجازة (مرة في الشهر) وتنقذ سلسلتك.</span><span class="acts"><button class="btn small primary" data-ha="hol">أنقذ سلسلتي</button></span></div>`;
+  if(state.iron&&state.iron.mk===curMonth())h+=`<div class="alert" style="border-color:rgba(255,85,125,.4);background:rgba(255,85,125,.06)"><span>🔒 وضع الحديد ${ironBroken(state,curMonth())?"<b>انكسر</b> وضاعت إنجازات الاستمرارية 💔":"شغال... متفوتش يوم!"}</span></div>`;
+  box.innerHTML=h;
 }
+$("homeAlerts").addEventListener("click",e=>{const b=e.target.closest("[data-ha]");if(b)handleAct(b.dataset.ha)});
+
+/* =====================================================================
+   COMPETITION
+   ===================================================================== */
+function hasKnight(id){const t=todayK();return D_DUELS.get().some(d=>d.status==="done"&&d.winner===id&&d.end>=addDays(t,-7))}
+function botDaily(b,d){if(rnd("z"+d+b.name)<0.12)return 0;return Math.round(b.base*(0.45+rnd(d+b.name)*1.1))}
+function players(mk){
+  const users=DB.users(),list=[];
+  Object.values(users).forEach(u=>{
+    const sm=summary(u.state,mk,false);
+    list.push({id:u.id,name:u.name,photo:u.photo,points:sm.points,minutes:sm.ms.minutes,week:weekMinutes(u.state),streak:calcStreak(u.state),level:sm.level,ach:sm.ach,me:ME&&u.id===ME.id,bot:false,knight:hasKnight(u.id)});
+  });
+  if(DEMO){
+    const t=todayK();
+    BOTS.forEach(b=>{
+      const ds=monthDates(mk).filter(d=>d<=t);let min=0,run=0;ds.forEach(d=>{min+=botDaily(b,d)});
+      for(let i=0;i<30;i++){if(botDaily(b,addDays(t,-i))>=60)run++;else if(i>0)break}
+      let wk=0;for(let i=0;i<7;i++)wk+=botDaily(b,addDays(t,-i));
+      const pts=Math.round(Math.sqrt(min/60)*b.k);
+      list.push({id:"bot:"+b.name,name:b.name,photo:"",points:pts,minutes:min,week:wk,streak:run,level:levelOf(pts),ach:Math.floor(pts/4),me:false,bot:true,knight:hasKnight("bot:"+b.name)});
+    });
+  }
+  return list;
+}
+function sortPlayers(list,key){return list.slice().sort((a,b)=>b[key]-a[key]||b.minutes-a.minutes||a.name.localeCompare(b.name,"ar"))}
+let metric="points";
+function metricText(p){
+  if(metric==="points")return p.points+" نقطة";
+  if(metric==="minutes")return fmtMin(p.minutes);
+  if(metric==="week")return fmtMin(p.week);
+  return p.streak+" 🔥";
+}
+function metricSub(p){return "مستوى "+p.level+" • "+p.ach+" إنجاز"}
+function nameHtml(p){return escapeHtml(p.name)+(p.me?" (أنت)":"")+(p.bot?'<span class="tag">تجريبي</span>':"")+(p.knight?'<span class="knight">⚔️ فارس</span>':"")}
+function renderCompete(){
+  const mk=curMonth(),rows=sortPlayers(players(mk),metric),medals=["🥇","🥈","🥉"];
+  $("compMonth").textContent="• "+monthLabel(mk);
+  $("compCount").textContent=rows.length+" متنافس";
+  $("demoNote").classList.toggle("hidden",!DEMO);
+  const top=rows.slice(0,3),pod=$("podium");
+  if(top.length>=3){
+    pod.innerHTML=[1,0,2].map(i=>{const p=top[i];return `<div class="pod p${i+1} ${p.me?"me":""}"><div class="m">${medals[i]}</div><div style="display:flex;justify-content:center;margin:6px 0">${avatar(p,i===0?60:50)}</div><div class="nm">${escapeHtml(p.name)}</div><div class="vv">${metricText(p)}</div></div>`}).join("");
+    pod.classList.remove("hidden");
+  }else pod.classList.add("hidden");
+  $("compList").innerHTML=rows.map((p,i)=>`<div class="lb-row ${p.me?"me":""}"><div class="rk">${medals[i]||i+1}</div>${avatar(p,40)}<div><div class="nm">${nameHtml(p)}</div><div class="sub">${metricSub(p)}</div></div><div class="val">${metricText(p)}</div></div>`).join("");
+}
+$("metricTabs").querySelectorAll("button").forEach(b=>b.onclick=()=>{
+  metric=b.dataset.metric;
+  $("metricTabs").querySelectorAll("button").forEach(x=>x.classList.toggle("active",x===b));renderCompete();
+});
+
+/* =====================================================================
+   HALL OF FAME
+   ===================================================================== */
+function hallEntries(mk){
+  const users=DB.users(),list=[];
+  Object.values(users).forEach(u=>{
+    const h=u.history[mk];
+    if(h&&h.minutes>0){
+      const h2=u.history[prevMonth(mk)];
+      list.push({name:u.name,photo:u.photo,points:h.points,minutes:h.minutes,imp:h2&&h2.minutes>0?h.minutes-h2.minutes:null,iron:h.iron,me:ME&&u.id===ME.id,bot:false});
+    }
+  });
+  const real=list.length;
+  if(DEMO)HALL_BOTS.forEach(b=>list.push({name:b.name,photo:"",points:b.pts,minutes:b.hrs*60,imp:(b.hrs-b.prev)*60,iron:false,me:false,bot:true}));
+  return{list,real};
+}
+function renderHall(){
+  const mk=prevMonth(curMonth());
+  $("hallMonth").textContent="• "+monthLabel(mk);
+  const {list,real}=hallEntries(mk);
+  $("hallNote").classList.toggle("hidden",!(DEMO&&real<3));
+  const rows=list.slice().sort((a,b)=>b.points-a.points||b.minutes-a.minutes||a.name.localeCompare(b.name,"ar"));
+  const top=rows.slice(0,10);
+  if(!top.length){$("hallBody").innerHTML='<div class="card muted">قاعة الشرف لسه فاضية. هتتملي مع نهاية الشهر 🏛️</div>';return}
+  const mine=rows.findIndex(r=>r.me);
+  const tag=p=>(p.bot?'<span class="tag">تجريبي</span>':"")+(p.iron?'<span class="knight">🔒 حديد</span>':"");
+  let h="";
+  const f=top[0];
+  h+=`<div class="hof-top"><div class="hof-title">🏆 بطل شهر ${monthLabel(mk)}</div>${avatar(f,112,"fr1")}<div class="hof-name">${escapeHtml(f.name)}${f.me?" (أنت)":""}</div><div class="hof-sub">${f.points} نقطة • ${fmtMin(f.minutes)} ${tag(f)}</div></div>`;
+  top.slice(1).forEach((p,i)=>{
+    const r=i+2,fr=r===2?"fr2":r===3?"fr3":r<=7?"fr4":"fr8",sz=r===2?66:r===3?62:r<=7?50:42,medal=r===2?"🥈":r===3?"🥉":r;
+    h+=`<div class="hof-row k${r}"><div class="rk">${medal}</div>${avatar(p,sz,fr)}<div><div class="nm">${escapeHtml(p.name)}${p.me?" (أنت)":""}${tag(p)}</div><div class="sub">${fmtMin(p.minutes)} مذاكرة</div></div><div class="val">${p.points} نقطة</div></div>`;
+  });
+  if(mine>=10)h+=`<div class="card muted" style="margin-top:6px">ترتيبك في الشهر ده: #${mine+1} 💪 كمّل وادخل قاعة الشرف الشهر الجاي!</div>`;
+  const imp=rows.filter(r=>r.imp!=null&&r.imp>0).sort((a,b)=>b.imp-a.imp)[0];
+  if(imp)h+=`<div class="section"><div class="section-head"><h2>📈 الأكثر تطورًا</h2><span>أكتر زيادة في ساعات المذاكرة عن الشهر اللي قبله</span></div><div class="improved">${avatar(imp,52)}<div><div class="nm" style="font-weight:800">${escapeHtml(imp.name)}${imp.me?" (أنت)":""}${imp.bot?'<span class="tag">تجريبي</span>':""}</div><div class="muted">زاد مذاكرته بـ ${fmtMin(imp.imp)} عن الشهر اللي فات 🚀</div></div></div></div>`;
+  $("hallBody").innerHTML=h;
+}
+
+/* =====================================================================
+   FRIENDS
+   ===================================================================== */
+function renderFriends(){
+  const q=normName($("friendSearch").value||"");
+  const all=sortPlayers(players(curMonth()),"points");
+  $("friendCount").textContent=all.length+" صديق";
+  const rows=all.filter(p=>!q||normName(p.name).includes(q));
+  $("friendGrid").innerHTML=rows.map(p=>`<div class="fcard ${p.me?"me":""}">${avatar(p,52)}<div style="min-width:0"><div class="nm">${nameHtml(p)}</div><div class="sub">مستوى ${p.level} • ${p.ach} إنجاز • 🔥 ${p.streak}</div></div>${p.me?"":`<button class="btn small" data-ch="${escapeHtml(p.id)}">⚔️ تحدّاه</button>`}</div>`).join("")||'<div class="muted">مفيش نتايج</div>';
+}
+$("friendSearch").addEventListener("input",renderFriends);
+$("friendGrid").addEventListener("click",e=>{const b=e.target.closest("[data-ch]");if(!b)return;preOpp=b.dataset.ch;duelTab="d1";go("duels")});
+
+/* =====================================================================
+   DUELS + TEAMS
+   ===================================================================== */
+const KIND_T={hours:"⏱️ ساعات التركيز",sched:"📅 الالتزام بالجدول",days:"🔥 الأيام المنتظمة"};
+const isBot=id=>String(id).startsWith("bot:");
+const botOf=id=>BOTS.find(b=>"bot:"+b.name===id);
+function ent(id,users){
+  if(isBot(id)){const b=botOf(id);return{id,name:b?b.name:"؟",photo:"",bot:true}}
+  const u=users[id];return u?{id,name:u.name,photo:u.photo,bot:false}:{id,name:"محذوف",photo:"",bot:false};
+}
+const entName=(id,users)=>ent(id,users).name;
+function metricOf(id,kind,a,z,users){
+  const t=todayK(),ds=range(a,z);
+  if(isBot(id)){
+    const b=botOf(id);if(!b)return 0;
+    const el=ds.filter(d=>d<=t);
+    if(kind==="hours")return el.reduce((x,d)=>x+botDaily(b,d),0);
+    if(kind==="days")return el.filter(d=>botDaily(b,d)>=60).length;
+    return el.length?Math.round(55+rnd(b.name+a)*40):0;
+  }
+  const u=users[id];if(!u)return 0;const s=u.state;
+  if(kind==="hours")return ds.filter(d=>d<=t).reduce((x,d)=>x+(s.daily[d]||0),0);
+  if(kind==="days")return ds.filter(d=>d<=t&&(s.daily[d]||0)>=60).length;
+  let p=0,dn=0;ds.forEach(d=>{if(d<s.startDate)return;const pl=planned(s,d);p+=pl;dn+=Math.min(doneCount(s,d),pl)});
+  return p?Math.round(dn/p*100):0;
+}
+function baseOf(id,kind,start,days,users){
+  const v=metricOf(id,kind,addDays(start,-28),addDays(start,-1),users);
+  return kind==="sched"?v:v*days/28;
+}
+function fmtVal(kind,v){return kind==="hours"?fmtMin(v):kind==="days"?(Math.round(v*10)/10)+" يوم":Math.round(v)+"%"}
+function awardBonus(users,id,mk,entry){
+  if(isBot(id))return false;const u=users[id];if(!u)return false;
+  const s=u.state;s.bonus[mk]=s.bonus[mk]||[];const L=s.bonus[mk];
+  if(L.some(e=>e.id===entry.id))return false;
+  if(entry.kind==="duel"&&(L.filter(e=>e.kind==="duel").length>=3||L.some(e=>e.kind==="duel"&&e.opp===entry.opp)))return false;
+  if(entry.kind==="team"&&L.filter(e=>e.kind==="team").length>=2)return false;
+  L.push(entry);return true;
+}
+function getTeam(id){return D_TEAMS.get().find(t=>t.id===id)||BOT_TEAMS.find(t=>t.id===id)}
+function tMetric(team,kind,a,z,users){
+  if(!team||!team.members.length)return 0;
+  return team.members.reduce((x,id)=>x+metricOf(id,kind,a,z,users),0)/team.members.length;
+}
+function dScore(d,users){
+  const va=metricOf(d.from,d.kind,d.start,d.end,users),vb=metricOf(d.to,d.kind,d.start,d.end,users);
+  let sa=va,sb=vb;
+  if(d.fair){sa=va-baseOf(d.from,d.kind,d.start,d.days,users);sb=vb-baseOf(d.to,d.kind,d.start,d.days,users)}
+  return{va,vb,sa,sb};
+}
+function resolveAll(){
+  const users=DB.users(),t=todayK();let ch=false;
+  const duels=D_DUELS.get();
+  duels.forEach(d=>{
+    if(d.status==="active"&&t>d.end){
+      const sc=dScore(d,users);let w=null;
+      if(Math.abs(sc.sa-sc.sb)>1e-9){
+        w=sc.sa>sc.sb?d.from:d.to;
+        if(metricOf(w,"hours",d.start,d.end,users)<300){w=null;d.lowHours=true}
+      }
+      d.status="done";d.winner=w;d.va=sc.va;d.vb=sc.vb;
+      if(w)d.awarded=awardBonus(users,w,mkOf(d.end),{id:"duel_"+d.id,pts:2,kind:"duel",opp:w===d.from?d.to:d.from});
+      ch=true;
+    }
+  });
+  const tds=D_TD.get();
+  tds.forEach(d=>{
+    if(d.status==="active"&&t>d.end){
+      const A_=getTeam(d.a),B_=getTeam(d.b);
+      if(!A_||!B_){d.status="cancelled";ch=true;return}
+      const va=tMetric(A_,d.kind,d.start,d.end,users),vb=tMetric(B_,d.kind,d.start,d.end,users);
+      let w=null;if(Math.abs(va-vb)>1e-9)w=va>vb?d.a:d.b;
+      d.status="done";d.winner=w;d.va=va;d.vb=vb;
+      if(w){
+        const wt=w===d.a?A_:B_;let n=0;
+        wt.members.forEach(id=>{if(metricOf(id,"hours",d.start,d.end,users)>=120&&awardBonus(users,id,mkOf(d.end),{id:"team_"+d.id,pts:2,kind:"team"}))n++});
+        d.awardedCount=n;
+      }
+      ch=true;
+    }
+  });
+  if(ch){D_DUELS.set(duels);D_TD.set(tds);DB.save()}
+}
+let duelTab="d1",preOpp="";
+function mineDuels(){return D_DUELS.get().filter(d=>d.from===ME.id||d.to===ME.id)}
+function tugHtml(a,b){const tot=a+b,pa=tot>0?Math.max(4,Math.min(96,a/tot*100)):50;return `<div class="tug"><i style="width:${pa}%"></i><i style="width:${100-pa}%"></i></div>`}
+function daysLeft(d){const n=Math.round((pd(d.end)-pd(todayK()))/864e5)+1;return n>0?n:0}
+function duelCard(d,users){
+  const A_=ent(d.from,users),B_=ent(d.to,users);
+  let va,vb,sa,sb;
+  if(d.status==="done"){va=d.va;vb=d.vb;sa=va;sb=vb}else{const sc=dScore(d,users);va=sc.va;vb=sc.vb;sa=Math.max(0,sc.sa);sb=Math.max(0,sc.sb)}
+  let foot="";
+  if(d.status==="pending")foot=d.from===ME.id?`<span class="muted">⏳ بانتظار الرد</span> <button class="btn small danger" data-act="cancel:${d.id}">إلغاء</button>`:`<button class="btn small primary" data-act="acc:${d.id}">قبول</button> <button class="btn small danger" data-act="dec:${d.id}">رفض</button>`;
+  else if(d.status==="active")foot=`<span class="muted">⏳ فاضل ${daysLeft(d)} يوم • ${KIND_T[d.kind]}${d.fair?" • تحدي عادل":""}</span>`;
+  else{
+    const w=d.winner;
+    foot=!w?`<span class="muted">🤝 تعادل${d.lowHours?" (الفايز ذاكر أقل من 5 ساعات)":""}</span>`:`<span class="${w===ME.id?"res-win":"res-lose"}">${w===ME.id?"🏆 فزت!"+(d.awarded?" +2 نقطة":" (وصلت للحد الأقصى للنقاط)"):"خسرت"+" — الفايز: "+escapeHtml(entName(w,users))}</span>`;
+  }
+  return `<div class="duel"><div class="vs"><div class="who">${avatar(A_,48)}<span>${escapeHtml(A_.name)}${d.from===ME.id?" (أنت)":""}</span><span class="sc">${fmtVal(d.kind,va)}</span></div><div>⚔️</div><div class="who">${avatar(B_,48)}<span>${escapeHtml(B_.name)}${d.to===ME.id?" (أنت)":""}</span><span class="sc">${fmtVal(d.kind,vb)}</span></div></div>${tugHtml(sa,sb)}<div>${foot}</div></div>`;
+}
+function renderDuels(){
+  $("dtabs").querySelectorAll("button").forEach(b=>b.classList.toggle("active",b.dataset.dt===duelTab));
+  $("pane-d1").classList.toggle("hidden",duelTab!=="d1");$("pane-d2").classList.toggle("hidden",duelTab!=="d2");
+  const users=DB.users();
+  if(duelTab==="d1")renderD1(users);else renderD2(users);
+}
+function renderD1(users){
+  const mine=mineDuels(),done=mine.filter(d=>d.status==="done");
+  const W=done.filter(d=>d.winner===ME.id).length,L=done.filter(d=>d.winner&&d.winner!==ME.id).length,T=done.length-W-L;
+  const open=mine.filter(d=>d.status==="pending"||d.status==="active");
+  const others=Object.values(users).filter(u=>u.id!==ME.id).map(u=>({id:u.id,name:u.name})).concat(DEMO?BOTS.map(b=>({id:"bot:"+b.name,name:b.name+" (تجريبي)"})):[]);
+  let h=`<div class="card" style="margin-bottom:14px"><div class="section-head"><h2>📊 سجلك</h2></div><span class="chip">🏆 فوز: ${W}</span><span class="chip">💔 خسارة: ${L}</span><span class="chip">🤝 تعادل: ${T}</span><div class="muted" style="margin-top:8px">القواعد: الفايز لازم يكون ذاكر 5 ساعات على الأقل في المبارزة. +2 نقطة للفايز، بحد أقصى 3 مبارزات بنقاط في الشهر ومرة واحدة لكل صاحب. أقصى مبارزتين شغالين مع بعض.</div></div>`;
+  h+=`<div class="card" style="margin-bottom:14px"><div class="section-head"><h2>⚔️ مبارزاتك الحالية</h2></div>${open.map(d=>duelCard(d,users)).join("")||'<div class="muted">مفيش مبارزات شغالة. ابدأ واحدة من تحت 👇</div>'}</div>`;
+  h+=`<div class="card" style="margin-bottom:14px"><div class="section-head"><h2>➕ تحدّى صاحبك</h2></div>
+    <label class="l muted">الصاحب</label><select class="fld" id="duelOpp">${others.map(o=>`<option value="${escapeHtml(o.id)}" ${o.id===preOpp?"selected":""}>${escapeHtml(o.name)}</option>`).join("")||"<option value=''>مفيش أصحاب لسه</option>"}</select>
+    <div class="frow"><div><label class="l muted">المدة</label><select class="fld" id="duelDays"><option value="3">3 أيام</option><option value="7" selected>أسبوع</option><option value="14">أسبوعين</option></select></div>
+    <div><label class="l muted">نوع المنافسة</label><select class="fld" id="duelKind"><option value="hours">⏱️ ساعات التركيز</option><option value="sched">📅 الالتزام بالجدول (%)</option><option value="days">🔥 الأيام المنتظمة</option></select></div></div>
+    <label class="remember" style="display:flex;gap:7px;align-items:center;margin:4px 0 10px;color:var(--muted);font-size:13px"><input type="checkbox" id="duelFair"> التحدي العادل: بنقارن مين اتحسّن أكتر عن متوسطه هو الأسابيع اللي فاتت</label>
+    <button class="btn primary" id="duelGo">⚔️ ابعت التحدي</button></div>`;
+  h+=`<div class="card"><div class="section-head"><h2>📜 آخر المبارزات</h2></div>${done.slice(-5).reverse().map(d=>duelCard(d,users)).join("")||'<div class="muted">لسه مفيش مبارزات خلصت</div>'}</div>`;
+  $("pane-d1").innerHTML=h;
+}
+function renderD2(users){
+  const teams=D_TEAMS.get(),my=teams.find(t=>t.members.includes(ME.id));
+  const tds=D_TD.get().filter(d=>{const a=getTeam(d.a),b=getTeam(d.b);return my&&((a&&a.id===my.id)||(b&&b.id===my.id))});
+  let h="";
+  if(!my){
+    h+=`<div class="card" style="margin-bottom:14px"><div class="section-head"><h2>👥 اعمل فريقك</h2></div><p class="muted">الفريق من 2 لـ 5 أشخاص، وأنت القائد. بنقارن متوسط ساعات الفرد مش المجموع، فالفريق الأصغر يقدر يغلب الأكبر.</p>
+      <input class="fld" id="teamName" maxlength="20" placeholder="اسم الفريق"><button class="btn primary" id="teamCreate">🆕 إنشاء الفريق</button></div>`;
+  }else{
+    const isLeader=my.leader===ME.id;
+    h+=`<div class="card" style="margin-bottom:14px"><div class="section-head"><h2 style="color:${escapeHtml(my.color||"#fff")}">👥 ${escapeHtml(my.name)}</h2><span>${my.members.length} / 5</span></div>
+      <div>${my.members.map(id=>{const e=ent(id,users);return `<span class="chip">${avatar(e,24)} ${escapeHtml(e.name)}${id===my.leader?" 👑":""}${e.bot?" (تجريبي)":""}</span>`}).join("")}</div>
+      ${my.invites.length?`<div class="muted" style="margin-top:8px">دعوات معلّقة: ${my.invites.map(id=>escapeHtml(entName(id,users))).join("، ")}</div>`:""}`;
+    if(isLeader&&my.members.length+my.invites.length<5){
+      const cand=Object.values(users).filter(u=>u.id!==ME.id&&!my.members.includes(u.id)&&!my.invites.includes(u.id)&&!teams.some(t=>t.members.includes(u.id))).map(u=>({id:u.id,name:u.name})).concat(DEMO?BOTS.filter(b=>!my.members.includes("bot:"+b.name)).map(b=>({id:"bot:"+b.name,name:b.name+" (تجريبي)"})):[]);
+      h+=`<div class="frow" style="margin-top:10px"><select class="fld" id="teamInv" style="margin:0">${cand.map(o=>`<option value="${escapeHtml(o.id)}">${escapeHtml(o.name)}</option>`).join("")||"<option value=''>مفيش حد متاح</option>"}</select><button class="btn" id="teamInvGo">➕ ادعُه</button></div>`;
+    }
+    h+=`<div style="margin-top:10px"><button class="btn danger small" id="teamLeave">🚪 مغادرة الفريق</button></div></div>`;
+    if(isLeader){
+      const others=teams.filter(t=>t.id!==my.id&&t.members.length>=2).concat(DEMO?BOT_TEAMS:[]);
+      h+=`<div class="card" style="margin-bottom:14px"><div class="section-head"><h2>⚔️ تحدّى فريق</h2></div>
+        ${my.members.length<2?'<div class="muted">محتاج عضو واحد على الأقل مع فريقك عشان تتحدى.</div>':`
+        <label class="l muted">الفريق المنافس</label><select class="fld" id="tdOpp">${others.map(t=>`<option value="${t.id}">${escapeHtml(t.name)}${t.bot?" (تجريبي)":""} • ${t.members.length} أعضاء</option>`).join("")||"<option value=''>مفيش فرق تانية</option>"}</select>
+        <div class="frow"><div><label class="l muted">المدة</label><select class="fld" id="tdDays"><option value="3">3 أيام</option><option value="7" selected>أسبوع</option><option value="14">أسبوعين</option></select></div>
+        <div><label class="l muted">النوع</label><select class="fld" id="tdKind"><option value="hours">⏱️ ساعات التركيز</option><option value="sched">📅 الالتزام بالجدول (%)</option><option value="days">🔥 الأيام المنتظمة</option></select></div></div>
+        <button class="btn primary" id="tdGo">⚔️ ابعت التحدي</button>`}
+        <div class="muted" style="margin-top:8px">النتيجة بمتوسط الفرد. +2 نقطة لكل عضو في الفريق الفايز ذاكر ساعتين على الأقل، وبحد أقصى مبارزتين فريق بنقاط في الشهر.</div></div>`;
+    }
+    h+=`<div class="card"><div class="section-head"><h2>📜 مبارزات الفريق</h2></div>${tds.slice().reverse().map(d=>tdCard(d,users)).join("")||'<div class="muted">لسه مفيش مبارزات فرق</div>'}</div>`;
+  }
+  const inv=teams.filter(t=>t.invites.includes(ME.id));
+  if(inv.length)h=`<div class="card" style="margin-bottom:14px"><div class="section-head"><h2>📩 دعوات</h2></div>${inv.map(t=>`<div class="alert"><span>دعوة للانضمام لفريق <b>${escapeHtml(t.name)}</b></span><span class="acts"><button class="btn small primary" data-act="tacc:${t.id}">قبول</button><button class="btn small danger" data-act="tdec:${t.id}">رفض</button></span></div>`).join("")}</div>`+h;
+  $("pane-d2").innerHTML=h;
+}
+function tdCard(d,users){
+  const A_=getTeam(d.a),B_=getTeam(d.b);if(!A_||!B_)return "";
+  let va,vb;
+  if(d.status==="done"){va=d.va;vb=d.vb}else{va=tMetric(A_,d.kind,d.start,d.end,users);vb=tMetric(B_,d.kind,d.start,d.end,users)}
+  const meA=A_.members.includes(ME.id);
+  let foot="";
+  if(d.status==="pending")foot=meA?`<span class="muted">⏳ بانتظار رد قائد الفريق التاني</span> <button class="btn small danger" data-act="tdcancel:${d.id}">إلغاء</button>`:`<span class="muted">⏳ بانتظار رد قائد فريقك</span>`;
+  else if(d.status==="active")foot=`<span class="muted">⏳ فاضل ${daysLeft(d)} يوم • ${KIND_T[d.kind]} (متوسط الفرد)</span>`;
+  else if(d.status==="cancelled")foot='<span class="muted">أُلغيت</span>';
+  else{const mineT=meA?A_.id:B_.id;foot=!d.winner?'<span class="muted">🤝 تعادل</span>':`<span class="${d.winner===mineT?"res-win":"res-lose"}">${d.winner===mineT?"🏆 فريقك فاز!":"خسر فريقك"}</span>`}
+  const sty=t=>`style="color:${escapeHtml(t.color||"#fff")}"`;
+  return `<div class="duel"><div class="vs"><div class="who"><span ${sty(A_)}>👥 ${escapeHtml(A_.name)}</span><span class="sc">${fmtVal(d.kind,va)}</span></div><div>⚔️</div><div class="who"><span ${sty(B_)}>👥 ${escapeHtml(B_.name)}</span><span class="sc">${fmtVal(d.kind,vb)}</span></div></div>${tugHtml(Math.max(0,va),Math.max(0,vb))}<div>${foot}</div></div>`;
+}
+function handleAct(a){
+  const [k,id]=a.split(":");
+  const duels=D_DUELS.get(),users=DB.users();
+  if(k==="hol"){useHoliday();return}
+  if(k==="acc"||k==="dec"||k==="cancel"){
+    const d=duels.find(x=>x.id===id);if(!d)return;
+    if(k==="acc"){
+      if(duels.filter(x=>(x.from===ME.id||x.to===ME.id)&&x.status==="active").length>=2)return toast("عندك مبارزتين شغالين بالفعل");
+      d.status="active";d.start=todayK();d.end=addDays(d.start,d.days-1);toast("⚔️ بدأت المبارزة!");
+    }else{duels.splice(duels.indexOf(d),1);toast(k==="dec"?"تم الرفض":"تم الإلغاء")}
+    D_DUELS.set(duels);renderAll();return;
+  }
+  const teams=D_TEAMS.get();
+  if(k==="tacc"||k==="tdec"){
+    const t=teams.find(x=>x.id===id);if(!t)return;
+    t.invites=t.invites.filter(x=>x!==ME.id);
+    if(k==="tacc"){
+      if(teams.some(x=>x.members.includes(ME.id)))toast("إنت في فريق بالفعل، اخرج منه الأول");
+      else if(t.members.length>=5)toast("الفريق اكتمل");
+      else{t.members.push(ME.id);toast("انضممت للفريق 👥")}
+    }
+    D_TEAMS.set(teams);renderAll();return;
+  }
+  const tds=D_TD.get();
+  if(k==="tdacc"||k==="tddec"||k==="tdcancel"){
+    const d=tds.find(x=>x.id===id);if(!d)return;
+    if(k==="tdacc"){d.status="active";d.start=todayK();d.end=addDays(d.start,d.days-1);toast("⚔️ بدأت مبارزة الفرق!")}
+    else tds.splice(tds.indexOf(d),1);
+    D_TD.set(tds);renderAll();
+  }
+}
+$("pane-d1").addEventListener("click",e=>{
+  const b=e.target.closest("[data-act]");if(b)return handleAct(b.dataset.act);
+  if(e.target.id!=="duelGo")return;
+  const opp=$("duelOpp").value,days=+$("duelDays").value,kind=$("duelKind").value,fair=$("duelFair").checked;
+  if(!opp)return toast("اختار صاحب");
+  const duels=D_DUELS.get();
+  if(duels.filter(d=>(d.from===ME.id||d.to===ME.id)&&(d.status==="active"||d.status==="pending")).length>=2)return toast("أقصى حد: مبارزتين في نفس الوقت");
+  if(duels.some(d=>(d.status==="active"||d.status==="pending")&&((d.from===ME.id&&d.to===opp)||(d.to===ME.id&&d.from===opp))))return toast("في مبارزة شغالة بينكم بالفعل");
+  const t=todayK(),bot=isBot(opp);
+  duels.push({id:uid(),from:ME.id,to:opp,days,kind,fair,status:bot?"active":"pending",created:t,start:t,end:addDays(t,days-1)});
+  D_DUELS.set(duels);toast(bot?"⚔️ بدأت المبارزة!":"📨 اتبعت التحدي");preOpp="";renderAll();
+});
+$("pane-d2").addEventListener("click",e=>{
+  const b=e.target.closest("[data-act]");if(b)return handleAct(b.dataset.act);
+  const id=e.target.id,teams=D_TEAMS.get(),my=teams.find(t=>t.members.includes(ME.id)),users=DB.users();
+  if(id==="teamCreate"){
+    const name=$("teamName").value.trim();
+    if(name.length<2)return toast("اكتب اسم للفريق");
+    if(teams.concat(BOT_TEAMS).some(t=>normName(t.name)===normName(name)))return toast("الاسم ده موجود");
+    const COL=["#b85cff","#58b7ff","#55e6a5","#ffd45a","#ff6f8e","#ff9d5c"];
+    teams.push({id:uid(),name,leader:ME.id,members:[ME.id],invites:[],color:COL[teams.length%COL.length]});
+    D_TEAMS.set(teams);toast("تم إنشاء الفريق 👥");renderAll();
+  }else if(id==="teamInvGo"&&my){
+    const v=$("teamInv").value;if(!v)return;
+    if(my.members.length+my.invites.length>=5)return toast("الفريق مش بياخد أكتر من 5");
+    if(isBot(v)){my.members.push(v);toast("انضم للفريق (تجريبي)")}else{my.invites.push(v);toast("📨 اتبعتت الدعوة")}
+    D_TEAMS.set(teams);renderAll();
+  }else if(id==="teamLeave"&&my){
+    if(!confirm("متأكد إنك عايز تخرج من الفريق؟"))return;
+    my.members=my.members.filter(x=>x!==ME.id);
+    let list=teams;
+    if(!my.members.filter(x=>!isBot(x)).length){
+      list=teams.filter(t=>t.id!==my.id);
+      const tds=D_TD.get();tds.forEach(d=>{if((d.a===my.id||d.b===my.id)&&(d.status==="pending"||d.status==="active"))d.status="cancelled"});D_TD.set(tds);
+    }else if(my.leader===ME.id)my.leader=my.members.find(x=>!isBot(x))||my.members[0];
+    D_TEAMS.set(list);renderAll();
+  }else if(id==="tdGo"&&my){
+    const opp=$("tdOpp").value;if(!opp)return;
+    const days=+$("tdDays").value,kind=$("tdKind").value,ob=getTeam(opp),tds=D_TD.get();
+    if(my.members.length<2||!ob||ob.members.length<2)return toast("الفريقين لازم يكونوا عضوين على الأقل");
+    if(tds.some(d=>(d.status==="active"||d.status==="pending")&&(d.a===my.id||d.b===my.id)))return toast("فريقك في مبارزة شغالة بالفعل");
+    const t=todayK();
+    tds.push({id:uid(),a:my.id,b:opp,days,kind,status:ob.bot?"active":"pending",created:t,start:t,end:addDays(t,days-1)});
+    D_TD.set(tds);toast(ob.bot?"⚔️ بدأت المبارزة!":"📨 اتبعت التحدي");renderAll();
+  }
+});
+$("dtabs").querySelectorAll("button").forEach(b=>b.onclick=()=>{duelTab=b.dataset.dt;renderDuels()});
+
+/* =====================================================================
+   HOLIDAY + IRON MODE
+   ===================================================================== */
+function useHoliday(){
+  const y=missedYesterday();if(!y)return toast("مفيش يوم تنقذه دلوقتي");
+  state.holidays[y]=1;toast("🛟 تم إنقاذ سلسلتك");save();
+}
+function renderProfile(){
+  $("acctInfo").textContent=ME.name+" • "+ME.phone.slice(0,4)+"****"+ME.phone.slice(-3);
+  $("profAvatar").innerHTML=avatar(ME,72);
+  $("pfName").value=ME.name;
+  const left=7*864e5-(Date.now()-(ME.nameChangedAt||0));
+  $("pfNameNote").textContent=left>0&&ME.nameChangedAt?"تقدر تغير اسمك تاني بعد "+Math.ceil(left/864e5)+" يوم.":"تقدر تغير اسمك مرة كل 7 أيام.";
+  const mk=curMonth(),used=Object.keys(state.holidays).some(d=>mkOf(d)===mk),iron=state.iron&&state.iron.mk===mk;
+  $("holState").textContent=iron?"🔒 مش متاح في وضع الحديد.":used?"استخدمت يوم الإجازة بتاع الشهر ده.":"متاح لك يوم إجازة واحد في الشهر لو فاتك يوم مذاكرة في جدولك.";
+  $("holBtn").disabled=!missedYesterday();
+  $("ironState").textContent=iron?(ironBroken(state,mk)?"💔 انكسر! ضاعت إنجازات الاستمرارية بتاعة الشهر.":"🔒 شغال لحد آخر الشهر. متفوتش يوم!"):"مش مفعّل.";
+  $("ironBtn").disabled=!!iron;
+  $("demoTools").classList.toggle("hidden",!DEMO);
+}
+$("holBtn").onclick=useHoliday;
+$("ironBtn").onclick=()=>{
+  if(!confirm("وضع الحديد بيبدأ من بكرة ومش بتقدر توقفه لآخر الشهر. لو فاتك يوم بتخسر إنجازات الاستمرارية. متأكد؟"))return;
+  state.iron={mk:curMonth(),since:addDays(todayK(),1)};toast("🔒 وضع الحديد اشتغل من بكرة");save();
+};
+$("pfSaveName").onclick=()=>{
+  const n=$("pfName").value.trim().replace(/\s+/g," ");
+  if(n===ME.name)return toast("ده اسمك الحالي");
+  if(n.length<2||n.length>18)return toast("الاسم من 2 لـ 18 حرف");
+  if(ME.nameChangedAt&&Date.now()-ME.nameChangedAt<7*864e5)return toast("لسه مرّش 7 أيام على آخر تغيير");
+  if(Object.values(DB.users()).some(u=>u.id!==ME.id&&normName(u.name)===normName(n))||BOTS.some(b=>normName(b.name)===normName(n)))return toast("الاسم ده مستخدم قبل كده");
+  ME.name=n;ME.nameChangedAt=Date.now();toast("تم تغيير الاسم ✅");save();
+};
+function processPhoto(file){return new Promise((res,rej)=>{
+  const fr=new FileReader();
+  fr.onload=()=>{const img=new Image();img.onload=()=>{
+    const S=144,c=document.createElement("canvas");c.width=c.height=S;const x=c.getContext("2d"),m=Math.min(img.width,img.height);
+    x.drawImage(img,(img.width-m)/2,(img.height-m)/2,m,m,0,0,S,S);
+    let q=.8,out=c.toDataURL("image/jpeg",q);while(out.length>40000&&q>.3){q-=.1;out=c.toDataURL("image/jpeg",q)}
+    res(out)};img.onerror=rej;img.src=fr.result};
+  fr.onerror=rej;fr.readAsDataURL(file);
+})}
+$("pfPhoto").onchange=async e=>{
+  const f=e.target.files[0];if(!f)return;
+  try{ME.photo=await processPhoto(f);toast("تم تغيير الصورة 📷");save()}catch(err){toast("الصورة مش مناسبة ❌")}
+  e.target.value="";
+};
+$("pfPhotoDel").onclick=()=>{ME.photo="";toast("تم شيل الصورة");save()};
+
+/* ---------- demo tools ---------- */
+$("dtMin").onclick=()=>{addMinutes(30);toast("+30 دقيقة");save()};
+$("dtSeed").onclick=()=>{
+  const t=todayK();
+  for(let i=1;i<=14;i++){
+    const d=addDays(t,-i),m=Math.round(70+rnd(d+ME.id)*200);
+    state.daily[d]=m;state.totalMinutes+=m;
+    const items=state.schedule[dayName(d)];
+    if(items.length&&rnd("b"+d+ME.id)>.3){state.done[d]={n:items.length,d:{}};items.forEach((b,idx)=>{state.done[d].d[idx]=bareNames(b.n)})}
+    if(d<state.startDate)state.startDate=d;
+  }
+  toast("تم توليد بيانات تجريبية 📈");save();
+};
+
+/* =====================================================================
+   ACHIEVEMENTS PAGE
+   ===================================================================== */
 function renderAchievements(){
-  const list=achievementList(),g=document.getElementById("achievementsGrid");g.innerHTML="";
-  let lastCat="",unlocked=list.filter(x=>x.cur>=x.target).length;
-  const catCount={},catDone={};list.forEach(x=>{catCount[x.cat]=(catCount[x.cat]||0)+1;if(x.cur>=x.target)catDone[x.cat]=(catDone[x.cat]||0)+1});
-  list.forEach(x=>{
-    if(x.cat!==lastCat){lastCat=x.cat;const hd=document.createElement("div");hd.className="ach-cat";hd.innerHTML="<b>"+x.cat+"</b><span>"+(catDone[x.cat]||0)+" / "+catCount[x.cat]+"</span>";g.appendChild(hd)}
-    const ok=x.cur>=x.target,pct=Math.max(0,Math.min(100,x.cur/x.target*100));
-    const e=document.createElement("div");e.className="achievement "+(ok?"unlocked":"");
-    e.innerHTML='<div class="medal">'+x.icon+'</div><b>'+x.title+'</b><small>'+x.desc+'</small><div class="ach-bar"><i style="width:'+pct+'%"></i></div><small>'+(ok?"✅ تم فتح الإنجاز":Math.min(x.cur,x.target)+" / "+x.target)+'</small>';
+  const mk=curMonth(),sm=summary(state,mk,false),g=$("achievementsGrid");
+  $("achMonth").textContent="• "+monthLabel(mk);
+  $("achTotal").innerHTML='<span class="ach-total">🏅 '+sm.ach+' / '+sm.list.length+'</span>';
+  const lo=LV[sm.level-1],hi=LV[sm.level],pct=hi?Math.min(100,(sm.points-lo)/(hi-lo)*100):100;
+  $("achHead").innerHTML=`<div><div class="muted">مستواك</div><div class="lvl-big">${sm.level}<span style="font-size:16px;color:var(--muted)"> / 10</span></div></div>
+    <div style="flex:1;min-width:200px"><div><b>${sm.points}</b> نقطة ${sm.bonus?`<span class="muted">(منها ${sm.bonus} من المبارزات)</span>`:""}</div><div class="ach-bar"><i style="width:${pct}%"></i></div><div class="muted">${hi?"فاضل "+(hi-sm.points)+" نقطة للمستوى "+(sm.level+1):"وصلت لأعلى مستوى 👑"}</div></div>
+    <div class="muted">🥉 سهل = 1 • 🥈 متوسط = 3 • 🥇 صعب = 6 • 💎 أسطوري = 10<br>كل شهر بيبدأ من الصفر.</div>`;
+  renderSquares($("sqGrid"),sm.ms.minutes);
+  $("sqInfo2").textContent=Math.floor(sm.ms.minutes/60)+" / 150 ساعة • كل مربع = 3 ساعات";
+  g.innerHTML="";let last="";
+  sm.list.forEach(x=>{
+    if(x.cat!==last){last=x.cat;const items=sm.list.filter(y=>y.cat===x.cat),done=items.filter(y=>y.ok).length;
+      const hd=document.createElement("div");hd.className="ach-cat";hd.innerHTML="<b>"+CATS[x.cat][0]+" "+CATS[x.cat][1]+"</b><span>"+done+" / "+items.length+"</span>";g.appendChild(hd)}
+    const p=Math.max(0,Math.min(100,x.cur/x.n*100));
+    const e=document.createElement("div");e.className="achievement "+(x.ok?"unlocked":"")+(x.lost?" lost":"");
+    e.innerHTML=`<div class="medal">${TIERI[x.t]}</div><b>${escapeHtml(x.title)}</b><small>${escapeHtml(x.desc)}</small><div><span class="tier t${x.t}">${TIERN[x.t]} • ${TP[x.t]} نقطة</span></div><div class="ach-bar"><i style="width:${x.ok?100:p}%"></i></div><small>${x.lost?"🔒 ضاع (وضع الحديد)":x.ok?"✅ تم فتح الإنجاز":Math.min(x.cur,x.n)+" / "+x.n+" "+x.u}</small>`;
     g.appendChild(e);
   });
-  const sp=document.querySelector("#page-achievements .section-head span");
-  if(sp)sp.innerHTML='<span class="ach-total">🏅 '+unlocked+' / '+list.length+'</span>';
-  // notify new unlocks (silent on first run)
-  try{
-    state.achSeen=state.achSeen||{};const fresh=[];
-    list.forEach(x=>{const id=x.cat+"|"+x.title;if(x.cur>=x.target&&!state.achSeen[id]){state.achSeen[id]=1;fresh.push(x)}});
-    if(fresh.length){
-      const first=!state.achInit;state.achInit=true;
-      localStorage.setItem(KEY,JSON.stringify(state));
-      if(!first)setTimeout(()=>toast("🏅 إنجاز جديد: "+fresh[0].title+(fresh.length>1?" (+"+(fresh.length-1)+")":"")),400);
-    }else if(!state.achInit){state.achInit=true;localStorage.setItem(KEY,JSON.stringify(state))}
-  }catch(e){}
 }
-function renderChart(){
-  const c=document.getElementById("chart");c.innerHTML="";
-  const arr=(state.daily||{});let vals=[];
-  for(let i=6;i>=0;i--){let d=new Date();d.setDate(d.getDate()-i);let key=d.toISOString().slice(0,10);vals.push({key,v:arr[key]||0,label:["أح","إث","ثل","أر","خم","جم","سب"][d.getDay()]})}
+
+/* =====================================================================
+   SCHEDULE / SUBJECTS / TASKS / ANALYTICS
+   ===================================================================== */
+function renderSchedule(){
+  const t=$("weekTable"),td=dayName(todayK());
+  const cols=Math.max(3,...DAYS.map(d=>state.schedule[d].length));
+  const ord=["الأولى","الثانية","الثالثة","الرابعة","الخامسة","السادسة","السابعة","الثامنة"];
+  let head="<thead><tr><th>اليوم</th>";for(let i=0;i<cols;i++)head+="<th>الفترة "+(ord[i]||(i+1))+"</th>";head+="</tr></thead>";
+  t.innerHTML=head;const body=document.createElement("tbody");
+  DAYS.forEach(d=>{
+    const tr=document.createElement("tr");if(d===td)tr.className="today-row";
+    const c0=document.createElement("td");c0.textContent=d;tr.appendChild(c0);
+    for(let i=0;i<cols;i++){
+      const c=document.createElement("td"),b=state.schedule[d][i];
+      if(b){const info=subjectInfo(b.n);c.innerHTML=`<div class="cell" style="border-color:${info.color}44"><b>${escapeHtml(b.i||info.icon)} ${escapeHtml(b.n)}</b><small>${durText(b.m)}</small>${b.t?"<small>🕓 "+timeText(b.t)+"</small>":""}</div>`}
+      else if(i===0&&!state.schedule[d].length)c.innerHTML='<div class="cell" style="opacity:.6"><b>يوم فاضي</b></div>';
+      tr.appendChild(c);
+    }
+    body.appendChild(tr);
+  });t.appendChild(body);
+}
+function renderSubjects(){
+  const map={},ws=weekStartOf(todayK());
+  range(ws,addDays(ws,6)).forEach(date=>{
+    const dn=dayName(date);
+    state.schedule[dn].forEach((b,i)=>{
+      if(NON_SUBJECT.includes(b.n))return;
+      const m=map[b.n]||(map[b.n]={plan:0,done:0,icon:b.i});
+      m.plan+=b.m;if(state.done[date]&&state.done[date].d[i])m.done+=b.m;
+    });
+  });
+  const g=$("subjectGrid");g.innerHTML="";
+  const names=Object.keys(map);
+  if(!names.length)g.innerHTML='<div class="card" style="grid-column:1/-1;color:var(--muted)">مفيش مواد في جدولك لسه. ضيف مواد من "تعديل جدولي".</div>';
+  names.forEach(name=>{
+    const m=map[name],info=subjectInfo(name),el=document.createElement("div");el.className="card subject-card";el.style.setProperty("--accent-color",info.color);
+    const pct=m.plan?Math.min(100,m.done/m.plan*100):0;
+    el.innerHTML=`<div style="font-size:28px">${escapeHtml(m.icon||info.icon)}</div><h3>${escapeHtml(name)}</h3><div class="big">${+(m.plan/60).toFixed(1)} ساعة</div><div class="tag" style="margin:0">مخطط في الأسبوع • أنجزت ${+(m.done/60).toFixed(1)} ساعة</div><div class="progress"><i style="width:${pct}%;background:${info.color}"></i></div>`;
+    g.appendChild(el);
+  });
+}
+function renderTasks(){
+  const g=$("tasksList");g.innerHTML="";
+  state.tasks.forEach((t,i)=>{
+    const el=document.createElement("div");el.className="task "+(t.done?"done":"");
+    el.innerHTML=`<button>×</button><input type="checkbox" ${t.done?"checked":""}><span>${escapeHtml(t.text)}</span>`;
+    el.querySelector("input").onchange=()=>{t.done=!t.done;t.doneAt=t.done?todayK():null;save()};
+    el.querySelector("button").onclick=()=>{state.tasks.splice(i,1);save()};g.appendChild(el);
+  });
+}
+function renderAnalytics(){
+  const t=todayK(),c=$("chart");c.innerHTML="";const vals=[];
+  for(let i=6;i>=0;i--){const d=addDays(t,-i);vals.push({v:state.daily[d]||0,label:["أح","إث","ثل","أر","خم","جم","سب"][pd(d).getDay()]})}
   const max=Math.max(2,...vals.map(x=>x.v));
-  vals.forEach(x=>{const w=document.createElement("div");w.className="bar-wrap";w.innerHTML=`<div class="bar" style="height:${Math.max(5,x.v/max*100)}%" title="${x.v} دقيقة"></div><div class="bar-label">${x.label}</div>`;c.appendChild(w)})
+  vals.forEach(x=>{const w=document.createElement("div");w.className="bar-wrap";w.innerHTML=`<div class="bar" style="height:${Math.max(5,x.v/max*100)}%" title="${x.v} دقيقة"></div><div class="bar-label">${x.label}</div>`;c.appendChild(w)});
+  const ms=monthStats(state,curMonth());
+  $("monthHoursAn").textContent=(ms.minutes/60).toFixed(1)+" ساعة";
+  $("totalHoursAn").textContent=((state.totalMinutes||0)/60).toFixed(1)+" ساعة";
+  $("sessionsAn").textContent=state.sessions||0;$("blocksAn").textContent=ms.done;
 }
-function renderAll(){renderHome();renderStats();renderSchedule();renderSubjects();renderTasks();renderAchievements();renderChart()}
+$("addTask").onclick=()=>{const i=$("taskInput");if(!i.value.trim())return;state.tasks.unshift({text:i.value.trim(),done:false,doneAt:null});i.value="";save();toast("تمت إضافة المهمة ✅")};
+$("taskInput").addEventListener("keydown",e=>{if(e.key==="Enter")$("addTask").click()});
+
+/* ---------- schedule editor ---------- */
+let draft=null;
+function startDraft(){draft=JSON.parse(JSON.stringify(state.schedule));renderEditor()}
+function renderEditor(){
+  const box=$("editDays");box.innerHTML="";
+  DAYS.forEach(d=>{
+    const card=document.createElement("div");card.className="card ed-day";
+    const head=document.createElement("div");head.className="dh";
+    head.innerHTML=`<h3>${d}${d===dayName(todayK())?' <span style="color:var(--muted);font-size:12px">(النهارده)</span>':""}</h3><div><button class="btn small" data-add="${d}">＋ إضافة مادة</button> <button class="btn small danger" data-clear="${d}">يوم فاضي</button></div>`;
+    card.appendChild(head);
+    if(!draft[d].length){const e=document.createElement("div");e.style.cssText="color:var(--muted);font-size:13px";e.textContent="يوم راحة";card.appendChild(e)}
+    draft[d].forEach((b,i)=>{
+      const row=document.createElement("div");row.className="ed-row";
+      row.innerHTML=`<input class="e-i" maxlength="4" placeholder="📚" value="${escapeHtml(b.i||"")}" data-d="${d}" data-i="${i}" data-f="i">
+        <input class="e-n" placeholder="اسم المادة" value="${escapeHtml(b.n)}" data-d="${d}" data-i="${i}" data-f="n">
+        <input class="e-h" type="number" min="0.25" max="12" step="0.25" value="${+(b.m/60).toFixed(2)}" title="عدد الساعات" data-d="${d}" data-i="${i}" data-f="m">
+        <input class="e-t" type="time" value="${escapeHtml(b.t||"")}" title="ميعاد البداية (اختياري)" data-d="${d}" data-i="${i}" data-f="t">
+        <button class="e-x" data-del="${d}|${i}" title="حذف">×</button>`;
+      card.appendChild(row);
+    });
+    box.appendChild(card);
+  });
+}
+$("editDays").addEventListener("input",e=>{
+  const t=e.target;if(!t.dataset.f)return;
+  const b=draft[t.dataset.d][+t.dataset.i];if(!b)return;
+  if(t.dataset.f==="m")b.m=Math.round((parseFloat(t.value)||0)*60);else b[t.dataset.f]=t.value;
+});
+$("editDays").addEventListener("click",e=>{
+  const t=e.target.closest("button");if(!t)return;
+  if(t.dataset.add){draft[t.dataset.add].push(blk("",120,"",""));renderEditor();return}
+  if(t.dataset.clear){draft[t.dataset.clear]=[];renderEditor();return}
+  if(t.dataset.del){const [d,i]=t.dataset.del.split("|");draft[d].splice(+i,1);renderEditor()}
+});
+$("edSave").onclick=()=>{
+  const out={};
+  DAYS.forEach(d=>{
+    const arr=draft[d].map(b=>({n:(b.n||"").trim(),m:Math.max(15,Math.min(720,Math.round(b.m)||0)),i:(b.i||"").trim(),t:b.t||""})).filter(b=>b.n);
+    arr.forEach(b=>{if(!b.i)b.i=iconGuess(b.n)});
+    out[d]=arr.filter(b=>b.t).sort((a,b)=>a.t.localeCompare(b.t)).concat(arr.filter(b=>!b.t));
+  });
+  const td=todayK(),dn=dayName(td);
+  if(JSON.stringify(out[dn])!==JSON.stringify(state.schedule[dn]))delete state.done[td];
+  state.schedule=out;draft=null;setupTimer();toast("تم حفظ جدولك ✅");save();go("schedule");
+};
+$("edCancel").onclick=()=>{draft=null;go("schedule")};
+$("edReset").onclick=()=>{if(confirm("متأكد؟ هيرجع الجدول الافتراضي وهتتمسح تعديلاتك."))  {draft=defaultSchedule();renderEditor();toast("اضغط حفظ لتأكيد الجدول الافتراضي")}};
+
+/* =====================================================================
+   NAVIGATION + RENDER
+   ===================================================================== */
+const PAGES={home:renderHome,compete:renderCompete,hall:renderHall,friends:renderFriends,duels:renderDuels,achievements:renderAchievements,schedule:renderSchedule,subjects:renderSubjects,tasks:renderTasks,analytics:renderAnalytics,profile:renderProfile};
+function renderAll(){if(!ME)return;renderChrome();if(PAGES[curPage]&&curPage!=="home"&&curPage!=="achievements")PAGES[curPage]()}
 document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>go(b.dataset.page));
 document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
-function go(page){document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.getElementById("page-"+page).classList.add("active");document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.page===page));document.getElementById("sidebar").classList.remove("open");window.scrollTo({top:0,behavior:"smooth"})}
-document.getElementById("menuBtn").onclick=()=>document.getElementById("sidebar").classList.toggle("open");
-document.getElementById("addTask").onclick=()=>{const i=document.getElementById("taskInput");if(!i.value.trim())return;state.tasks.unshift({text:i.value.trim(),done:false});state.tasksAdded=(state.tasksAdded||0)+1;i.value="";save();toast("تمت إضافة المهمة ✅")};
-document.getElementById("taskInput").addEventListener("keydown",e=>{if(e.key==="Enter")document.getElementById("addTask").click()});
+function go(page){
+  if(page==="edit"&&!draft)startDraft();
+  if(page!=="edit")draft=null;
+  curPage=page;
+  document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+  $("page-"+page).classList.add("active");
+  document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.page===page));
+  $("sidebar").classList.remove("open");
+  if(ME){resolveAll();renderChrome();if(PAGES[page]&&page!=="home"&&page!=="achievements")PAGES[page]()}
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+$("menuBtn").onclick=()=>$("sidebar").classList.toggle("open");
+$("todayDate").textContent=new Intl.DateTimeFormat("ar-EG",{weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(new Date());
 
-
-let timerModeType="countdown", remaining=3000, elapsed=0, running=false, interval=null, selected="";
-const timerEl=document.getElementById("timer"),focusTimer=document.getElementById("focusTimer");
+/* =====================================================================
+   TIMER (بيحسب بالتوقيت الفعلي)
+   ===================================================================== */
+let timerModeType="countdown",remaining=3000,elapsed=0,running=false,interval=null,lastT=0,carry=0;
+const timerEl=$("timer"),focusTimer=$("focusTimer");
 function setupTimer(){
-  const s=document.getElementById("timerSelect"),d=today();s.innerHTML="";
-  (SCHEDULE[d]||[]).forEach((x,i)=>{if(x[0]!=="—"){const o=document.createElement("option");o.value=i;o.textContent=x[2]+" "+x[0]+" • "+x[1];s.appendChild(o)}});
-  selected=s.value;
-  s.onchange=()=>{selected=s.value;document.getElementById("timerSub").textContent=(SCHEDULE[d][selected]||["جلسة","",""])[0]};
-  document.getElementById("timerSub").textContent=(SCHEDULE[d][s.value]||["اختر فترة","",""])[0];
+  const s=$("timerSelect"),items=state.schedule[dayName(todayK())]||[];s.innerHTML="";
+  items.forEach((b,i)=>{const o=document.createElement("option");o.value=i;o.textContent=(b.i||"")+" "+b.n+" • "+durText(b.m);s.appendChild(o)});
+  if(!items.length){const o=document.createElement("option");o.textContent="جلسة حرة";s.appendChild(o)}
+  const setSub=()=>{const b=items[s.value];$("timerSub").textContent=b?b.n:"جلسة حرة";$("focusSubject").textContent=b?b.n:"جلسة حرة"};
+  s.onchange=setSub;setSub();
 }
-function fmt(sec){return String(Math.floor(sec/3600)).padStart(2,"0")+":"+String(Math.floor(sec%3600/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0")}
-function fmtShort(sec){return String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0")}
-function updateTimer(){
-  const txt=timerModeType==="countdown" ? fmtShort(remaining) : fmt(elapsed);
-  timerEl.textContent=txt;focusTimer.textContent=txt;
+const fmt=sec=>String(Math.floor(sec/3600)).padStart(2,"0")+":"+String(Math.floor(sec%3600/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0");
+const fmtShort=sec=>String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0");
+function updateTimer(){const txt=timerModeType==="countdown"?fmtShort(remaining):fmt(elapsed);timerEl.textContent=txt;focusTimer.textContent=txt}
+function tick(){
+  const now=Date.now();let dt=Math.floor((now-lastT)/1000);if(dt<=0)return;
+  lastT=now;dt=Math.min(dt,120);let minAdded=false;
+  for(let i=0;i<dt;i++){
+    if(timerModeType==="countdown")remaining--;else elapsed++;
+    carry++;if(carry>=60){carry=0;addMinutes(1);minAdded=true}
+    if(timerModeType==="countdown"&&remaining<=0){if(minAdded)save(true);finishSession();return}
+  }
+  updateTimer();if(minAdded)save(true);
 }
-function startTimer(){
-  if(running)return;
-  running=true;
-  interval=setInterval(()=>{
-    if(timerModeType==="countdown"){remaining--; if(remaining<=0){finishSession();return}}
-    else {elapsed++; if(elapsed%60===0){state.focusMinutes=(state.focusMinutes||0)+1;state.xp+=3;let key=new Date().toISOString().slice(0,10);state.daily[key]=(state.daily[key]||0)+1;markActive();save()}}
-    updateTimer();
-  },1000);
-  toast(timerModeType==="countdown"?"بدأ العد التنازلي ⚡":"بدأت ساعة التركيز التصاعدية ⏱️");
-}
-function pauseTimer(){running=false;clearInterval(interval);interval=null}
-function resetTimer(){pauseTimer();remaining=3000;elapsed=0;updateTimer()}
+function startTimer(){if(running)return;running=true;lastT=Date.now();interval=setInterval(tick,1000);acquireLock();toast(timerModeType==="countdown"?"بدأ العد التنازلي ⚡":"بدأت ساعة التركيز ⏱️")}
+function pauseTimer(){if(running)tick();running=false;clearInterval(interval);interval=null;releaseLock()}
+function resetTimer(){pauseTimer();remaining=3000;elapsed=0;carry=0;updateTimer()}
 function finishSession(){
-  pauseTimer();state.sessions++;state.focusMinutes=(state.focusMinutes||0)+50;state.xp+=150;
-  let key=new Date().toISOString().slice(0,10);state.daily[key]=(state.daily[key]||0)+50;
-  markActive();state.streak=calcStreak();save();toast("جلسة مكتملة! +150 XP 👑");
-  if("Notification" in window && Notification.permission==="granted") new Notification("AHMED YOUSSEF STUDY OS",{body:"انتهت جلسة التركيز. أحسنت! +150 XP 👑",icon:"icon-192.png"});
-  remaining=3000;updateTimer();
+  pauseTimer();state.sessions++;carry=0;remaining=3000;updateTimer();save(true);toast("جلسة مكتملة! أحسنت 👑");
+  if("Notification" in window&&Notification.permission==="granted")new Notification("El-Shilla Study",{body:"انتهت جلسة التركيز. أحسنت! 👑",icon:"icon-192.png"});
 }
 function setTimerMode(mode){
-  pauseTimer();timerModeType=mode;elapsed=0;remaining=3000;
-  document.getElementById("countdownTab").classList.toggle("active",mode==="countdown");
-  document.getElementById("stopwatchTab").classList.toggle("active",mode==="stopwatch");
-  document.getElementById("countdownControls").style.display=mode==="countdown"?"block":"none";
-  document.getElementById("stopwatchControls").style.display=mode==="stopwatch"?"block":"none";
-  document.getElementById("timerMode").textContent=mode==="countdown"?"FOCUS COUNTDOWN":"FOCUS STOPWATCH";
-  updateTimer();
+  pauseTimer();timerModeType=mode;elapsed=0;remaining=3000;carry=0;
+  $("countdownTab").classList.toggle("active",mode==="countdown");$("stopwatchTab").classList.toggle("active",mode==="stopwatch");
+  $("countdownControls").style.display=mode==="countdown"?"block":"none";$("stopwatchControls").style.display=mode==="stopwatch"?"block":"none";
+  $("timerMode").textContent=mode==="countdown"?"FOCUS COUNTDOWN":"FOCUS STOPWATCH";updateTimer();
 }
-document.getElementById("timerStart").onclick=startTimer;
-document.getElementById("timerPause").onclick=()=>{pauseTimer();toast("تم إيقاف الجلسة")};
-document.getElementById("timerReset").onclick=resetTimer;
-document.getElementById("countdownTab").onclick=()=>setTimerMode("countdown");
-document.getElementById("stopwatchTab").onclick=()=>setTimerMode("stopwatch");
-document.getElementById("startFocus").onclick=()=>{document.getElementById("focusOverlay").classList.add("open");startTimer()};
-document.getElementById("focusOpen").onclick=()=>document.getElementById("focusOverlay").classList.add("open");
-document.getElementById("focusClose").onclick=()=>document.getElementById("focusOverlay").classList.remove("open");
-document.getElementById("focusPause").onclick=()=>running?pauseTimer():startTimer();
+$("timerStart").onclick=startTimer;
+$("timerPause").onclick=()=>{pauseTimer();toast("تم إيقاف الجلسة")};
+$("timerReset").onclick=resetTimer;
+$("countdownTab").onclick=()=>setTimerMode("countdown");
+$("stopwatchTab").onclick=()=>setTimerMode("stopwatch");
+$("startFocus").onclick=()=>{$("focusOverlay").classList.add("open");startTimer()};
+$("focusOpen").onclick=()=>$("focusOverlay").classList.add("open");
+$("focusClose").onclick=()=>{if(running)return toast("🔒 وقّف التايمر الأول لو عايز تخرج");$("focusOverlay").classList.remove("open")};
+$("focusPause").onclick=()=>running?pauseTimer():startTimer();
 
-document.getElementById("todayDate").textContent=new Intl.DateTimeFormat("ar-EG",{weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(new Date());
-setupTimer();renderAll();updateTimer();
+/* =====================================================================
+   FOCUS LOCK: مفيش خروج والتايمر شغال
+   ===================================================================== */
+let wakeLock=null,awayAt=0;
+async function acquireLock(){
+  try{if(!document.fullscreenElement&&document.documentElement.requestFullscreen)await document.documentElement.requestFullscreen({navigationUI:"hide"})}catch(e){}
+  try{if(navigator.wakeLock)wakeLock=await navigator.wakeLock.request("screen")}catch(e){}
+  try{history.pushState({lock:1},"")}catch(e){}
+}
+function releaseLock(){
+  try{if(wakeLock){wakeLock.release();wakeLock=null}}catch(e){}
+  try{if(document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen()}catch(e){}
+}
+window.addEventListener("beforeunload",e=>{if(running){e.preventDefault();e.returnValue="";return ""}});
+window.addEventListener("popstate",()=>{if(running){try{history.pushState({lock:1},"")}catch(e){}toast("🔒 وقّف التايمر الأول لو عايز تخرج")}});
+function onLeave(){
+  if(!running||awayAt)return;
+  pauseTimer();awayAt=Date.now();
+  if(state){const k=todayK();state.exits[k]=(state.exits[k]||0)+1;persist()}
+}
+function onReturn(){
+  if(!awayAt)return;
+  const secs=Math.round((Date.now()-awayAt)/1000);awayAt=0;
+  const n=state&&state.exits?state.exits[todayK()]||1:1;
+  $("leaveMsg").textContent="الوقت اللي خرجت فيه ("+(secs>=60?Math.floor(secs/60)+" دقيقة":secs+" ثانية")+") مش متحسب. ده خروج رقم "+n+" النهارده. ركّز وكمّل 💪";
+  $("leaveOverlay").classList.add("open");
+}
+document.addEventListener("visibilitychange",()=>{if(document.hidden)onLeave();else{onReturn();if(running&&navigator.wakeLock&&!wakeLock)acquireLock()}});
+window.addEventListener("pagehide",onLeave);
+$("leaveResume").onclick=()=>{$("leaveOverlay").classList.remove("open");$("focusOverlay").classList.add("open");startTimer()};
+$("leaveEnd").onclick=()=>{$("leaveOverlay").classList.remove("open");$("focusOverlay").classList.remove("open");releaseLock()};
 
-// ---------- Backup / Transfer ----------
-function getBackupPayload(){
-  return {version:2,app:"AHMED YOUSSEF STUDY OS",createdAt:new Date().toISOString(),state};
-}
-function downloadText(filename,text,mime="application/json"){
-  const blob=new Blob([text],{type:mime}),url=URL.createObjectURL(blob),a=document.createElement("a");
-  a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
-}
-function exportJson(){
-  const payload=getBackupPayload();
-  downloadText("ahmed-youssef-study-backup-"+new Date().toISOString().slice(0,10)+".json",JSON.stringify(payload,null,2));
-  toast("تم تصدير نسخة JSON 💾");
-}
-function autoBackup(){
-  localStorage.setItem("ahmed-study-auto-backup",JSON.stringify(getBackupPayload()));
-  localStorage.setItem("ahmed-study-auto-backup-time",new Date().toISOString());
-  const el=document.getElementById("backupStatus"); if(el) el.textContent="آخر Backup تلقائي: "+new Date().toLocaleString("ar-EG");
-}
-function restorePayload(payload){
-  if(!payload || !payload.state) throw new Error("ملف غير صالح");
-  state=payload.state; save(); autoBackup(); toast("تمت استعادة البيانات بنجاح ♻️");
-}
-document.getElementById("exportJson").onclick=exportJson;
-document.getElementById("downloadBackup").onclick=()=>{exportJson();autoBackup()};
-document.getElementById("importJson").onchange=e=>{
-  const file=e.target.files[0]; if(!file)return;
-  const reader=new FileReader();reader.onload=()=>{try{restorePayload(JSON.parse(reader.result))}catch(err){toast("ملف JSON غير صالح ❌")}};reader.readAsText(file);
-};
-document.getElementById("restoreAutoBackup").onclick=()=>{
-  try{restorePayload(JSON.parse(localStorage.getItem("ahmed-study-auto-backup")||""))}catch(e){toast("لا توجد نسخة تلقائية صالحة")}
-};
-function encodeTransfer(obj){return "STUDYOS-"+btoa(unescape(encodeURIComponent(JSON.stringify(obj)))).replace(/=+$/,"")}
-function decodeTransfer(code){return JSON.parse(decodeURIComponent(escape(atob(code.replace(/^STUDYOS-/,"")))))}
-document.getElementById("makeCode").onclick=()=>{
-  const code=encodeTransfer(getBackupPayload());document.getElementById("transferCode").value=code;
-  navigator.clipboard?.writeText(code);toast("تم إنشاء كود النقل ونسخه 🔐");
-};
-document.getElementById("copyCode").onclick=async()=>{
-  const v=document.getElementById("transferCode").value;if(!v)return toast("أنشئ الكود أولًا");
-  try{await navigator.clipboard.writeText(v);toast("تم نسخ الكود 📋")}catch(e){toast("انسخ الكود يدويًا")}
-};
-document.getElementById("applyCode").onclick=()=>{
-  try{restorePayload(decodeTransfer(document.getElementById("codeImport").value.trim()))}catch(e){toast("كود النقل غير صالح ❌")}
-};
-setInterval(autoBackup,60000);
-setTimeout(autoBackup,5000);
+/* =====================================================================
+   BACKUP
+   ===================================================================== */
+function payload(){return{version:4,app:"El-Shilla Study",createdAt:new Date().toISOString(),state}}
+function downloadText(name,text){const b=new Blob([text],{type:"application/json"}),u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000)}
+function autoBackup(){if(!ME)return;try{localStorage.setItem("elshilla_autobackup_"+ME.id,JSON.stringify(payload()))}catch(e){}const el=$("backupStatus");if(el)el.textContent="آخر Backup تلقائي: "+new Date().toLocaleString("ar-EG")}
+function restorePayload(p){if(!p||!p.state)throw new Error("bad");state=normalize(p.state);ME.state=state;save();autoBackup();setupTimer();toast("تمت استعادة البيانات ♻️")}
+$("exportJson").onclick=()=>{downloadText("el-shilla-backup-"+todayK()+".json",JSON.stringify(payload(),null,2));toast("تم التصدير 💾")};
+$("importJson").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{restorePayload(JSON.parse(r.result))}catch(err){toast("ملف JSON غير صالح ❌")}};r.readAsText(f);e.target.value=""};
+$("restoreAutoBackup").onclick=()=>{try{restorePayload(JSON.parse(localStorage.getItem("elshilla_autobackup_"+ME.id)||""))}catch(e){toast("لا توجد نسخة تلقائية صالحة")}};
+setInterval(autoBackup,60000);setTimeout(autoBackup,5000);
 
-// ---------- PWA ----------
+/* =====================================================================
+   PWA
+   ===================================================================== */
 let deferredInstall=null;
-window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstall=e;document.getElementById("pwaState").textContent="التثبيت متاح 📲"});
-document.getElementById("installPwa").onclick=async()=>{
-  if(deferredInstall){deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null}
-  else toast("من قائمة المتصفح اختر تثبيت التطبيق أو Add to Home screen");
-};
-document.getElementById("notifyBtn").onclick=async()=>{
-  if(!("Notification" in window)){toast("المتصفح لا يدعم الإشعارات");return}
-  const p=await Notification.requestPermission();toast(p==="granted"?"تم تفعيل الإشعارات 🔔":"لم يتم السماح بالإشعارات");
-};
-if("serviceWorker" in navigator && location.protocol!=="file:"){
-  navigator.serviceWorker.register("sw.js").then(()=>document.getElementById("pwaState").textContent="PWA جاهز للعمل Offline ✅").catch(()=>document.getElementById("pwaState").textContent="تعذر تسجيل Offline");
-}else{
-  document.getElementById("pwaState").textContent=location.protocol==="file:"?"افتحه عبر خادم محلي لتفعيل PWA":"المتصفح لا يدعم Service Worker";
-}
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstall=e;$("pwaState").textContent="التثبيت متاح 📲"});
+$("installPwa").onclick=async()=>{if(deferredInstall){deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null}else toast("من قائمة المتصفح اختر تثبيت التطبيق أو Add to Home screen")};
+$("notifyBtn").onclick=async()=>{if(!("Notification" in window)){toast("المتصفح لا يدعم الإشعارات");return}const p=await Notification.requestPermission();toast(p==="granted"?"تم تفعيل الإشعارات 🔔":"لم يتم السماح بالإشعارات")};
+if("serviceWorker" in navigator&&location.protocol!=="file:"){
+  navigator.serviceWorker.register("sw.js").then(()=>$("pwaState").textContent="جاهز للعمل Offline ✅").catch(()=>$("pwaState").textContent="تعذر تسجيل Offline");
+}else{$("pwaState").textContent=location.protocol==="file:"?"افتحه عبر رابط https لتفعيل التثبيت":"المتصفح لا يدعم Service Worker"}
 
-
-
-/* ===== Motivation banner: new quote every 5 min, no repeats until all are used ===== */
+/* =====================================================================
+   AUTH
+   ===================================================================== */
 (function(){
-  const QUOTES=["ابدأ دلوقتي، مش لما تحس إنك جاهز.", "كل ساعة مذاكرة النهارده بتفرق في نتيجتك آخر السنة.", "التعب مؤقت، لكن الفرحة بالنجاح بتفضل.", "مش لازم تكون مثالي، لازم تكون مستمر.", "خطوة صغيرة كل يوم أحسن من حلم كبير من غير تنفيذ.", "اللي بيذاكر دلوقتي هيضحك في يوم النتيجة.", "ركّز في اللي قدامك، الباقي هييجي لوحده.", "الانضباط بيوصّلك لحاجات الحماس عمره ما هيوصّلك ليها.", "النهارده يوم جديد وفرصة جديدة تقرّب من حلمك.", "مش مهم تذاكر كتير، المهم تذاكر صح وبتركيز.", "كل صفحة بتخلّصها بتقرّبك من هدفك.", "التأجيل أكبر عدو لأي طالب، اقفله وابدأ.", "اصبر، الحصاد بييجي بعد الزرع.", "أنت أقوى مما تتخيل، كمّل.", "النجاح مش صدفة، ده عادات يومية صغيرة.", "لما تحس بالزهق افتكر ليه بدأت.", "استثمر في عقلك، ده أفضل استثمار هتعمله.", "إنجاز النهارده هو راحة بالك بكرة.", "ريّح دماغك شوية، بس متنساش ترجع.", "اللي بيتعب في الصمت هيسمعوا صدى نجاحه.", "مفيش مستحيل مع الإصرار والتنظيم.", "ركّز على التقدم مش الكمال.", "موبايلك مش هيذاكر عنك، اقفله شوية.", "كل مسألة بتحلها بتبني ثقتك في نفسك.", "الأحلام الكبيرة محتاجة ساعات مذاكرة كبيرة.", "ابدأ بأصعب مادة وهتلاقي الباقي أسهل.", "خلّي هدفك قدام عينك في كل وقت.", "النظام اللي بتمشي عليه النهارده هو نتيجتك بكرة.", "متقارنش نفسك بحد، قارن نفسك بنفسك إمبارح.", "التعب بيعدّي والإنجاز بيفضل.", "عقلك زي العضلة، كل ما تدرّبه بيقوى.", "ربنا مع اللي بيحاول ويجتهد، كمّل وتوكل.", "لما تقع ابتسم وقوم، الطريق لسه طويل وحلو.", "٢٥ دقيقة تركيز أحسن من ساعتين تشتت.", "النوم الكفاية جزء من المذاكرة، متهملوش.", "اشرب مية وخد نفس عميق وكمّل.", "المراجعة هي سر الحفظ، راجع بانتظام.", "افهم الأول وبعدين احفظ، هتوفر وقت كتير.", "اكتب ملخصاتك بإيدك، هتفضل في دماغك أكتر.", "جرّب تشرح اللي ذاكرته لنفسك بصوت عالي.", "كل غلطة في المسألة درس هيفيدك في الامتحان.", "حل أسئلة سنين فاتت، الامتحان مش هيبقى غريب عليك.", "اللي بيخطط بيوصل، واللي بيمشي من غير خطة بيتوه.", "قسّم المنهج على الأيام ومش هتحس بتقله.", "ابدأ يومك بهدف واضح، وخلّصه قبل ما تنام.", "النجاح مش للأذكى، ده للأكتر إصراراً.", "مفيش حد وصل لحلمه وهو قاعد، اتحرك.", "لو الطريق سهل يبقى مش بيوصّل لحاجة كبيرة.", "سهر النهارده تعب، وسهر بكرة فرحة.", "أهلك مستنيين فرحتك، متكسرش فرحتهم.", "كل يوم بتذاكر فيه هو يوم كسبته.", "خلّي تركيزك أقوى من أي مشتت حواليك.", "الانشغال بالدراسة دلوقتي هيريّحك بعدين.", "كل إنجاز صغير يستاهل تحتفل بيه.", "احنا بنبني مستقبل، والبناء محتاج صبر.", "عدّي الأيام الصعبة، وراها أيام أحلى.", "إنت بتعمل ده لنفسك قبل أي حد.", "اجعل مذاكرتك عادة مش مجهود.", "الفرق بين حلمك وواقعك هو ساعات شغل.", "لو حسيت إنك تعبان، خد بريك ٥ دقايق وارجع أقوى.", "الثقة في النفس نص النجاح.", "متستناش الدافع، اعمل الأول والدافع هييجي.", "أحسن وقت تبدأ فيه كان إمبارح، وتاني أحسن وقت هو دلوقتي.", "اللي بيستحمل مرارة التعب بيدوق حلاوة النجاح.", "إنت مش بتذاكر عشان الدرجات بس، إنت بتبني شخصيتك.", "التفاصيل الصغيرة في المنهج بتفرق الدرجات الكبيرة.", "كلمة مش قادر مش موجودة في قاموس المجتهدين.", "فكّر في اللحظة اللي هتشوف فيها اسمك في الناجحين.", "النهارده هتتعب شوية وبكرة هتفتخر بنفسك.", "الطريق للتفوق بيبدأ بقرار.", "خليك صبور، النتايج الكبيرة محتاجة وقت.", "بدل ما تقول معنديش وقت، قول دي مش أولويتي.", "استغل كل دقيقة، الوقت مبيرجعش.", "اعمل اللي عليك وسيب الباقي على ربنا.", "إنت قادر تعمل أكتر مما فاكر.", "مذاكرة النهارده = راحة بال في يوم الامتحان.", "افتكر إن كل المتفوقين بدأوا من نفس نقطتك.", "الصبر مفتاح الفرج، والاجتهاد مفتاح النجاح.", "لو مادة صعبة عليك، دي فرصة تتعلم تتخطى الصعب.", "كل ما تفهم أكتر، الخوف من الامتحان بيقل.", "ابعد عن السلبية وخلّي حواليك ناس بتشجعك.", "نظّم مكانك وهتلاقي تركيزك زاد.", "ابدأ بالسهل لو محتاج تسخّن، وبعدها هاجم الصعب.", "إنت لسه في بداية الطريق، فكمّل وماتبصش وراك.", "متستهونش بدقيقة، الدقايق هي اللي بتعمل الساعات.", "المتفوق مش اللي ما بيغلطش، ده اللي بيتعلم من غلطه.", "احلم كبير واشتغل أكبر.", "ذاكر بنفس طويل، السباق ماراثون مش سرعة.", "اختار تبقى فخور بنفسك آخر اليوم.", "التركيز عملة نادرة، اصرفها صح.", "الأيام بتعدّي سواء ذاكرت أو لأ، فاختار تعدّيها بإنجاز.", "اللي بيصبر على تعب المذاكرة مش هيتعب من الندم.", "كل حصة بتحضرها وبتركّز فيها بتوفرلك ساعات في البيت.", "إيمانك بنفسك هو الوقود اللي بيشغّلك.", "أحسن انتقام من اللي استهان بيك هو نجاحك.", "ركّز على اللي في إيدك مش على اللي برّه سيطرتك.", "اتعلم تقول لأ للمشتتات وأيوه لأحلامك.", "عمرك ما هتندم إنك ذاكرت زيادة.", "إنت بتصنع نسخة أفضل من نفسك كل يوم.", "خلّي المثابرة شعارك والهدف وجهتك.", "الصبح هو أحلى وقت للتركيز، استغله.", "مش كل يوم هيبقى سهل، بس كل يوم يستاهل.", "الإنجاز بيبدأ لما تقفل الأعذار.", "جدول منظم وعزيمة قوية، ده كل اللي محتاجه.", "اتحدى نفسك النهارده بمسألة أصعب من إمبارح.", "لما الأمور تتصعّب، افتكر إنك قربت من القمة.", "النجاح بيحب الناس اللي بتشتغل في الضلمة.", "أنت أقرب لهدفك دلوقتي من أي وقت فات.", "اجتهد النهارده، وسيب بكرة يشكرك.", "الله لا يضيع أجر من أحسن عملاً.", "حب اللي بتتعلمه وهتلاقي المذاكرة بقت ممتعة.", "أنت ملك وقتك، فاستخدمه بحكمة. 👑", "مفيش طريق مختصر للتفوق، بس فيه طريق مستمر."];
-  const KEY="motivState_v1", EVERY=5*60*1000;
-  const bar=document.getElementById("motivBar"), txt=document.getElementById("motivText");
+  const splash=$("splash"),box=$("authBox");
+  document.querySelectorAll("[data-atab]").forEach(b=>b.onclick=()=>{
+    document.querySelectorAll("[data-atab]").forEach(x=>x.classList.toggle("active",x===b));
+    $("loginForm").classList.toggle("hidden",b.dataset.atab!=="login");
+    $("regForm").classList.toggle("hidden",b.dataset.atab!=="register");
+    $("recForm").classList.toggle("hidden",b.dataset.atab!=="recover");
+    ["liErr","rgErr"].forEach(i=>$(i).textContent="");
+  });
+
+  function enter(user,delay){
+    ME=user;state=ME.state;
+    finalizeMonths();resolveAll();
+    resetTimer();setupTimer();checkAch();renderAll();updateTimer();
+    DB.flushNow();
+    setTimeout(()=>splash.classList.add("hide"),delay||0);
+  }
+  function showAuth(){splash.classList.remove("hide");box.classList.add("show");document.querySelector('[data-atab="login"]').click()}
+  function busy(btn,on,txt){if(!btn)return;if(on){btn.dataset.t=btn.dataset.t||btn.textContent;if(txt)btn.textContent=txt}else if(btn.dataset.t)btn.textContent=btn.dataset.t;btn.disabled=on}
+
+  if(!auth||!fs){
+    splash.classList.remove("hide");box.classList.add("show");
+    $("liErr").textContent="تعذر تحميل خدمة السيرفر. افتح الموقع وانت أونلاين مرة وجرّب تاني.";
+    return;
+  }
+
+  async function bootUser(fbUser){
+    await startCloud();
+    const phone=normPhone((fbUser.email||"").replace(EMAIL_DOM,""));
+    const id=await userIdOf(phone);
+    const u=_uc[id];
+    if(u)u.phone=phone;
+    return u||null;
+  }
+  const shake=()=>{box.classList.remove("shake");void box.offsetWidth;box.classList.add("shake")};
+
+  let fails=0,locked=false;
+  $("loginForm").onsubmit=async e=>{
+    e.preventDefault();if(locked)return;
+    const err=$("liErr");err.textContent="";
+    const phone=normPhone($("liPhone").value),pass=$("liPass").value,btn=$("liBtn");
+    if(!validPhone(phone)||!pass){err.textContent="اكتب الرقم وكلمة السر";return}
+    busy(btn,true,"⏳ جاري الدخول...");
+    try{
+      const P=firebase.auth.Auth.Persistence;
+      await auth.setPersistence($("liRemember").checked?P.LOCAL:P.SESSION);
+      const cred=await auth.signInWithEmailAndPassword(phone+EMAIL_DOM,pass);
+      const u=await bootUser(cred.user);
+      if(!u){
+        await auth.signOut();stopCloud();
+        err.textContent=navigator.onLine?"الحساب ناقص. سجّل من تاب (حساب جديد) بنفس الرقم والكود.":"مفيش اتصال بالسيرفر، جرّب تاني.";
+        busy(btn,false);return;
+      }
+      fails=0;busy(btn,false);enter(u,200);
+    }catch(ex){
+      busy(btn,false);
+      const c=ex&&ex.code;
+      if(c==="auth/network-request-failed"){err.textContent="مفيش إنترنت، جرّب تاني";return}
+      if(c==="auth/too-many-requests"){err.textContent="محاولات كتير، استنى شوية وجرّب تاني";return}
+      fails++;err.textContent="الرقم أو كلمة السر غير صحيحة";$("liPass").value="";shake();
+      if(fails>=5){locked=true;btn.disabled=true;let s=30;const t=setInterval(()=>{err.textContent="محاولات كتير، استنى "+s+" ثانية";if(--s<0){clearInterval(t);locked=false;btn.disabled=false;fails=0;err.textContent=""}},1000)}
+    }
+  };
+
+  function localMigration(phone){
+    // لو كان عندك حساب قديم محفوظ على نفس الجهاز، نرفع بياناته للسيرفر
+    try{
+      const us=JSON.parse(localStorage.getItem(USERS_KEY)||"{}");
+      const old=Object.values(us).find(u=>u&&u.phone===phone);
+      if(old&&old.state)return{state:normalize(old.state),history:old.history||{},photo:old.photo||"",nameChangedAt:old.nameChangedAt||0};
+    }catch(e){}
+    try{
+      if(!localStorage.getItem(LEGACY_CLAIM)){
+        const raw=localStorage.getItem(LEGACY_KEY);
+        if(raw){localStorage.setItem(LEGACY_CLAIM,"1");const s=JSON.parse(raw);delete s.startDate;return{state:normalize(s),history:{},photo:"",nameChangedAt:0}}
+      }
+    }catch(e){}
+    return{state:normalize({startDate:todayK()}),history:{},photo:"",nameChangedAt:0};
+  }
+
+  $("regForm").onsubmit=async e=>{
+    e.preventDefault();const err=$("rgErr");err.textContent="";
+    const btn=$("regForm").querySelector('button[type="submit"]');
+    const name=$("rgName").value.trim().replace(/\s+/g," "),phone=normPhone($("rgPhone").value),pass=$("rgPass").value,
+      code=$("rgCode").value.trim().toUpperCase();
+    if(name.length<2)return err.textContent="اكتب اسمك (من 2 لـ 18 حرف)";
+    if(!validPhone(phone))return err.textContent="رقم التليفون غير صحيح (مثال: 01012345678)";
+    if(pass.length<6)return err.textContent="كلمة السر لازم 6 على الأقل";
+    if(!code)return err.textContent="اكتب كود الشلة";
+    busy(btn,true,"⏳ جاري إنشاء الحساب...");
+    let fbUser=null,created=false;
+    try{
+      await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+      try{
+        fbUser=(await auth.createUserWithEmailAndPassword(phone+EMAIL_DOM,pass)).user;created=true;
+      }catch(ex){
+        if(ex.code==="auth/email-already-in-use"){
+          try{fbUser=(await auth.signInWithEmailAndPassword(phone+EMAIL_DOM,pass)).user}
+          catch(e2){busy(btn,false);return err.textContent="الرقم ده مسجل قبل كده، جرّب تدخل"}
+        }else throw ex;
+      }
+      // 1) الانضمام للشلة (الكود بيتراجع على السيرفر)
+      const id=await userIdOf(phone);
+      const mref=fs.collection("members").doc(fbUser.uid);
+      let hasMember=false;
+      try{hasMember=(await mref.get()).exists}catch(e){}
+      if(!hasMember){
+        try{await mref.set({userId:id,code})}
+        catch(ex){
+          if(created){try{await fbUser.delete()}catch(e){}}else{try{await auth.signOut()}catch(e){}}
+          busy(btn,false);
+          return err.textContent=ex.code==="permission-denied"?"كود الشلة غلط 🚫 اسأل صاحبك":"حصل خطأ في الاتصال، جرّب تاني";
+        }
+      }
+      // 2) ملف خاص بيربط الحساب بالبروفايل (مش بيظهر لحد)
+      try{await fs.collection("private").doc(id).set({authEmail:phone+EMAIL_DOM,createdAt:Date.now()})}catch(e){}
+      // 3) تحميل الشلة والتأكد من الاسم
+      await startCloud();
+      let u=_uc[id];
+      if(u){
+        u.phone=phone;
+        toast("رجعنا حسابك 👋");
+      }else{
+        if(Object.values(_uc).some(x=>normName(x.name)===normName(name))||BOTS.some(b=>normName(b.name)===normName(name))){
+          if(created){try{await fbUser.delete()}catch(e){}}else{try{await auth.signOut()}catch(e){}}
+          stopCloud();busy(btn,false);return err.textContent="الاسم ده مستخدم، اختار اسم تاني";
+        }
+        const mig=localMigration(phone);
+        u={id,name,photo:mig.photo,nameChangedAt:mig.nameChangedAt,createdAt:Date.now(),state:mig.state,history:mig.history,phone};
+        await fs.collection("users").doc(id).set(userToDoc(u));
+        _uc[id]=u;_us[id]=snapOf(u);
+        toast("أهلاً "+name+"! دخلت المنافسة 🌍");
+      }
+      busy(btn,false);enter(u,200);
+    }catch(ex){
+      busy(btn,false);
+      const c=ex&&ex.code;
+      err.textContent=c==="auth/network-request-failed"?"مفيش إنترنت، جرّب تاني":c==="auth/weak-password"?"كلمة السر ضعيفة، اختار أقوى":c==="permission-denied"?"السيرفر رفض العملية. راجع قواعد Firestore":"حصل خطأ: "+(c||"غير معروف");
+    }
+  };
+
+  $("logoutBtn").onclick=async()=>{
+    if(running)return toast("🔒 وقّف التايمر الأول");
+    pauseTimer();DB.flushNow();
+    await new Promise(r=>setTimeout(r,350));
+    try{await auth.signOut()}catch(e){}
+    stopCloud();ME=null;state=null;draft=null;
+    $("focusOverlay").classList.remove("open");go("home");showAuth();
+  };
+
+  // تجديد تلقائي عند تغيير اليوم / الشهر
+  let lastDay=todayK();
+  setInterval(()=>{if(ME&&todayK()!==lastDay){lastDay=todayK();finalizeMonths();resolveAll();setupTimer();checkAch();renderAll()}},30000);
+
+  // استرجاع الجلسة
+  const unsub=auth.onAuthStateChanged(async fu=>{
+    unsub();
+    if(!fu){showAuth();return}
+    try{
+      const u=await bootUser(fu);
+      if(u)enter(u,900);else{try{await auth.signOut()}catch(e){}stopCloud();showAuth()}
+    }catch(e){showAuth()}
+  });
+})();
+
+/* =====================================================================
+   MOTIVATION BANNER
+   ===================================================================== */
+(function(){
+  const QUOTES=["ابدأ دلوقتي، مش لما تحس إنك جاهز.", "كل ساعة مذاكرة النهارده بتفرق في نتيجتك آخر السنة.", "التعب مؤقت، لكن الفرحة بالنجاح بتفضل.", "مش لازم تكون مثالي، لازم تكون مستمر.", "خطوة صغيرة كل يوم أحسن من حلم كبير من غير تنفيذ.", "اللي بيذاكر دلوقتي هيضحك في يوم النتيجة.", "ركّز في اللي قدامك، الباقي هييجي لوحده.", "الانضباط بيوصّلك لحاجات الحماس عمره ما هيوصّلك ليها.", "النهارده يوم جديد وفرصة جديدة تقرّب من حلمك.", "مش مهم تذاكر كتير، المهم تذاكر صح وبتركيز.", "كل صفحة بتخلّصها بتقرّبك من هدفك.", "التأجيل أكبر عدو لأي طالب، اقفله وابدأ.", "اصبر، الحصاد بييجي بعد الزرع.", "أنت أقوى مما تتخيل، كمّل.", "النجاح مش صدفة، ده عادات يومية صغيرة.", "لما تحس بالزهق افتكر ليه بدأت.", "استثمر في عقلك، ده أفضل استثمار هتعمله.", "إنجاز النهارده هو راحة بالك بكرة.", "ريّح دماغك شوية، بس متنساش ترجع.", "اللي بيتعب في الصمت هيسمعوا صدى نجاحه.", "مفيش مستحيل مع الإصرار والتنظيم.", "ركّز على التقدم مش الكمال.", "موبايلك مش هيذاكر عنك، اقفله شوية.", "كل مسألة بتحلها بتبني ثقتك في نفسك.", "الأحلام الكبيرة محتاجة ساعات مذاكرة كبيرة.", "ابدأ بأصعب مادة وهتلاقي الباقي أسهل.", "خلّي هدفك قدام عينك في كل وقت.", "النظام اللي بتمشي عليه النهارده هو نتيجتك بكرة.", "متقارنش نفسك بحد، قارن نفسك بنفسك إمبارح.", "التعب بيعدّي والإنجاز بيفضل.", "عقلك زي العضلة، كل ما تدرّبه بيقوى.", "ربنا مع اللي بيحاول ويجتهد، كمّل وتوكل.", "لما تقع ابتسم وقوم، الطريق لسه طويل وحلو.", "٢٥ دقيقة تركيز أحسن من ساعتين تشتت.", "النوم الكفاية جزء من المذاكرة، متهملوش.", "اشرب مية وخد نفس عميق وكمّل.", "المراجعة هي سر الحفظ، راجع بانتظام.", "افهم الأول وبعدين احفظ، هتوفر وقت كتير.", "اكتب ملخصاتك بإيدك، هتفضل في دماغك أكتر.", "جرّب تشرح اللي ذاكرته لنفسك بصوت عالي.", "كل غلطة في المسألة درس هيفيدك في الامتحان.", "حل أسئلة سنين فاتت، الامتحان مش هيبقى غريب عليك.", "اللي بيخطط بيوصل، واللي بيمشي من غير خطة بيتوه.", "قسّم المنهج على الأيام ومش هتحس بتقله.", "ابدأ يومك بهدف واضح، وخلّصه قبل ما تنام.", "النجاح مش للأذكى، ده للأكتر إصراراً.", "مفيش حد وصل لحلمه وهو قاعد، اتحرك.", "لو الطريق سهل يبقى مش بيوصّل لحاجة كبيرة.", "سهر النهارده تعب، وسهر بكرة فرحة.", "أهلك مستنيين فرحتك، متكسرش فرحتهم.", "كل يوم بتذاكر فيه هو يوم كسبته.", "خلّي تركيزك أقوى من أي مشتت حواليك.", "الانشغال بالدراسة دلوقتي هيريّحك بعدين.", "كل إنجاز صغير يستاهل تحتفل بيه.", "احنا بنبني مستقبل، والبناء محتاج صبر.", "عدّي الأيام الصعبة، وراها أيام أحلى.", "إنت بتعمل ده لنفسك قبل أي حد.", "اجعل مذاكرتك عادة مش مجهود.", "الفرق بين حلمك وواقعك هو ساعات شغل.", "لو حسيت إنك تعبان، خد بريك ٥ دقايق وارجع أقوى.", "الثقة في النفس نص النجاح.", "متستناش الدافع، اعمل الأول والدافع هييجي.", "أحسن وقت تبدأ فيه كان إمبارح، وتاني أحسن وقت هو دلوقتي.", "اللي بيستحمل مرارة التعب بيدوق حلاوة النجاح.", "إنت مش بتذاكر عشان الدرجات بس، إنت بتبني شخصيتك.", "التفاصيل الصغيرة في المنهج بتفرق الدرجات الكبيرة.", "كلمة مش قادر مش موجودة في قاموس المجتهدين.", "فكّر في اللحظة اللي هتشوف فيها اسمك في الناجحين.", "النهارده هتتعب شوية وبكرة هتفتخر بنفسك.", "الطريق للتفوق بيبدأ بقرار.", "خليك صبور، النتايج الكبيرة محتاجة وقت.", "بدل ما تقول معنديش وقت، قول دي مش أولويتي.", "استغل كل دقيقة، الوقت مبيرجعش.", "اعمل اللي عليك وسيب الباقي على ربنا.", "إنت قادر تعمل أكتر مما فاكر.", "مذاكرة النهارده = راحة بال في يوم الامتحان.", "افتكر إن كل المتفوقين بدأوا من نفس نقطتك.", "الصبر مفتاح الفرج، والاجتهاد مفتاح النجاح.", "لو مادة صعبة عليك، دي فرصة تتعلم تتخطى الصعب.", "كل ما تفهم أكتر، الخوف من الامتحان بيقل.", "ابعد عن السلبية وخلّي حواليك ناس بتشجعك.", "نظّم مكانك وهتلاقي تركيزك زاد.", "ابدأ بالسهل لو محتاج تسخّن، وبعدها هاجم الصعب.", "إنت لسه في بداية الطريق، فكمّل وماتبصش وراك.", "متستهونش بدقيقة، الدقايق هي اللي بتعمل الساعات.", "المتفوق مش اللي ما بيغلطش، ده اللي بيتعلم من غلطه.", "احلم كبير واشتغل أكبر.", "ذاكر بنفس طويل، السباق ماراثون مش سرعة.", "اختار تبقى فخور بنفسك آخر اليوم.", "التركيز عملة نادرة، اصرفها صح.", "الأيام بتعدّي سواء ذاكرت أو لأ، فاختار تعدّيها بإنجاز.", "اللي بيصبر على تعب المذاكرة مش هيتعب من الندم.", "كل حصة بتحضرها وبتركّز فيها بتوفرلك ساعات في البيت.", "إيمانك بنفسك هو الوقود اللي بيشغّلك.", "أحسن انتقام من اللي استهان بيك هو نجاحك.", "ركّز على اللي في إيدك مش على اللي برّه سيطرتك.", "اتعلم تقول لأ للمشتتات وأيوه لأحلامك.", "عمرك ما هتندم إنك ذاكرت زيادة.", "إنت بتصنع نسخة أفضل من نفسك كل يوم.", "خلّي المثابرة شعارك والهدف وجهتك.", "الصبح هو أحلى وقت للتركيز، استغله.", "مش كل يوم هيبقى سهل، بس كل يوم يستاهل.", "الإنجاز بيبدأ لما تقفل الأعذار.", "جدول منظم وعزيمة قوية، ده كل اللي محتاجه.", "اتحدى نفسك النهارده بمسألة أصعب من إمبارح.", "لما الأمور تتصعّب، افتكر إنك قربت من القمة.", "النجاح بيحب الناس اللي بتشتغل في الضلمة.", "أنت أقرب لهدفك دلوقتي من أي وقت فات.", "اجتهد النهارده، وسيب بكرة يشكرك.", "الله لا يضيع أجر من أحسن عملاً.", "حب اللي بتتعلمه وهتلاقي المذاكرة بقت ممتعة.", "أنت ملك وقتك، فاستخدمه بحكمة. 👑", "مفيش طريق مختصر للتفوق، بس فيه طريق مستمر.", "المنافسة الشريفة بتطلّع أحسن ما فيك، شد حيلك! 🏆"];
+  const KEY="motivState_v1",EVERY=5*60*1000;
+  const bar=$("motivBar"),txt=$("motivText");
   if(!bar||!txt)return;
   function load(){try{return JSON.parse(localStorage.getItem(KEY))||null}catch(e){return null}}
-  function save(s){try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}}
+  function saveM(s){try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}}
   function shuffle(n,avoid){
     const a=Array.from({length:n},(_,i)=>i);
     for(let i=n-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}
@@ -648,75 +1925,19 @@ if("serviceWorker" in navigator && location.protocol!=="file:"){
     return a;
   }
   let st=load();
-  if(!st||!Array.isArray(st.order)||st.order.length!==QUOTES.length||st.pos>=st.order.length||typeof st.t!=="number"){
-    st={order:shuffle(QUOTES.length),pos:0,t:Date.now()};save(st);
-  }
-  function show(){
-    txt.classList.add("out");
-    setTimeout(()=>{txt.textContent=QUOTES[st.order[st.pos]];txt.classList.remove("out")},400);
-  }
+  if(!st||!Array.isArray(st.order)||st.order.length!==QUOTES.length||st.pos>=st.order.length||typeof st.t!=="number"){st={order:shuffle(QUOTES.length),pos:0,t:Date.now()};saveM(st)}
+  function show(){txt.classList.add("out");setTimeout(()=>{txt.textContent=QUOTES[st.order[st.pos]];txt.classList.remove("out")},400)}
   function advance(){
-    const last=st.order[st.pos];
-    st.pos++;
+    const last=st.order[st.pos];st.pos++;
     if(st.pos>=st.order.length){st.order=shuffle(QUOTES.length,last);st.pos=0}
-    st.t=Date.now();save(st);
+    st.t=Date.now();saveM(st);
     bar.classList.remove("gone");document.documentElement.style.setProperty("--bn-h",window.innerWidth<=600?"50px":"42px");
     show();
   }
   txt.textContent=QUOTES[st.order[st.pos]];
   setInterval(()=>{if(Date.now()-st.t>=EVERY)advance()},5000);
   document.addEventListener("visibilitychange",()=>{if(!document.hidden&&Date.now()-st.t>=EVERY)advance()});
-  document.getElementById("motivClose").onclick=()=>{bar.classList.add("gone");document.documentElement.style.setProperty("--bn-h","0px")};
-})();
-
-/* ===== Login lock ===== */
-(function(){
-  const PASS_HASH="79052e6e362471bed40c64513bbc6de3f32afc786fde610773da5336656d4e60", SALT="ahmed-study-os|", AKEY="studyOsAuth_v1";
-  function sha256(msg){
-    const bytes=Array.from(new TextEncoder().encode(msg));
-    const primes=[];for(let n=2;primes.length<64;n++){if(primes.every(p=>n%p))primes.push(n)}
-    const frac=x=>((x-Math.floor(x))*4294967296)>>>0;
-    const K=primes.map(p=>frac(Math.cbrt(p)));let H=primes.slice(0,8).map(p=>frac(Math.sqrt(p)));
-    const l=bytes.length;bytes.push(0x80);while(bytes.length%64!==56)bytes.push(0);
-    const hi=Math.floor(l*8/4294967296),lo=(l*8)>>>0;
-    for(const v of [hi,lo])for(let i=3;i>=0;i--)bytes.push((v>>>(i*8))&255);
-    const rotr=(x,n)=>(x>>>n)|(x<<(32-n));
-    for(let o=0;o<bytes.length;o+=64){
-      const w=new Array(64);
-      for(let i=0;i<16;i++)w[i]=(bytes[o+i*4]<<24|bytes[o+i*4+1]<<16|bytes[o+i*4+2]<<8|bytes[o+i*4+3])>>>0;
-      for(let i=16;i<64;i++){const s0=rotr(w[i-15],7)^rotr(w[i-15],18)^(w[i-15]>>>3),s1=rotr(w[i-2],17)^rotr(w[i-2],19)^(w[i-2]>>>10);w[i]=(w[i-16]+s0+w[i-7]+s1)>>>0}
-      let [a,b,c,d,e,f,g,h]=H;
-      for(let i=0;i<64;i++){const S1=rotr(e,6)^rotr(e,11)^rotr(e,25),ch=(e&f)^(~e&g),t1=(h+S1+ch+K[i]+w[i])>>>0,S0=rotr(a,2)^rotr(a,13)^rotr(a,22),mj=(a&b)^(a&c)^(b&c),t2=(S0+mj)>>>0;h=g;g=f;f=e;e=(d+t1)>>>0;d=c;c=b;b=a;a=(t1+t2)>>>0}
-      const r=[a,b,c,d,e,f,g,h];H=H.map((v,i)=>(v+r[i])>>>0);
-    }
-    return H.map(v=>v.toString(16).padStart(8,"0")).join("");
-  }
-  const splash=document.getElementById("splash"),box=document.getElementById("lockBox"),
-        inp=document.getElementById("lockInput"),btn=document.getElementById("lockBtn"),
-        err=document.getElementById("lockErr"),rem=document.getElementById("lockRemember"),eye=document.getElementById("lockEye");
-  function isAuthed(){try{return localStorage.getItem(AKEY)===PASS_HASH||sessionStorage.getItem(AKEY)===PASS_HASH}catch(e){return false}}
-  function open(){splash.classList.add("hide")}
-  if(isAuthed()){setTimeout(open,900);return}
-  box.classList.add("show");setTimeout(()=>inp.focus(),300);
-  let fails=0,locked=false;
-  function submit(){
-    if(locked)return;
-    const ok=sha256(SALT+inp.value)===PASS_HASH;
-    if(ok){
-      try{(rem.checked?localStorage:sessionStorage).setItem(AKEY,PASS_HASH)}catch(e){}
-      err.textContent="";open();
-    }else{
-      fails++;err.textContent="كلمة المرور غير صحيحة";inp.value="";
-      box.classList.remove("shake");void box.offsetWidth;box.classList.add("shake");
-      if(fails>=5){
-        locked=true;btn.disabled=true;let s=30;
-        const t=setInterval(()=>{err.textContent="محاولات كتير، استنى "+s+" ثانية";if(--s<0){clearInterval(t);locked=false;btn.disabled=false;fails=0;err.textContent=""}},1000);
-      }
-    }
-  }
-  btn.onclick=submit;
-  inp.addEventListener("keydown",e=>{if(e.key==="Enter")submit()});
-  eye.onclick=()=>{inp.type=inp.type==="password"?"text":"password"};
+  $("motivClose").onclick=()=>{bar.classList.add("gone");document.documentElement.style.setProperty("--bn-h","0px")};
 })();
 </script>
 </body>
