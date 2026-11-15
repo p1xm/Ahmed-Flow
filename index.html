@@ -1714,17 +1714,16 @@ function renderFocusApps(){
 function fillAppInputs(){$("chatPick").value=getChat();renderFocusApps()}
 
 /* فتح موقع مسموح من غير ما التايمر يقف */
-let allowedOutAt=0,allowedAway=false,allowedAwayAt=0,allowCap=120;
+let excursion=false,excTimer=null,allowedAway=false,allowCap=120;
 function openSite(k){
   const i=siteInfo(k);if(!i)return;
-  if(running)allowedOutAt=Date.now();
+  if(running){excursion=true;clearTimeout(excTimer);excTimer=setTimeout(()=>{excursion=false},120000)}
   window.open(i.url,"_blank","noopener,noreferrer");
 }
 function returnFromSite(){
-  if(!allowedAway){allowedOutAt=0;return}
-  allowedAway=false;allowedOutAt=0;
-  if(!running)return;
-  allowCap=86400;try{tick()}finally{allowCap=120}
+  if(!excursion)return;
+  clearTimeout(excTimer);excTimer=setTimeout(()=>{excursion=false},4000);
+  if(allowedAway){allowedAway=false;if(running){allowCap=86400;try{tick()}finally{allowCap=120}}}
 }
 $("chatPick").addEventListener("change",e=>{try{localStorage.setItem(chatKey(),e.target.value)}catch(x){}renderFocusApps()});
 document.querySelectorAll(".site-go").forEach(b=>b.addEventListener("click",()=>openSite(b.dataset.k)));
@@ -1747,8 +1746,7 @@ window.addEventListener("beforeunload",e=>{if(running){e.preventDefault();e.retu
 window.addEventListener("popstate",()=>{if(running){try{history.pushState({lock:1},"")}catch(e){}toast("🔒 وقّف التايمر الأول لو عايز تخرج")}});
 function onLeave(){
   if(!running||awayAt)return;
-  if(allowedAway)return;
-  if(allowedOutAt&&Date.now()-allowedOutAt<120000){allowedAway=true;allowedAwayAt=Date.now();return}
+  if(excursion){clearTimeout(excTimer);allowedAway=true;return}
   pauseTimer();awayAt=Date.now();
   if(state){const k=todayK();state.exits[k]=(state.exits[k]||0)+1;persist()}
 }
