@@ -1723,7 +1723,7 @@ function openSite(k){
 }
 function returnFromSite(){
   if(awayTimedOut){awayTimedOut=false;toast("⏸ التايمر وقف لأنك غبت أكتر من ساعة");return}
-  if(!allowedAway)return;
+  if(!allowedAway){allowedOutAt=0;return}
   const away=Date.now()-allowedAwayAt;
   allowedAway=false;allowedOutAt=0;
   if(!running)return;
@@ -1740,7 +1740,7 @@ $("focusApps").addEventListener("click",e=>{const b=e.target.closest(".site-open
 let wakeLock=null,awayAt=0;
 async function acquireLock(){
   try{if(!document.fullscreenElement&&document.documentElement.requestFullscreen)await document.documentElement.requestFullscreen({navigationUI:"hide"})}catch(e){}
-  try{if(navigator.wakeLock)wakeLock=await navigator.wakeLock.request("screen")}catch(e){}
+  try{if(navigator.wakeLock){wakeLock=await navigator.wakeLock.request("screen");wakeLock.addEventListener("release",()=>{wakeLock=null})}}catch(e){}
   try{history.pushState({lock:1},"")}catch(e){}
 }
 function releaseLock(){
@@ -1751,7 +1751,8 @@ window.addEventListener("beforeunload",e=>{if(running){e.preventDefault();e.retu
 window.addEventListener("popstate",()=>{if(running){try{history.pushState({lock:1},"")}catch(e){}toast("🔒 وقّف التايمر الأول لو عايز تخرج")}});
 function onLeave(){
   if(!running||awayAt)return;
-  if(allowedOutAt&&Date.now()-allowedOutAt<120000){allowedAway=true;allowedAwayAt=Date.now();allowedOutAt=0;return}
+  if(allowedAway)return;
+  if(allowedOutAt&&Date.now()-allowedOutAt<120000){allowedAway=true;allowedAwayAt=Date.now();return}
   pauseTimer();awayAt=Date.now();
   if(state){const k=todayK();state.exits[k]=(state.exits[k]||0)+1;persist()}
 }
