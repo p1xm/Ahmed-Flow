@@ -369,7 +369,6 @@ a{color:inherit;text-decoration:none}
             <div class="site-slot"><div class="site-lbl">🔎 جوجل</div><button class="site-go" data-k="google" title="افتح">↗</button></div>
             <div class="site-slot"><div class="site-lbl">▶️ يوتيوب</div><button class="site-go" data-k="youtube" title="افتح">↗</button></div>
           </div>
-          <div class="muted" style="margin-top:6px;font-size:12px">⏳ التايمر هيفضل شغال، بس هيقف لو غبت أكتر من ساعة</div>
         </div>
         <div class="timer-controls">
           <button class="btn primary" id="timerStart">▶ ابدأ</button>
@@ -1665,7 +1664,6 @@ const fmt=sec=>String(Math.floor(sec/3600)).padStart(2,"0")+":"+String(Math.floo
 const fmtShort=sec=>String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0");
 function updateTimer(){const txt=timerModeType==="countdown"?fmtShort(remaining):fmt(elapsed);timerEl.textContent=txt;focusTimer.textContent=txt}
 function tick(){
-  if(allowedAway&&Date.now()-allowedAwayAt>AWAY_MAX){allowedAway=false;awayTimedOut=true;running=false;clearInterval(interval);interval=null;releaseLock();return}
   const now=Date.now();let dt=Math.floor((now-lastT)/1000);if(dt<=0)return;
   if(dt>allowCap){lastT=now;dt=allowCap}else lastT+=dt*1000;
   let minAdded=false;
@@ -1710,26 +1708,23 @@ function siteInfo(k){
   const f=FIXED[k];return f?{name:f[0],url:f[1],ic:f[2]}:null;
 }
 function renderFocusApps(){
-  $("focusApps").innerHTML='<div class="muted">🌐 المسموح في الجلسة دي (دوس عشان تفتح):</div><div class="muted" style="font-size:12px;margin-bottom:4px">⏳ التايمر هيقف لو غبت أكتر من ساعة</div>'+
+  $("focusApps").innerHTML='<div class="muted">🌐 المسموح في الجلسة دي (دوس عشان تفتح):</div>'+
     ["chat","google","youtube"].map(k=>{const i=siteInfo(k);return '<button class="chip site-open" data-k="'+k+'">'+i.ic+' '+i.name+' ↗</button>'}).join("");
 }
 function fillAppInputs(){$("chatPick").value=getChat();renderFocusApps()}
 
 /* فتح موقع مسموح من غير ما التايمر يقف */
-let allowedOutAt=0,allowedAway=false,allowedAwayAt=0,awayTimedOut=false,allowCap=120;const AWAY_MAX=3600000;
+let allowedOutAt=0,allowedAway=false,allowedAwayAt=0,allowCap=120;
 function openSite(k){
   const i=siteInfo(k);if(!i)return;
-  if(running){allowedOutAt=Date.now();toast("⏳ التايمر شغال، بس هيقف لو غبت أكتر من ساعة")}
+  if(running)allowedOutAt=Date.now();
   window.open(i.url,"_blank","noopener,noreferrer");
 }
 function returnFromSite(){
-  if(awayTimedOut){awayTimedOut=false;toast("⏸ التايمر وقف لأنك غبت أكتر من ساعة");return}
   if(!allowedAway){allowedOutAt=0;return}
-  const away=Date.now()-allowedAwayAt;
   allowedAway=false;allowedOutAt=0;
   if(!running)return;
-  if(away>AWAY_MAX){pauseTimer();toast("⏸ التايمر وقف لأنك غبت أكتر من ساعة");return}
-  allowCap=AWAY_MAX/1000;try{tick()}finally{allowCap=120}
+  allowCap=86400;try{tick()}finally{allowCap=120}
 }
 $("chatPick").addEventListener("change",e=>{try{localStorage.setItem(chatKey(),e.target.value)}catch(x){}renderFocusApps()});
 document.querySelectorAll(".site-go").forEach(b=>b.addEventListener("click",()=>openSite(b.dataset.k)));
