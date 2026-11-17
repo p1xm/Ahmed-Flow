@@ -45,6 +45,26 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    // حرب المناطق (لعبة إضافية): مستند لكل شهر، للأعضاء بس
+    match /war/{id}     { allow read, write: if isMember(); }
+
+    // عالمي (عملات/حيوان/صناديق): كل لاعب بيكتب في محفظته هو بس
+    match /wallet/{id} {
+      allow read: if isMember();
+      allow create, update: if isMember() && ownerOf(id);
+      allow delete: if false;
+    }
+    // تعويض المبارزات: الخاسر بيسجل اللي دفعه والفايز بيقراه (مفيش تعديل بعد التسجيل)
+    match /transfers/{id} {
+      allow read, create: if isMember();
+      allow update, delete: if false;
+    }
+    // وحش الأسبوع واللاعبين في القاتل الصامت: بيتعمل مرة واحدة في بداية كل أسبوع
+    match /weekly/{id} {
+      allow read, create: if isMember();
+      allow update, delete: if false;
+    }
+
     match /duels/{id}   { allow read, write: if isMember(); }
     match /teams/{id}   { allow read, write: if isMember(); }
     match /tduels/{id}  { allow read, write: if isMember(); }

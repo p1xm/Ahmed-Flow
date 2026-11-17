@@ -316,6 +316,8 @@ a{color:inherit;text-decoration:none}
     <button data-page="quranhall"><span class="ico">📖</span>قاعة شرف القرآن</button>
     <button data-page="friends"><span class="ico">👥</span>الأصدقاء</button>
     <button data-page="duels"><span class="ico">⚔️</span>المبارزات والفرق</button>
+    <button data-page="war"><span class="ico">🗺️</span>حرب المناطق</button>
+    <button data-page="world"><span class="ico">🐾</span>عالمي</button>
     <button data-page="achievements"><span class="ico">👑</span>إنجازات الشهر</button>
     <button data-page="schedule"><span class="ico">📅</span>الجدول الأسبوعي</button>
     <button data-page="edit"><span class="ico">✏️</span>تعديل جدولي</button>
@@ -451,6 +453,10 @@ a{color:inherit;text-decoration:none}
   </section>
 
   <!-- DUELS -->
+  <section class="page" id="page-war"></section>
+
+  <section class="page" id="page-world"></section>
+
   <section class="page" id="page-duels">
     <div class="section-head"><h2>⚔️ المبارزات والفرق</h2></div>
     <div class="metric-tabs" id="dtabs">
@@ -1222,7 +1228,7 @@ function renderFriends(){
   const all=sortPlayers(players(curMonth()),"points");
   $("friendCount").textContent=all.length+" صديق";
   const rows=all.filter(p=>!q||normName(p.name).includes(q));
-  $("friendGrid").innerHTML=rows.map(p=>`<div class="fcard ${p.me?"me":""}">${avatar(p,52)}<div style="min-width:0"><div class="nm">${nameHtml(p)}</div><div class="sub">مستوى ${p.level} • ${p.ach} إنجاز • 🔥 ${p.streak}</div></div>${p.me?"":`<button class="btn small" data-ch="${escapeHtml(p.id)}">⚔️ تحدّاه</button>`}</div>`).join("")||'<div class="muted">مفيش نتايج</div>';
+  $("friendGrid").innerHTML=rows.map(p=>`<div class="fcard ${p.me?"me":""}">${avatar(p,52,window.WAR_COSM?WAR_COSM.frame(p.id):"")}<div style="min-width:0"><div class="nm">${nameHtml(p)}${window.WAR_COSM?WAR_COSM.title(p.id):""}</div><div class="sub">مستوى ${p.level} • ${p.ach} إنجاز • 🔥 ${p.streak}</div></div>${p.me?"":`<button class="btn small" data-ch="${escapeHtml(p.id)}">⚔️ تحدّاه</button>`}</div>`).join("")||'<div class="muted">مفيش نتايج</div>';
 }
 $("friendSearch").addEventListener("input",renderFriends);
 $("friendGrid").addEventListener("click",e=>{const b=e.target.closest("[data-ch]");if(!b)return;preOpp=b.dataset.ch;duelTab="d1";go("duels")});
@@ -2307,5 +2313,8 @@ if("serviceWorker" in navigator&&location.protocol!=="file:"){
   $("motivClose").onclick=()=>{bar.classList.add("gone");document.documentElement.style.setProperty("--bn-h","0px")};
 })();
 </script>
+<script src="war-maps.js"></script>
+<script src="war.js"></script>
+<script src="world.js"></script>
 </body>
 </html>
