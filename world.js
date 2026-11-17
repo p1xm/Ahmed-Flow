@@ -517,7 +517,7 @@ function petHtml(w){
   else status=`<div class="war-sub">😄 حيوانك نشيط! ${p.miss?"":"كمّل كده."}</div>`;
   const sev=p.deaths?`<div class="war-sub">🪦 مات ${p.deaths} ${p.deaths===1?"مرة":"مرات"} قبل كده</div>`:"";
   return `<div class="wd-stage">
-    <div class="wd-pet s${st} ${v.tired?"tired":""}" style="--sz:${PET_SIZES[st]}px">${acc?`<span class="acc ${acc.pos}">${acc.e}</span>`:""}<span class="pe">${emoji}</span></div>
+    <div class="wd-pet s${st} ${v.tired?"tired":""}" style="--sz:${PET_SIZES[st]}px">${acc?`<span class="acc ${acc.pos}">${acc.e}</span>`:""}<span class="pe">${window.A3D?A3D.html(emoji,{tired:v.tired,dead:v.dead}):emoji}</span></div>
     <h2 style="margin:0">${st===0?"بيضة "+sp[0]:sp[0]} • ${STAGE_NAMES[st]}</h2>
     <div class="war-sub">مرحلة ${st+1} من 6 • نمو ${h1(v.xp)} ساعة${next?" / "+next:""}</div>
     <div class="wd-bar"><i style="width:${pct}%"></i></div>
@@ -537,7 +537,7 @@ function monsterHtml(){
   const rows=Object.keys(st.per).filter(id=>st.per[id]>0).sort((a,b)=>st.per[b]-st.per[a]).slice(0,10)
     .map(id=>`<div class="wd-row"><div class="who">${avOf(id,34)}<b>${escapeHtml(nameOfU(id))}${id===ME.id?" (أنت)":""}</b></div><span class="war-sub" style="margin:0">⚔️ ${h1(st.per[id])} ساعة</span></div>`).join("");
   const w=myW(),claimed=w&&w.claimed["mon_"+doc.wk],mine=st.per[ME.id]||0;
-  return `<div class="wd-mon ${st.dead?"dead":""}">${doc.monster.e}</div>
+  return `<div class="wd-mon ${st.dead?"dead":""}">${window.A3D?A3D.html(doc.monster.e,{dead:st.dead}):doc.monster.e}</div>
   <h2 style="text-align:center;margin:0">${escapeHtml(doc.monster.n)}</h2>
   <div class="wd-bar hp"><i style="width:${100-pct}%"></i></div>
   <div class="wd-kv"><span>❤️ الصحة: <b>${h1(left)}</b> / ${hp} ساعة</span><span>⏳ فاضل <b>${daysLeft}</b> ${daysLeft===1?"يوم":"أيام"} (لحد الجمعة)</span></div>
@@ -619,6 +619,7 @@ function renderWorld(){
   const tabs=[["pet","🐾 حيواني"],["monster","🐉 الوحش"],["boxes","🎁 الصناديق"+(w.boxes?" ("+w.boxes+")":"")],["assassin","🥷 القاتل"],["shop","🛒 المتجر"]];
   const body=tab==="pet"?petHtml(w):tab==="monster"?monsterHtml():tab==="boxes"?boxesHtml(w):tab==="assassin"?assassinHtml(w):shopHtml(w);
   const ttl=window.WAR_COSM.title(ME.id);
+  const oldC=window.A3D?Array.from(root.querySelectorAll("canvas.a3d")):[];
   root.innerHTML=`
   <div class="card wd-bal"><div><h1 style="margin:0">🐾 عالمي</h1><small>${avOf(ME.id,28)} ${escapeHtml(ME.name)} ${ttl}</small></div>
     <div style="text-align:center"><div class="big">🪙 ${w.coins}</div><small>النهارده: +${todayEarn(w)} من المذاكرة</small></div></div>
@@ -630,6 +631,7 @@ function renderWorld(){
     <li>مناطق حرب المناطق، قتل الوحش، الاغتيال، فوز المبارزات، والصناديق.</li>
     <li>خسرت مبارزة؟ بتدفع ${COMP_PAY} 🪙 للفايز. لو كسبته المبارزة اللي بعدها (خلال ${COMP_DAYS} أيام) بتاخد <b>${COMP_REMATCH} 🪙</b>.</li></ul></details></div>
   <div class="card wd-log"><div class="section-head"><h2>📜 آخر الأحداث</h2></div>${w.log.slice(0,12).map(l=>`<div>${escapeHtml(l.x)}</div>`).join("")||'<div class="war-sub">لسه مفيش أحداث</div>'}</div>`;
+  if(oldC.length)A3D.reuse(oldC,root);
   root.querySelectorAll("[data-wt]").forEach(b=>b.onclick=()=>{tab=b.dataset.wt;renderWorld()});
   root.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{
     const a=b.dataset.a;
