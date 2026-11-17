@@ -284,8 +284,10 @@ function injectCss(){
   .war-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--purple),var(--gold));border-radius:9px}
   .war-map{width:100%;max-width:560px;margin:0 auto;display:block;touch-action:manipulation}
   .war-map .t{cursor:pointer}
-  .war-map .t rect{transition:filter .15s}
-  .war-map .t:hover rect{filter:brightness(1.25)}
+  .war-map .t .ti{transition:filter .15s}
+  .war-map .t:hover .ti{filter:brightness(1.25)}
+  .war-cd{display:flex;align-items:center;justify-content:center;gap:8px;margin:0 auto 10px;padding:8px 16px;width:fit-content;border-radius:999px;background:rgba(255,213,90,.1);border:1px solid rgba(255,213,90,.35);font-size:13px;color:var(--muted)}
+  .war-cd b{color:var(--gold);font-size:18px;letter-spacing:1px;font-variant-numeric:tabular-nums}
   .war-map text{font-family:Cairo,system-ui,sans-serif;pointer-events:none}
   .war-legend{display:flex;flex-wrap:wrap;gap:8px 14px;justify-content:center;margin-top:12px;font-size:12px;color:var(--muted)}
   .war-legend span{display:inline-flex;align-items:center;gap:5px}
@@ -320,29 +322,110 @@ function tileLines(n,lim){
   if(cur)out.push(cur);
   return out.slice(0,3);
 }
-function mapSvg(d){
-  // عرض الرسم ثابت 360 والمربعات بتتقسم عليه، فالخط يفضل مقروء على الموبايل
-  const M=WAR_MAPS[d.map],W=360,TW=W/M.cols,TH=Math.min(66,Math.max(52,TW*.92)),H=M.rows*TH;
-  const f=M.cols>=6?9.6:M.cols===5?10.5:12,lim=Math.floor((TW-8)/(f*.46)),lh=f+2.4;
-  const adj=adjOf(d.map),mine=new Set(myTiles(d));
-  let out=`<svg class="war-map" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="خريطة ${escapeHtml(M.name)}">`;
+/* ---------- خريطة أقرب للواقع + مجسّمات 3D ---------- */
+const hash3=(a,b,c)=>{const x=Math.sin(a*127.1+b*311.7+c*74.7)*43758.5453;return x-Math.floor(x)};
+const seedOf=t=>{let h=7;for(let i=0;i<t.length;i++)h=(h*31+t.charCodeAt(i))%9973;return h};
+function hexHsl(h,sat,l){
+  sat/=100;l/=100;const k=n=>(n+h/30)%12,a=sat*Math.min(l,1-l),f=n=>l-a*Math.max(-1,Math.min(k(n)-3,Math.min(9-k(n),1)));
+  const x=v=>Math.round(255*v).toString(16).padStart(2,"0");return"#"+x(f(0))+x(f(8))+x(f(4));
+}
+const unitHex=uid=>uid?hexHsl(hueOf(uid),72,52):"#9aa3b2";
+const TERR={1:"#8a7f58",2:"#6f7d4c",3:"#55804f",4:"#3f8a5f"};
+const _geo={};
+// حدود المناطق: شبكة نقاطها مهزوزة بثبات + حواف متعرجة (الحافة المشتركة بين منطقتين نفس الشكل بالظبط)
+function geoOf(mapId,TW,TH,PAD){
+  const key=mapId+"|"+TW.toFixed(1)+"|"+TH;if(_geo[key])return _geo[key];
+  const M=WAR_MAPS[mapId],sd=seedOf(mapId),ax=TW*.17,ay=TH*.12,cor={},edge={};
+  const C=(i,j)=>{const k=i+","+j;return cor[k]||(cor[k]=[PAD+i*TW+(hash3(i,j,sd)-.5)*2*ax,PAD+j*TH+(hash3(i,j,sd+1)-.5)*2*ay])};
+  const edgeP=(i1,j1,i2,j2)=>{
+    const fw=i1<i2||(i1===i2&&j1<j2),ai=fw?i1:i2,aj=fw?j1:j2,bi=fw?i2:i1,bj=fw?j2:j1,k=ai+","+aj+">"+bi+","+bj;
+    let p=edge[k];
+    if(!p){
+      const A=C(ai,aj),B=C(bi,bj),dx=B[0]-A[0],dy=B[1]-A[1],L=Math.hypot(dx,dy)||1,nx=-dy/L,ny=dx/L;
+      const o1=(hash3(ai*7+bi,aj*5+bj,sd+2)-.5)*L*.26,o2=(hash3(ai*3+bi,aj*11+bj,sd+3)-.5)*L*.26;
+      p=edge[k]=[A,[A[0]+dx*.34+nx*o1,A[1]+dy*.34+ny*o1],[A[0]+dx*.68+nx*o2,A[1]+dy*.68+ny*o2],B];
+    }
+    return fw?p:p.slice().reverse();
+  };
+  const tiles={};
   M.regions.forEach(r=>{
-    const T=d.tiles[r.id],x=r.x*TW+2,y=r.y*TH+2,w=TW-4,h=TH-4,cx=x+w/2;
-    const owner=T.o,fill=owner?colorOf(owner):"#1b1933";
-    const attackable=T.o!==ME.id&&(mine.size===0||[...adj[r.id]].some(n=>mine.has(n)));
-    const isSel=sel===r.id;
-    let stroke=owner===ME.id?"rgba(255,255,255,.9)":"rgba(255,255,255,.12)",sw=owner===ME.id?2:1,dash="";
-    if(attackable&&!isSel){stroke="rgba(88,183,255,.95)";sw=1.6;dash=' stroke-dasharray="4 3"'}
-    if(isSel){stroke="#ffd45a";sw=3}
-    out+=`<g class="t" data-r="${r.id}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"${dash}/>`;
-    const lines=tileLines(r.n,lim),room=h-f-7,y0=y+(room-lines.length*lh)/2+f+1;
-    lines.forEach((ln,i)=>{out+=`<text x="${cx}" y="${y0+i*lh}" text-anchor="middle" font-size="${f}" font-weight="800" fill="#fff">${escapeHtml(ln)}</text>`});
-    out+=`<text x="${cx}" y="${y+h-5}" text-anchor="middle" font-size="${f+.6}" font-weight="800" fill="${owner?"#fff":"#c9c3e6"}">⚔️${T.s}</text>`;
-    if(r.cap)out+=`<text x="${x+3}" y="${y+f+2}" font-size="${f+1}">👑</text>`;
-    if(T.k)out+=`<text x="${x+w-3}" y="${y+f+2}" text-anchor="end" font-size="${f}" font-weight="800" fill="#fff">🪖${T.k}</text>`;
-    out+=`</g>`;
+    const i=r.x,j=r.y;
+    const pts=[].concat(edgeP(i,j,i+1,j).slice(0,-1),edgeP(i+1,j,i+1,j+1).slice(0,-1),edgeP(i+1,j+1,i,j+1).slice(0,-1),edgeP(i,j+1,i,j).slice(0,-1));
+    const c0=C(i,j),c1=C(i+1,j),c2=C(i+1,j+1),c3=C(i,j+1);
+    tiles[r.id]={d:"M"+pts.map(p=>p[0].toFixed(1)+" "+p[1].toFixed(1)).join("L")+"Z",cx:(c0[0]+c1[0]+c2[0]+c3[0])/4,top:(c0[1]+c1[1])/2,bot:(c2[1]+c3[1])/2};
   });
-  return out+"</svg>";
+  return _geo[key]={tiles};
+}
+// منطقة الانطلاق: أقرب منطقة مجاورة للهدف بتاعة المهاجم، وإلا أقرب منطقة ليه
+function srcOf(d,o,adj,G){
+  const T=G.tiles[o.to];if(!T)return null;
+  const mineT=id=>id!==o.to&&d.tiles[id]&&d.tiles[id].o===o.u&&G.tiles[id];
+  const dist=id=>{const a=G.tiles[id];return Math.hypot(a.cx-T.cx,(a.top+a.bot)/2-(T.top+T.bot)/2)};
+  let best=null,bd=1e9;
+  [...(adj[o.to]||[])].filter(mineT).forEach(id=>{const k=dist(id);if(k<bd){bd=k;best=id}});
+  if(best)return best;
+  WAR_MAPS[d.map].regions.forEach(r=>{if(mineT(r.id)){const k=dist(r.id);if(k<bd){bd=k;best=r.id}}});
+  return best;
+}
+function cdText(){
+  const n=new Date(),t=new Date(n.getFullYear(),n.getMonth(),n.getDate()+1),s=Math.max(0,Math.floor((t-n)/1000)),p=x=>String(x).padStart(2,"0");
+  return p(Math.floor(s/3600))+":"+p(Math.floor(s%3600/60))+":"+p(s%60);
+}
+function mapSvg(d){
+  const M=WAR_MAPS[d.map],W=360,PAD=8,TW=(W-2*PAD)/M.cols,TH=Math.min(112,Math.max(84,TW*1.4)),H=M.rows*TH+2*PAD;
+  const f=M.cols>=6?9.6:M.cols===5?10.5:12,lim=Math.floor((TW-8)/(f*.46)),lh=f+2.4;
+  const adj=adjOf(d.map),mine=new Set(myTiles(d)),G=geoOf(d.map,TW,TH,PAD);
+  const sp={};   // صور المجسّمات (بتتعرّف مرة واحدة وتتكرر بـ <use>)
+  const addSp=(id,key,o)=>{if(sp[id]===undefined)sp[id]=(window.A3D&&A3D.sprite)?A3D.sprite(key,o):"";return!!sp[id]};
+  let body="";
+  M.regions.forEach(r=>{
+    const T=d.tiles[r.id],g=G.tiles[r.id],owner=T.o,isSel=sel===r.id;
+    const attackable=owner!==ME.id&&(mine.size===0||[...adj[r.id]].some(n=>mine.has(n)));
+    let stroke="rgba(8,6,22,.6)",sw=1.2,dash="";
+    if(owner===ME.id){stroke="rgba(255,255,255,.92)";sw=2.2}
+    if(attackable&&!isSel){stroke="rgba(88,183,255,.98)";sw=1.8;dash=' stroke-dasharray="4 3"'}
+    if(isSel){stroke="#ffd45a";sw=3}
+    const terr=TERR[r.v]||TERR[1];
+    body+=`<g class="t" data-r="${r.id}"><path class="ti" d="${g.d}" fill="${owner?colorOf(owner):terr}"/>`;
+    if(owner)body+=`<path d="${g.d}" fill="${terr}" opacity=".24" pointer-events="none"/>`;
+    body+=`<path d="${g.d}" fill="url(#wgrain)" pointer-events="none"/><path d="${g.d}" fill="url(#wshade)" pointer-events="none"/>`;
+    const lines=tileLines(r.n,lim),y0=g.top+f+4,nameBot=y0+(lines.length-1)*lh+4,cntTop=g.bot-f-6;
+    // الحصن (دفاع): 4 دبابات في الزوايا وبرج في النص فوقه 4 جنود
+    const hx=unitHex(owner).slice(1),fid="f"+hx;
+    if(addSp(fid,"war:fort@"+hx,{yaw:.45,pitch:.95,zoom:.8,size:160})){
+      const size=Math.min(TW*1.08,Math.max(30,(cntTop-nameBot)*1.4)),cy=(nameBot+cntTop)/2;
+      body+=`<use href="#${fid}" transform="translate(${g.cx.toFixed(1)} ${cy.toFixed(1)}) scale(${(size/64).toFixed(3)})" pointer-events="none"/>`;
+    }
+    lines.forEach((ln,i)=>{body+=`<text x="${g.cx.toFixed(1)}" y="${(y0+i*lh).toFixed(1)}" text-anchor="middle" font-size="${f}" font-weight="800" fill="#fff" stroke="rgba(0,0,0,.6)" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">${escapeHtml(ln)}</text>`});
+    body+=`<text x="${g.cx.toFixed(1)}" y="${(g.bot-6).toFixed(1)}" text-anchor="middle" font-size="${f+.6}" font-weight="800" fill="#fff" stroke="rgba(0,0,0,.65)" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">⚔️${T.s}</text>`;
+    if(r.cap)body+=`<text x="${(g.cx-TW/2+6).toFixed(1)}" y="${(g.bot-6).toFixed(1)}" font-size="${f+1}">👑</text>`;
+    if(T.k)body+=`<text x="${(g.cx+TW/2-6).toFixed(1)}" y="${(g.bot-6).toFixed(1)}" text-anchor="end" font-size="${f}" font-weight="800" fill="#fff" stroke="rgba(0,0,0,.65)" stroke-width="2.4" paint-order="stroke">🪖${T.k}</text>`;
+    body+=`<path d="${g.d}" fill="none" stroke="${stroke}" stroke-width="${sw}"${dash} stroke-linejoin="round" pointer-events="none"/></g>`;
+  });
+  // الهجمات الجارية: فرقة (3 دبابات + 3 جنود) بتتحرك من منطقة المهاجم للهدف
+  let marching="";
+  Object.entries(d.orders||{}).slice(0,36).forEach(([oid,o],idx)=>{
+    const to=G.tiles[o.to];if(!to)return;
+    const sId=srcOf(d,o,adj,G),from=sId?G.tiles[sId]:null;
+    const tx=to.cx,ty=(to.top+to.bot)/2,sx=from?from.cx:tx,sy=from?(from.top+from.bot)/2:ty-TH;
+    const dir=((Math.round(Math.atan2(tx-sx,ty-sy)/(Math.PI/4))%8)+8)%8,hx=unitHex(o.u).slice(1),qid="q"+hx+dir;
+    if(!addSp(qid,"war:squad@"+hx,{yaw:dir*Math.PI/4,pitch:.7,zoom:.8,size:160}))return;
+    const sd=seedOf(oid),dur=(4.2+(sd%12)/10).toFixed(1),bg=((idx%4)*.8+(sd%7)/10).toFixed(1),size=TW*1.3;
+    marching+=`<line x1="${sx.toFixed(1)}" y1="${sy.toFixed(1)}" x2="${tx.toFixed(1)}" y2="${ty.toFixed(1)}" stroke="#${hx}" stroke-width="1.8" stroke-dasharray="4 4" opacity=".7" pointer-events="none"/>`;
+    marching+=`<g pointer-events="none" opacity="0"><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.1;.86;1" dur="${dur}s" begin="${bg}s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="${sx.toFixed(1)} ${sy.toFixed(1)};${tx.toFixed(1)} ${ty.toFixed(1)}" dur="${dur}s" begin="${bg}s" repeatCount="indefinite"/><use href="#${qid}" transform="scale(${(size/64).toFixed(3)})"/></g>`;
+  });
+  const imgs=Object.keys(sp).filter(k=>sp[k]).map(k=>`<image id="${k}" width="64" height="64" x="-32" y="-32" href="${sp[k]}"/>`).join("");
+  return `<svg class="war-map" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="خريطة ${escapeHtml(M.name)}">
+  <defs>
+    <linearGradient id="wsea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16365a"/><stop offset="1" stop-color="#0a1a36"/></linearGradient>
+    <linearGradient id="wshade" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".34"/></linearGradient>
+    <pattern id="wgrain" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".6" fill="#fff" opacity=".1"/><circle cx="4" cy="4" r=".6" fill="#000" opacity=".15"/><circle cx="4.6" cy="1.2" r=".4" fill="#000" opacity=".1"/></pattern>
+    <pattern id="wwave" width="26" height="14" patternUnits="userSpaceOnUse"><path d="M0 7q6.5-5 13 0t13 0" fill="none" stroke="#6db4f0" stroke-opacity=".13" stroke-width="1"/></pattern>
+    <filter id="wshadow" x="-6%" y="-6%" width="112%" height="112%"><feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000" flood-opacity=".55"/></filter>
+    ${imgs}
+  </defs>
+  <rect width="${W}" height="${H}" rx="16" fill="url(#wsea)"/><rect width="${W}" height="${H}" rx="16" fill="url(#wwave)"/>
+  <g filter="url(#wshadow)">${body}</g>${marching}</svg>`;
 }
 
 function panelHtml(d,av){
@@ -421,7 +504,7 @@ function renderWar(){
   const hoursToday=Math.min(6,minToday/60);
   const tankToday=minToday>=TANK_MINUTES;
   const owners=new Set(Object.values(d.tiles).filter(t=>t.o).map(t=>t.o));
-  const legend=[...owners].map(u=>`<span><i style="background:${colorOf(u)}"></i>${escapeHtml(nameOf(u,d))}</span>`).join("")+`<span><i style="background:#1b1933"></i>محايدة</span>`;
+  const legend=[...owners].map(u=>`<span><i style="background:${colorOf(u)}"></i>${escapeHtml(nameOf(u,d))}</span>`).join("")+`<span><i style="background:#6f7d4c"></i>محايدة</span>`;
   root.innerHTML=`
   <div class="card war-head"><div><h1>🗺️ حرب المناطق ${M.flag}</h1><div class="war-sub">خريطة ${escapeHtml(M.name)} • ${escapeHtml(monthLabel(d.month))} • ذاكر عشان تقوى وتاخد مناطق أصحابك</div></div></div>
   <div class="war-res">
@@ -429,7 +512,7 @@ function renderWar(){
     <div class="box"><small>🪖 دباباتك المتاحة</small><b>${av.k}</b><small>الدبابة = ${TANK_POWER} قوة</small></div>
     <div class="box"><small>🪖 دبابة اليوم</small><b>${tankToday?"✅ خدتها":Math.floor(hoursToday*10)/10+" / 6 س"}</b><div class="war-bar"><i style="width:${Math.round(hoursToday/6*100)}%"></i></div></div>
   </div>
-  <div class="card">${mapSvg(d)}<div class="war-legend">${legend}</div></div>
+  <div class="card"><div class="war-cd" id="warCd">⏳ الحسم بعد <b dir="ltr">${cdText()}</b></div>${mapSvg(d)}<div class="war-legend">${legend}</div></div>
   <div id="warPanel">${panelHtml(d,av)}</div>
   ${ordersHtml(d)}
   ${rankHtml(d)}
@@ -475,5 +558,14 @@ setInterval(()=>{
   if(DATA&&DATA.lastResolved<todayK())resolveDay();
   renderWar();
 },15000);
+let lastResTry=0;
+setInterval(()=>{
+  if(!ME||curPage!=="war")return;
+  const b=document.querySelector("#warCd b");if(b)b.textContent=cdText();
+  if(DATA&&DATA.lastResolved<todayK()&&!resolving&&!document.hidden&&Date.now()-lastResTry>20000){
+    const a=document.activeElement;if(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))return;
+    lastResTry=Date.now();resolveDay().then(()=>renderWar());
+  }
+},1000);
 if(typeof auth!=="undefined"&&auth)auth.onAuthStateChanged(u=>{if(!u)stopWar()});
 })();

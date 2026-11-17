@@ -20,6 +20,20 @@ const mv=(m,v)=>[m[0]*v[0]+m[1]*v[1]+m[2]*v[2],m[3]*v[0]+m[4]*v[1]+m[5]*v[2],m[6
 
 /* ---------- شبكات أساسية (lathe على محور y) ---------- */
 const MESH={};
+function orient(v,f){
+  for(let i=0;i<f.length;i+=3){
+    const a=f[i]*3,b=f[i+1]*3,c=f[i+2]*3;
+    const ux=v[b]-v[a],uy=v[b+1]-v[a+1],uz=v[b+2]-v[a+2],wx=v[c]-v[a],wy=v[c+1]-v[a+1],wz=v[c+2]-v[a+2];
+    const nx=uy*wz-uz*wy,ny=uz*wx-ux*wz,nz=ux*wy-uy*wx;
+    const gx=v[a]+v[b]+v[c],gy=v[a+1]+v[b+1]+v[c+1],gz=v[a+2]+v[b+2]+v[c+2];
+    if(nx*gx+ny*gy+nz*gz<0){const t=f[i+1];f[i+1]=f[i+2];f[i+2]=t}
+  }
+}
+function boxMesh(){
+  const v=[-1,-1,-1, 1,-1,-1, 1,1,-1, -1,1,-1, -1,-1,1, 1,-1,1, 1,1,1, -1,1,1];
+  const f=[0,1,2,0,2,3, 4,6,5,4,7,6, 0,4,5,0,5,1, 3,2,6,3,6,7, 0,3,7,0,7,4, 1,5,6,1,6,2];
+  orient(v,f);return{v:new Float32Array(v),f:new Uint16Array(f)};
+}
 function lathe(prof,seg){
   const v=[],f=[],rings=[];
   prof.forEach(([y,r])=>{
@@ -37,20 +51,14 @@ function lathe(prof,seg){
       else{tri(A.s+j,A.s+j2,B.s+j2);tri(A.s+j,B.s+j2,B.s+j)}
     }
   }
-  // توجيه كل وش للخارج
-  for(let i=0;i<f.length;i+=3){
-    const a=f[i]*3,b=f[i+1]*3,c=f[i+2]*3;
-    const ux=v[b]-v[a],uy=v[b+1]-v[a+1],uz=v[b+2]-v[a+2],wx=v[c]-v[a],wy=v[c+1]-v[a+1],wz=v[c+2]-v[a+2];
-    const nx=uy*wz-uz*wy,ny=uz*wx-ux*wz,nz=ux*wy-uy*wx;
-    const gx=v[a]+v[b]+v[c],gy=v[a+1]+v[b+1]+v[c+1],gz=v[a+2]+v[b+2]+v[c+2];
-    if(nx*gx+ny*gy+nz*gz<0){const t=f[i+1];f[i+1]=f[i+2];f[i+2]=t}
-  }
+  orient(v,f);
   return{v:new Float32Array(v),f:new Uint16Array(f)};
 }
 function getMesh(t,q){
   const k=t+q;if(MESH[k])return MESH[k];
   let m;
   if(t==="e"){const seg=[12,9,7][q],R=[8,6,4][q],p=[];for(let i=0;i<=R;i++){const a=-PI/2+PI*i/R;p.push([sin(a),cos(a)])}m=lathe(p,seg)}
+  else if(t==="b")m=boxMesh();
   else if(t==="c")m=lathe([[-1,0],[-1,1],[1,0]],[10,8,6][q]);
   else m=lathe([[-1,0],[-1,1],[1,1],[1,0]],[10,8,6][q]);
   return MESH[k]=m;
@@ -60,6 +68,7 @@ function getMesh(t,q){
 const E=(c,p,s,o)=>Object.assign({t:"e",c,p,s},o);
 const C=(c,p,s,o)=>Object.assign({t:"c",c,p,s},o);   // مخروط: s=[rx,نصف الطول,rz] والقمة لفوق
 const K=(c,p,s,o)=>Object.assign({t:"k",c,p,s},o);   // أسطوانة
+const B=(c,p,s,o)=>Object.assign({t:"b",c,p,s},o);   // صندوق
 const mir=f=>[f(1),f(-1)];
 const RT=(ax,amp,spd,ph,pv)=>({k:"rot",ax,amp,spd,ph:ph||0,pv:pv||[0,0,0]});
 const MV=(ax,amp,spd,ph)=>({k:"mov",ax,amp,spd,ph:ph||0});
@@ -74,6 +83,17 @@ function chain(c,pts,rad,o){
   pts.forEach((p,i)=>{out.push(E(c,p,[R(i),R(i),R(i)],o));if(i)out.push(lm("k",c,pts[i-1],p,(R(i)+R(i-1))/2*.97,o))});
   return out;
 }
+// تحريك/تدوير/تصغير مجموعة أجزاء كوحدة واحدة
+function place(parts,x,y,z,yaw,sc){
+  sc=sc||1;const Ry=rotY((yaw||0)*D2R);
+  parts.flat(Infinity).forEach(P=>{
+    if(!P)return;const p=mv(Ry,[P.p[0]*sc,P.p[1]*sc,P.p[2]*sc]);
+    P.p=[p[0]+x,p[1]+y,p[2]+z];P.s=[P.s[0]*sc,P.s[1]*sc,P.s[2]*sc];
+    P.Rm=mul(Ry,P.Rm||eul.apply(null,P.r||[0,0,0]));
+  });
+  return parts;
+}
+function shade(h,f){const c=hexRgb(h);return"#"+c.map(v=>Math.min(255,Math.round(v*f)).toString(16).padStart(2,"0")).join("")}
 function eyes(y,z,sp,r,o){
   o=o||{};const out=[];
   [1,-1].forEach(sx=>{
@@ -365,16 +385,55 @@ const REG={
 }
 };
 
+/* ---------- مجسّمات الحرب (دبابة / جندي / فرقة / حصن) ---------- */
+function tank(col){
+  const dk=shade(col,.7);
+  return[
+    mir(s=>[B("#2a2a2e",[s*.38,.12,0],[.1,.12,.5]),E("#3a3a40",[s*.38,.1,.47],[.1,.1,.1]),E("#3a3a40",[s*.38,.1,-.47],[.1,.1,.1])]),
+    B(col,[0,.2,0],[.31,.1,.46]),B(col,[0,.19,.5],[.3,.06,.1],{r:[-28,0,0]}),
+    B("#ffffff",[0,.305,.2],[.2,.012,.05],{bias:.02}),
+    K(dk,[0,.38,-.06],[.2,.07,.2]),E(dk,[0,.44,-.06],[.14,.05,.14]),
+    lm("k","#1c1c21",[0,.4,.08],[0,.4,.66],.035),E("#1c1c21",[0,.4,.67],[.05,.05,.05])
+  ];
+}
+function soldier(col){
+  const kh="#5b6b3b";
+  return[
+    mir(s=>[K("#46532c",[s*.07,.12,0],[.045,.12,.045]),E("#2b2b2b",[s*.07,.02,.03],[.055,.03,.08])]),
+    E(kh,[0,.33,0],[.13,.15,.09]),B(col,[0,.34,-.1],[.09,.1,.03]),
+    mir(s=>lm("k",kh,[s*.15,.42,0],[s*.1,.3,.12],.035)),
+    E("#e6b98f",[0,.56,.01],[.075,.08,.075]),E("#3d4a2a",[0,.6,0],[.095,.065,.095]),E(col,[0,.64,.02],[.05,.02,.06],{bias:.02}),
+    lm("k","#222",[.1,.3,.02],[.1,.34,.42],.017)
+  ];
+}
+function squadModel(col){
+  const P=[];
+  [[-.82,.5],[0,.72],[.82,.5]].forEach(([x,z])=>P.push(place(tank(col),x,0,z,0,1)));
+  [-.55,0,.55].forEach(x=>P.push(place(soldier(col),x,0,-.85,0,1.15)));
+  return{parts:P};
+}
+function fortModel(col){
+  const P=[],st="#b0a58b";
+  P.push(B("#7f7456",[0,.02,0],[1.8,.03,1.8],{bias:-6}),B("#8c8062",[0,.05,0],[1.45,.02,1.45],{bias:-5}));
+  [[1,1],[-1,1],[1,-1],[-1,-1]].forEach(([sx,sz])=>P.push(place(tank(col),sx*1.2,.04,sz*1.2,Math.atan2(sx,sz)/D2R,.82)));
+  P.push(K("#9a8f78",[0,.55,0],[.52,.5,.52]),K(st,[0,1.07,0],[.62,.05,.62]),B("#4a3f2a",[0,.22,.52],[.14,.2,.04]));
+  for(let i=0;i<8;i++){const a=i/8*2*PI;P.push(B(st,[cos(a)*.56,1.18,sin(a)*.56],[.1,.08,.1],{r:[0,-a/D2R,0]}))}
+  P.push(lm("k","#ddd",[0,1.1,0],[0,2.0,0],.02),B(col,[.19,1.88,0],[.19,.11,.015]));
+  [45,135,225,315].forEach(a=>{const r=a*D2R;P.push(place(soldier(col),sin(r)*.3,1.12,cos(r)*.3,a,.78))});
+  return{parts:P};
+}
+REG["war:squad"]=squadModel;REG["war:fort"]=fortModel;
+
 /* ---------- بناء + تطبيع المجسّم ---------- */
 const NL=14,TOP=1.12,MODELS={};
 function hexRgb(h){h=h.replace("#","");if(h.length===3)h=h.split("").map(x=>x+x).join("");return[parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]}
 function build(key){
   if(MODELS[key]!==undefined)return MODELS[key];
-  const fn=REG[key];if(!fn)return MODELS[key]=null;
-  let spec;try{spec=fn()}catch(e){console.warn("A3D build",key,e);return MODELS[key]=null}
+  const kp=key.split("@"),fn=REG[kp[0]];if(!fn)return MODELS[key]=null;
+  let spec;try{spec=fn(kp[1]?"#"+kp[1]:undefined)}catch(e){console.warn("A3D build",key,e);return MODELS[key]=null}
   const parts=(spec.parts||spec).flat(Infinity).filter(Boolean);
   let mn=[1e9,1e9,1e9],mx=[-1e9,-1e9,-1e9],gy=1e9;
-  parts.forEach(P=>{const rho=max(P.s[0],P.s[1],P.s[2]);for(let i=0;i<3;i++){mn[i]=min(mn[i],P.p[i]-rho);mx[i]=max(mx[i],P.p[i]+rho)}gy=min(gy,P.p[1]-(P.r?rho:P.s[1]))});
+  parts.forEach(P=>{const rho=max(P.s[0],P.s[1],P.s[2]);for(let i=0;i<3;i++){mn[i]=min(mn[i],P.p[i]-rho);mx[i]=max(mx[i],P.p[i]+rho)}gy=min(gy,P.p[1]-((P.r||P.Rm)?rho:P.s[1]))});
   const ext=max(mx[0]-mn[0],mx[1]-mn[1],mx[2]-mn[2]),c=[(mn[0]+mx[0])/2,(mn[1]+mx[1])/2,(mn[2]+mx[2])/2];
   let Rh=0,Hy=0;
   parts.forEach(P=>{const rho=max(P.s[0],P.s[1],P.s[2]);Rh=max(Rh,Math.hypot(P.p[0]-c[0],P.p[2]-c[2])+rho);Hy=max(Hy,abs(P.p[1]-c[1])+rho)});
@@ -384,7 +443,7 @@ function build(key){
     const th=P.t==="e"?max(P.s[0],P.s[1],P.s[2]):max(P.s[0],P.s[2]),rel=th/ext,q=rel>.14?0:rel>.05?1:2;
     P.mesh=getMesh(P.t,q);P.vo=VC;VC+=P.mesh.v.length/3;FC+=P.mesh.f.length/3;
     P.p=[(P.p[0]-c[0])*S,(P.p[1]-c[1])*S,(P.p[2]-c[2])*S];P.s=[P.s[0]*S,P.s[1]*S,P.s[2]*S];
-    P.R=eul.apply(null,P.r||[0,0,0]);
+    P.R=P.Rm||eul.apply(null,P.r||[0,0,0]);
     if(P.an){const a=Object.assign({},P.an);if(a.pv)a.pv=[(a.pv[0]-c[0])*S,(a.pv[1]-c[1])*S,(a.pv[2]-c[2])*S];if(a.k==="mov")a.amp*=S;P.an=a}
     const rgb=hexRgb(P.c);P.pal=[];for(let l=0;l<NL;l++){const f=l/(NL-1)*TOP;P.pal.push("rgb("+min(255,rgb[0]*f|0)+","+min(255,rgb[1]*f|0)+","+min(255,rgb[2]*f|0)+")")}
     P.bias=P.bias||0;
@@ -400,16 +459,16 @@ function build(key){
 /* ---------- الرسم ---------- */
 const CD=5,LX=-.42,LY=.72,LZ=.55,LL=sqrt(LX*LX+LY*LY+LZ*LZ),lx=LX/LL,ly=LY/LL,lz=LZ/LL;
 function frame(st,o){
-  const m=st.m,cv=st.cv,ctx=st.ctx,W=cv.width,H=cv.height,R=min(W,H)/2,cx=W/2,cy=H/2;
+  const m=st.m,cv=st.cv,ctx=st.ctx,W=cv.width,H=cv.height,R=min(W,H)/2*(o.zoom||1),cx=W/2,cy=H/2;
   const t=o.t,yaw=o.yaw,pitch=o.pitch,roll=o.roll||0;
   const G=mul(rotX(pitch),mul(rotZ(roll),rotY(yaw)));
   const gt=mv(G,[0,o.dy||0,0]);
   ctx.clearRect(0,0,W,H);
   // ظل أرضي
   const gyS=cy-m.gy*cos(pitch)*R*.97,hopK=1-min(.5,(o.dy||0)*1.4);
-  ctx.save();ctx.translate(cx,gyS);ctx.scale(1,.2);
+  if(!o.noshadow){ctx.save();ctx.translate(cx,gyS);ctx.scale(1,.2);
   const gr=ctx.createRadialGradient(0,0,0,0,0,R*.62*hopK);gr.addColorStop(0,"rgba(0,0,0,.38)");gr.addColorStop(1,"rgba(0,0,0,0)");
-  ctx.fillStyle=gr;ctx.beginPath();ctx.arc(0,0,R*.62*hopK,0,2*PI);ctx.fill();ctx.restore();
+  ctx.fillStyle=gr;ctx.beginPath();ctx.arc(0,0,R*.62*hopK,0,2*PI);ctx.fill();ctx.restore()}
   const blink=!o.noblink&&(t%4.3)<.13;
   const X=m.X,Y=m.Y,Z=m.Z,SX=m.SX,SY=m.SY;
   for(let pi=0;pi<m.parts.length;pi++){
@@ -453,7 +512,7 @@ function frame(st,o){
 }
 
 /* ---------- التشغيل على صفحة ---------- */
-const live=new Set();let raf=0,last=0;
+const live=new Set(),SPR={};let raf=0,last=0;
 function size(st){
   const cv=st.cv,w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return false;
   const dpr=min(2,window.devicePixelRatio||1),W=Math.round(w*dpr),H=Math.round(h*dpr);
@@ -519,8 +578,19 @@ window.A3D={
       if(i>-1){n.replaceWith(old[i]);old.splice(i,1)}
     });
   },
+  // صورة PNG شفافة لمجسّم (للخرائط): A3D.sprite("war:fort@ff8800",{yaw,pitch,zoom,size})
+  sprite(key,o){
+    o=o||{};const size=o.size||160,ck=key+"|"+(o.yaw||0).toFixed(3)+"|"+(o.pitch!=null?o.pitch:.8)+"|"+(o.zoom||1)+"|"+size;
+    if(SPR[ck]!==undefined)return SPR[ck];
+    const m=build(key);if(!m)return SPR[ck]="";
+    try{
+      const cv=document.createElement("canvas");cv.width=cv.height=size;
+      frame({cv,ctx:cv.getContext("2d"),m},{t:0,yaw:o.yaw||0,pitch:o.pitch!=null?o.pitch:.8,roll:0,dy:0,noblink:true,still:true,zoom:o.zoom||1,noshadow:!!o.noshadow});
+      return SPR[ck]=cv.toDataURL("image/png");
+    }catch(e){return SPR[ck]=""}
+  },
   // للاختبار: رسم لقطة ثابتة
   snap(cv,k,o){o=o||{};const m=build(k);if(!m)return false;const st={cv,ctx:cv.getContext("2d"),m};
-    frame(st,{t:o.t||0,yaw:o.yaw!=null?o.yaw:.5,pitch:o.pitch!=null?o.pitch:.22,roll:o.roll||0,dy:0,noblink:true});return true}
+    frame(st,{t:o.t||0,yaw:o.yaw!=null?o.yaw:.5,pitch:o.pitch!=null?o.pitch:.22,roll:o.roll||0,dy:0,noblink:true,zoom:o.zoom});return true}
 };
 })();
