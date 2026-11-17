@@ -256,6 +256,16 @@ a{color:inherit;text-decoration:none}
 .alert .acts{display:flex;gap:6px}
 .chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;border:1px solid var(--line);background:#100e1f;font-size:12px;margin:3px}
 .hide-demo{display:none}
+
+.ios-modal{position:fixed;inset:0;background:rgba(3,3,10,.78);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:700;padding:18px}
+.ios-modal.show{display:flex}
+.ios-box{background:#12102a;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);max-width:420px;width:100%;padding:22px;max-height:90vh;overflow:auto}
+.ios-box h3{margin:0 0 6px;font-size:20px}
+.ios-box p{color:var(--muted);margin:0 0 14px;font-size:14px;line-height:1.7}
+.ios-box ol{margin:0 0 16px;padding:0 20px 0 0;line-height:2;font-size:15px}
+.ios-box ol li b{color:#fff}
+.ios-warn{background:rgba(255,190,70,.1);border:1px solid rgba(255,190,70,.35);border-radius:12px;padding:10px 12px;font-size:13px;margin-bottom:14px;display:none}
+.ios-box .btn{width:100%}
 </style>
 </head>
 <body>
@@ -581,11 +591,29 @@ a{color:inherit;text-decoration:none}
       <div class="section-head"><h2>📱 تثبيت التطبيق</h2><span id="pwaState">جارٍ الفحص...</span></div>
       <div class="hero-actions">
         <button class="btn primary" id="installPwa">📲 تثبيت التطبيق</button>
+        <button class="btn" id="installIos">🍎 تثبيت على الآيفون</button>
         <button class="btn" id="notifyBtn">🔔 تفعيل الإشعارات</button>
       </div>
     </div>
   </section>
 </main>
+</div>
+
+
+<div class="ios-modal" id="iosModal">
+  <div class="ios-box">
+    <h3>🍎 تثبيت التطبيق على الآيفون</h3>
+    <p>الآيفون بيثبّت التطبيقات من متصفح Safari بس، وبيتم يدوي في 3 خطوات:</p>
+    <div class="ios-warn" id="iosWarn">⚠️ إنت مش فاتح من Safari. انسخ رابط الموقع وافتحه في Safari الأول.</div>
+    <ol>
+      <li>افتح الموقع في <b>Safari</b>.</li>
+      <li>اضغط زر <b>المشاركة</b> <span style="font-size:18px">⎋</span> (المربع اللي فيه سهم لفوق، أسفل الشاشة).</li>
+      <li>اسحب لتحت واختار <b>«إضافة إلى الشاشة الرئيسية» (Add to Home Screen)</b> ثم <b>إضافة</b>.</li>
+    </ol>
+    <p style="margin-bottom:14px">بعد كده هتلاقي أيقونة التطبيق على الشاشة الرئيسية وبيفتح زي أي تطبيق. ولتفعيل الإشعارات لازم iOS 16.4 أو أحدث، وتفتح التطبيق من الأيقونة.</p>
+    <button class="btn primary" id="iosShare" style="margin-bottom:10px;display:none">📤 افتح قائمة المشاركة مباشرة</button>
+    <button class="btn" id="iosClose">تمام فهمت</button>
+  </div>
 </div>
 
 <div class="focus-overlay" id="focusOverlay">
@@ -2107,7 +2135,18 @@ setInterval(autoBackup,60000);setTimeout(autoBackup,5000);
    ===================================================================== */
 let deferredInstall=null;
 window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstall=e;$("pwaState").textContent="التثبيت متاح 📲"});
-$("installPwa").onclick=async()=>{if(deferredInstall){deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null}else toast("من قائمة المتصفح اختر تثبيت التطبيق أو Add to Home screen")};
+const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+const isStandalone=window.matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
+const isSafariIOS=isIOS&&/safari/i.test(navigator.userAgent)&&!/crios|fxios|edgios|opios|gsa\//i.test(navigator.userAgent);
+function openIosGuide(){$("iosWarn").style.display=isSafariIOS?"none":"block";$("iosModal").classList.add("show")}
+$("installIos").onclick=()=>{if(isStandalone){toast("التطبيق مثبّت بالفعل ✅");return}openIosGuide()};
+if(navigator.share)$("iosShare").style.display="block";
+$("iosShare").onclick=async()=>{try{await navigator.share({title:document.title,url:location.href.split("#")[0]});toast("اختار «إضافة إلى الشاشة الرئيسية» من القائمة 📲")}catch(e){}};
+$("iosClose").onclick=()=>$("iosModal").classList.remove("show");
+$("iosModal").onclick=e=>{if(e.target.id==="iosModal")$("iosModal").classList.remove("show")};
+if(isStandalone)$("installIos").style.display="none";
+else if(isIOS){$("installIos").classList.add("primary");$("installPwa").style.display="none";$("pwaState").textContent="ثبّت من Safari 🍎"}
+$("installPwa").onclick=async()=>{if(deferredInstall){deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null}else if(isIOS)openIosGuide();else toast("من قائمة المتصفح اختر تثبيت التطبيق أو Add to Home screen")};
 $("notifyBtn").onclick=async()=>{if(!("Notification" in window)){toast("المتصفح لا يدعم الإشعارات");return}const p=await Notification.requestPermission();toast(p==="granted"?"تم تفعيل الإشعارات 🔔":"لم يتم السماح بالإشعارات")};
 if("serviceWorker" in navigator&&location.protocol!=="file:"){
   navigator.serviceWorker.register("sw.js").then(()=>$("pwaState").textContent="جاهز للعمل Offline ✅").catch(()=>$("pwaState").textContent="تعذر تسجيل Offline");
